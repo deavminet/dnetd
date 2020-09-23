@@ -11,7 +11,7 @@
 module dnetd.dserver;
 
 import core.thread : Thread;
-import std.socket : Address, Socket;
+import std.socket : Address, Socket, AddressFamily, SocketType, ProtocolType;
 import dnetd.dconnection;
 import dnetd.dchannel;
 import std.string : cmp;
@@ -71,7 +71,7 @@ public class DServer : Thread
 	private void initNetwork()
 	{
 		/* Create the socket */
-		serverSocket = new Socket();
+		serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM, ProtocolType.TCP);
 
 		/* Bind the socket to the given address */
 		serverSocket.bind(sockAddress);
