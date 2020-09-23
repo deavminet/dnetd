@@ -85,6 +85,9 @@ public class DConnection : Thread
 	*/
 	private void process(DataMessage message)
 	{
+		/* Get the tag */
+		long tag = message.tag;
+
 		/* Get the command byte */
 		byte commandByte = message.data[0];
 
@@ -106,7 +109,17 @@ public class DConnection : Thread
 		/* TODO: Handle this case */
 		else
 		{
-			
+			/* TODO: Check plugins */
+			bool isPlugin = false;
+
+			if(isPlugin)
+			{
+				
+			}
+			else
+			{
+				
+			}
 		}
 	}
 

@@ -23,7 +23,9 @@ public class DServer : Thread
 	private Address sockAddress;
 
 
-	/* Connection queue */
+	/**
+	* Connection queue
+	*/
 	private DConnection[] connectionQueue;
 	
 	this(Address sockAddress)
