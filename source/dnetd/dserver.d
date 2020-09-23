@@ -13,6 +13,9 @@ module dnetd.dserver;
 import core.thread : Thread;
 import std.socket : Address, Socket;
 import dnetd.dconnection;
+import dnetd.dchannel;
+import std.string : cmp;
+import core.sync.mutex : Mutex;
 
 public class DServer : Thread
 {
@@ -27,6 +30,12 @@ public class DServer : Thread
 	* Connection queue
 	*/
 	private DConnection[] connectionQueue;
+
+	/**
+	* Channels
+	*/
+	private DChannel[] channels;
+	private Mutex channelLock;
 	
 	this(Address sockAddress)
 	{
@@ -50,6 +59,9 @@ public class DServer : Thread
 
 		/* Setup queues */
 		initQueues();
+
+		/* Setup locks */
+		initLocks();
 	}
 
 	/**
@@ -73,6 +85,12 @@ public class DServer : Thread
 	{
 		/* TODO: Implement me */
 	}
+
+	private void initLocks()
+	{
+		/* Initialioze the channel lock */
+		channelLock = new Mutex();
+	}
 	
 	private void startServer()
 	{
@@ -91,10 +109,42 @@ public class DServer : Thread
 			Socket socket = serverSocket.accept();
 
 			/* Spawn a connection handler */
-			DConnection connection = new DConnection(socket);
+			DConnection connection = new DConnection(this, socket);
 
 			/* Add to the connection queue */
 			connectionQueue ~= connection;
 		}
+	}
+
+	public void addChannel(DConnection causer, DChannel channel)
+	{
+		/* Lock the channels list */
+		channelLock.lock();
+
+		channels ~= channel;
+
+		/* TODO: Use causer */
+
+		/* Unlock the channels list */
+		channelLock.unlock();
+	}
+
+	public DChannel getChannelByName(string channelName)
+	{
+		/* Lock the channels list */
+		channelLock.lock();
+
+		foreach(DChannel currentChannel; channels)
+		{
+			if(cmp(currentChannel.getName(), channelName) == 0)
+			{
+				return currentChannel;
+			}
+		}
+
+		/* Unlock the channels list */
+		channelLock.unlock();
+
+		return null;
 	}
 }

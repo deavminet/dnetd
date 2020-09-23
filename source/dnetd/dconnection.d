@@ -15,12 +15,16 @@ import std.socket : Socket;
 import bmessage;
 import tristanable.encoding : DataMessage;
 import core.sync.mutex : Mutex;
+import dnetd.dserver : DServer;
+import std.string : split;
+import dnetd.dchannel : DChannel;
 
 public class DConnection : Thread
 {
 	/**
 	* Connection information
 	*/
+	private DServer server;
 	private Socket socket;
 	private bool hasAuthed;
 
@@ -34,10 +38,13 @@ public class DConnection : Thread
 	/* Reserved tag for push notifications */
 	private long notificationTag = 0;
 
-	this(Socket socket)
+	this(DServer server, Socket socket)
 	{
 		/* Set the function to be called on thread start */
 		super(&worker);
+
+		/* Set the associated server */
+		this.server = server;
 
 		/* Set the socket */
 		this.socket = socket;
@@ -94,12 +101,19 @@ public class DConnection : Thread
 
 	/**
 	* Write to socket
+	*
+	* Encodes the byte array as a tristanable tagged
+	* message and then encodes that as a bformat
+	* message
+	*
+	* Locks the writeLock mutex, sends it over the
+	* socket to the client/server, and unlocks the
+	* mutex
 	*/
-	private void writeSocket(long tag, byte[] data)
+	private bool writeSocket(long tag, byte[] data)
 	{
-		/* TODO: Implement me */
-
-		
+		/* Send status */
+		bool status;
 
 		/* Create the tagged message */
 		DataMessage message = new DataMessage(tag, data);
@@ -107,14 +121,13 @@ public class DConnection : Thread
 		/* Lock the write mutex */
 		writeLock.lock();
 
-		/* TODO: Do send */
-
-		bool status  = sendMessage(socket, message.encode());
-
-		/* TODO: use status */
+		/* Send the message */
+		status  = sendMessage(socket, message.encode());
 
 		/* Unlock the write mutex */
 		writeLock.unlock();
+
+		return status;
 	}
 	
 
@@ -144,15 +157,48 @@ public class DConnection : Thread
 			bool status = authenticate(username, password);
 
 			/* Encode the reply */
-			byte[] reply = [1, status];
+			byte[] reply = [status];
 
-			/* TODO: Implement me */
+			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
 		/* If `link` command (requires: unauthed) */
 		else if(commandByte == 1 && !hasAuthed)
 		{
 			
+		}
+		/* */
+		else if(commandByte == 2 && !hasAuthed)
+		{
+			
+		}
+		/* If `join` command (requires: authed) */
+		else if(commandByte == 3 && !hasAuthed)
+		{
+			/* Get the channel names */
+			string channelList = cast(string)message.data[1..message.data.length];
+			string[] channels = split(channelList, ",");
+
+			/**
+			* Loop through each channel, check if it
+			* exists, if so join it, else create it
+			* and then join it
+			*/
+			foreach(string channelName; channels)
+			{
+				/* Attempt to find the channel */
+				DChannel channel = server.getChannelByName(channelName);
+
+				/* Create the channel if it doesn't exist */
+				if(channel is null)
+				{
+					/* TODO: Thread safety for name choice */
+					channel = new DChannel(channelName);
+				}
+
+				/* Join the channel */
+				channel.join(this);
+			}
 		}
 		/* TODO: Handle this case */
 		else
