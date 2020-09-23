@@ -207,6 +207,36 @@ public class DConnection : Thread
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
+		/* If `part` command (requires: authed) */
+		else if(commandByte == 4 && hasAuthed)
+		{
+			/* Get the channel names */
+			string channelList = cast(string)message.data[1..message.data.length];
+			string[] channels = split(channelList, ",");
+
+			/**
+			* Loop through each channel, check if it
+			* exists, if so leave it
+			*/
+			foreach(string channelName; channels)
+			{
+				/* Attempt to find the channel */
+				DChannel channel = server.getChannelByName(channelName);
+
+				/* Leave a channel the channel only if it exists */
+				if(!(channel is null))
+				{
+					channel.leave(this);
+				}
+			}
+
+			/* TODO: Do reply */
+			/* Encode the reply */
+			byte[] reply = [true];
+			
+			/* TODO: Implement me, use return value */
+			writeSocket(tag, reply);
+		}
 		/* TODO: Handle this case */
 		else
 		{
