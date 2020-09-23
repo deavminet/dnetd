@@ -23,12 +23,12 @@ Every command starts with a 1 byte code specifying the command.
 ### `auth`
 
 ```
-|-- 0 --|-- username (null-terminated) --|-- password (null-terminated)--|
+|-- 0 --|-- usernameLength (1 byte) --|-- username --|-- password --|
 ```
 
 ### `link`
 
 ```
-|-- 0 --|-- todo
+|-- 1 --|-- todo
 ```
 
