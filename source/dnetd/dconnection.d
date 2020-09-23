@@ -88,12 +88,17 @@ public class DConnection : Thread
 		/* Get the command byte */
 		byte commandByte = message.data[0];
 
-		/* If `auth` command */
+		/* If `auth` command (requires: unauthed) */
 		if(commandByte == 0 && !hasAuthed)
 		{
-			
+			/* Get the length of the username */
+			byte usernameLength = message.data[1];
+
+			/* Get the username and password */
+			string username = cast(string)message.data[2..usernameLength];
+			string password = cast(string)message.data[cast(ubyte)2+usernameLength..message.data.length];
 		}
-		/* If `link` command */
+		/* If `link` command (requires: unauthed) */
 		else if(commandByte == 1 && !hasAuthed)
 		{
 			
