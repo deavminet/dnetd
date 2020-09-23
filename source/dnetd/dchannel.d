@@ -61,7 +61,17 @@ public class DChannel
 
 	public override string toString()
 	{
-		return "DChannel [Name: "~name~", Members: "~to!(string)(members)~"]";
+		string toStr;
+
+		/* Lock the members list */
+		memberLock.lock();
+		
+		toStr = "DChannel [Name: "~name~", Members: "~to!(string)(members)~"]";
+
+		/* Unlock the members list */
+		memberLock.unlock();
+
+		return toStr;
 	}
 	
 }

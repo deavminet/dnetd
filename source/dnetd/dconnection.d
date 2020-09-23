@@ -199,6 +199,13 @@ public class DConnection : Thread
 				/* Join the channel */
 				channel.join(this);
 			}
+
+			/* TODO: Do reply */
+			/* Encode the reply */
+			byte[] reply = [true];
+			
+			/* TODO: Implement me, use return value */
+			writeSocket(tag, reply);
 		}
 		/* TODO: Handle this case */
 		else
