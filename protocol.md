@@ -22,13 +22,21 @@ Every command starts with a 1 byte code specifying the command.
 
 ### `auth`
 
+Request format:
+
 ```
 |-- 0 --|-- usernameLength (1 byte) --|-- username --|-- password --|
+```
+
+Reply format:
+
+```
+|-- 1 --|-- status (1 byte) --|
 ```
 
 ### `link`
 
 ```
-|-- 1 --|-- todo
+|-- 2 --|-- todo
 ```
 
