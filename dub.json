@@ -3,6 +3,9 @@
 		"Tristan B. Kildaire"
 	],
 	"copyright": "Copyright © 2020, Tristan B. Kildaire",
+	"dependencies": {
+		"tristanable": "~>0.0.27"
+	},
 	"description": "dnet server",
 	"license": "AGPLv3",
 	"name": "dnet"
