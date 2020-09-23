@@ -10,6 +10,7 @@ module dnetd.dchannel;
 
 import dnetd.dconnection : DConnection;
 import core.sync.mutex : Mutex;
+import std.conv : to;
 
 public class DChannel
 {
@@ -60,7 +61,7 @@ public class DChannel
 
 	public override string toString()
 	{
-		return "DChannel [Name: "~name~", Members: "~members~"]";
+		return "DChannel [Name: "~name~", Members: "~to!(string)(members)~"]";
 	}
 	
 }
