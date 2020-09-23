@@ -14,7 +14,7 @@ import core.thread : Thread;
 import std.socket : Socket;
 import bmessage;
 import tristanable.encoding : DataMessage;
-
+import core.sync.mutex : Mutex;
 
 public class DConnection : Thread
 {
@@ -24,6 +24,13 @@ public class DConnection : Thread
 	private Socket socket;
 	private bool hasAuthed;
 
+	/* Write lock for socket */
+	/* TODO: Forgot how bmessage works, might need, might not, if multipel calls
+	* then yes, if single then no as it is based off (well glibc's write)
+	* thread safe code
+	*/
+	private Mutex writeLock;
+	
 	/* Reserved tag for push notifications */
 	private long notificationTag = 0;
 
@@ -35,20 +42,20 @@ public class DConnection : Thread
 		/* Set the socket */
 		this.socket = socket;
 
-		/* Initialize the tagging facility */
-		initTagger();
+		/* Initialize locks */
+		initLocks();
 
 		/* Start the connection handler */
 		start();
 	}
 
 	/**
-	* Initializes tristanable
-	* TODO: Implemet me (also tristanable needs reserved tags first)
+	* Initializes mutexes
 	*/
-	private void initTagger()
+	private void initLocks()
 	{
-		
+		/* Initialie the socket write lock */
+		writeLock = new Mutex();
 	}
 
 	/**
@@ -76,9 +83,41 @@ public class DConnection : Thread
 			/* Decode the tristanable message (tagged message) */
 			receivedMessage = DataMessage.decode(receivedBytes);
 
+			/* Process the message */
+			process(receivedMessage);
+
 			/* TODO: Tristanable needs reserved-tag support (client-side concern) */
 		}
 	}
+
+	/* TODO: add mutex for writing with message and funciton for doing so */
+
+	/**
+	* Write to socket
+	*/
+	private void writeSocket(long tag, byte[] data)
+	{
+		/* TODO: Implement me */
+
+		
+
+		/* Create the tagged message */
+		DataMessage message = new DataMessage(tag, data);
+
+		/* Lock the write mutex */
+		writeLock.lock();
+
+		/* TODO: Do send */
+
+		bool status  = sendMessage(socket, message.encode());
+
+		/* TODO: use status */
+
+		/* Unlock the write mutex */
+		writeLock.unlock();
+	}
+	
+
 
 	/**
 	* Process the received message
@@ -100,6 +139,15 @@ public class DConnection : Thread
 			/* Get the username and password */
 			string username = cast(string)message.data[2..usernameLength];
 			string password = cast(string)message.data[cast(ulong)2+usernameLength..message.data.length];
+
+			/* Authenticate */
+			bool status = authenticate(username, password);
+
+			/* Encode the reply */
+			byte[] reply = [1, status];
+
+			/* TODO: Implement me */
+			writeSocket(tag, reply);
 		}
 		/* If `link` command (requires: unauthed) */
 		else if(commandByte == 1 && !hasAuthed)
@@ -124,6 +172,13 @@ public class DConnection : Thread
 	}
 
 	/**
+	* Authenticate
 	*
+	* Login as a user with the given credentials
 	*/
+	private bool authenticate(string username, string password)
+	{
+		/* TODO: Implement me */
+		return true;
+	}
 }
