@@ -96,7 +96,7 @@ public class DConnection : Thread
 
 			/* Get the username and password */
 			string username = cast(string)message.data[2..usernameLength];
-			string password = cast(string)message.data[cast(ubyte)2+usernameLength..message.data.length];
+			string password = cast(string)message.data[cast(ulong)2+usernameLength..message.data.length];
 		}
 		/* If `link` command (requires: unauthed) */
 		else if(commandByte == 1 && !hasAuthed)
