@@ -56,7 +56,26 @@ public class DChannel
 
 	public void leave(DConnection client)
 	{
-		
+		/* Lock the members list */
+		memberLock.lock();
+
+		/* TODO: Get a better implementation */
+
+		/* Create a new list without the `client` */
+		DConnection[] newMembers;
+		foreach(DConnection currentMember; members)
+		{
+			if(!(currentMember is client))
+			{
+				newMembers ~= currentMember;	
+			}
+		}
+
+		/* Set it as the new list */
+		members = newMembers;
+
+		/* Unlock the members list */
+		memberLock.unlock();
 	}
 
 	public override string toString()
