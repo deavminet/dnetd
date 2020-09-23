@@ -165,15 +165,15 @@ public class DConnection : Thread
 		/* If `link` command (requires: unauthed) */
 		else if(commandByte == 1 && !hasAuthed)
 		{
-			
+			/* TODO: Implement me later */
 		}
-		/* */
+		/* If `register` command (requires: unauthed) */
 		else if(commandByte == 2 && !hasAuthed)
 		{
 			
 		}
 		/* If `join` command (requires: authed) */
-		else if(commandByte == 3 && !hasAuthed)
+		else if(commandByte == 3 && hasAuthed)
 		{
 			/* Get the channel names */
 			string channelList = cast(string)message.data[1..message.data.length];
