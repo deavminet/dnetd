@@ -37,6 +37,9 @@ public class DChannel
 		return name;
 	}
 
+	/**
+	* Joins the given client to this channel
+	*/
 	public void join(DConnection client)
 	{
 		/* Lock the members list */
@@ -54,6 +57,9 @@ public class DChannel
 		memberLock.unlock();
 	}
 
+	/**
+	* Removes the given client from this channel
+	*/
 	public void leave(DConnection client)
 	{
 		/* Lock the members list */
@@ -76,6 +82,25 @@ public class DChannel
 
 		/* Unlock the members list */
 		memberLock.unlock();
+	}
+
+	public void sendMessage(DConnection sender, string message)
+	{
+		/* TODO: Generate message */
+		/* TODO: Spec out in protocol */
+		/* TODO: Reserved tag 0 for notifications */
+		byte[] msg;
+		
+		/* Send the message to everyone else in the channel */
+		foreach(DConnection member; members)
+		{
+			/* Skip sending to self */
+			if(!(member is sender))
+			{
+				/* Send the message */
+				member.writeSocket(0, msg);
+			}
+		}
 	}
 
 	public override string toString()

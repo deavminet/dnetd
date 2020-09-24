@@ -110,7 +110,7 @@ public class DConnection : Thread
 	* socket to the client/server, and unlocks the
 	* mutex
 	*/
-	private bool writeSocket(long tag, byte[] data)
+	public bool writeSocket(long tag, byte[] data)
 	{
 		/* Send status */
 		bool status;
@@ -264,6 +264,63 @@ public class DConnection : Thread
 
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
+		}
+		/* If `msg` command (requires: authed) */
+		else if(commandByte == 7 && hasAuthed)
+		{
+			/* Status */
+			bool status = true;
+
+			/* Get the type of message */
+			byte messageType = message.data[0];
+
+			/* Get the channel/person name */
+			string destination;
+			ulong i = 0;
+			while(message.data[1+i] != cast(byte)0)
+			{
+				destination ~= message.data[1+i];
+				i++;
+			}
+
+			/* Get the message (offset from null-terminator, hence +1 at the end) */
+			string msg = cast(string)message.data[1+i+1..message.data.length];
+
+			/* If we are sending to a user */
+			if(messageType == cast(byte)0)
+			{
+				/* TODO Implemet  me */
+			}
+			/* If we are sending to a channel */
+			else if(messageType == cast(ubyte)1)
+			{
+				/* If the channel exists */
+				if(server.getChannelByName(destination))
+				{
+					/* TODO Implemet  me */
+				}
+				/* If the channel does not exist */
+				else
+				{
+					status = false;
+				}
+			}
+			/* Unknown destination type */
+			else
+			{
+				status = false;
+			}
+
+			
+			
+			/* TODO: Handling here, should we make the user wait? */
+
+			/* Encode the reply */
+			// byte[] reply = [status];
+			// reply ~= channelList;
+			
+						/* TODO: Implement me, use return value */
+					//	writeSocket(tag, reply);
 		}
 		/* TODO: Handle this case */
 		else
