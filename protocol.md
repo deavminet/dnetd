@@ -93,5 +93,15 @@ Reply format:
 |-- status (1 byte) --|-- channelnames(CSV) --|
 ```
 
+### `msg`
+
+Request format:
+
+```
+|-- 7 --|-- type (1 byte) --|-- channel/person name (null terminated) --|-- message --|
+```
+
+* `type`, `0` - to user, `1` to channel
+
 ### `chanprop`
 
