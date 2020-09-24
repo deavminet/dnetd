@@ -197,8 +197,8 @@ public class DConnection : Thread
 		{
 			
 		}
-		/* If `join` command (requires: authed) */
-		else if(commandByte == 3 && hasAuthed)
+		/* If `join` command (requires: authed, client) */
+		else if(commandByte == 3 && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the channel names */
 			string channelList = cast(string)message.data[1..message.data.length];
@@ -232,8 +232,8 @@ public class DConnection : Thread
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
-		/* If `part` command (requires: authed) */
-		else if(commandByte == 4 && hasAuthed)
+		/* If `part` command (requires: authed, client) */
+		else if(commandByte == 4 && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the channel names */
 			string channelList = cast(string)message.data[1..message.data.length];
@@ -262,8 +262,8 @@ public class DConnection : Thread
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
-		/* If `list` command (requires: authed) */
-		else if(commandByte == 6 && hasAuthed)
+		/* If `list` command (requires: authed, client) */
+		else if(commandByte == 6 && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get all channels */
 			DChannel[] channels = server.getChannels();
