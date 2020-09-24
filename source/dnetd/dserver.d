@@ -147,4 +147,9 @@ public class DServer : Thread
 
 		return null;
 	}
+
+	public DChannel[] getChannels()
+	{
+		return channels;
+	}
 }

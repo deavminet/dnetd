@@ -237,6 +237,34 @@ public class DConnection : Thread
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
+		/* If `list` command (requires: authed) */
+		else if(commandByte == 6 && hasAuthed)
+		{
+			/* Get all channels */
+			DChannel[] channels = server.getChannels();
+
+			/* Generate a list of channel names (CSV) */
+			string channelList;
+			for(ulong i = 0; i < channels.length; i++)
+			{
+				if(i == channels.length-1)
+				{
+					channelList ~= channels[i].getName();
+				}
+				else
+				{
+					channelList ~= channels[i].getName()~",";
+				}
+			}
+
+			/* TODO: Reply */
+			/* Encode the reply */
+			byte[] reply = [true];
+			reply ~= channelList;
+
+			/* TODO: Implement me, use return value */
+			writeSocket(tag, reply);
+		}
 		/* TODO: Handle this case */
 		else
 		{
