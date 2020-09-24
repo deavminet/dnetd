@@ -31,12 +31,67 @@ Request format:
 Reply format:
 
 ```
-|-- 1 --|-- status (1 byte) --|
+|-- status (1 byte) --|
 ```
 
 ### `link`
 
 ```
-|-- 2 --|-- todo
+|-- 1 --|-- todo
 ```
+
+### `reg`
+
+2
+
+### `join`
+
+Request format:
+
+TODO: Allow multiple joins
+
+```
+|-- 3 --|-- channelToJoin(CSV) --|
+```
+
+Reply format:
+
+```
+|-- status (1 byte) --|
+```
+
+TODO: Support redirects?
+
+### `part`
+
+Request format:
+
+```
+|-- 4 --|-- channelToPart(CSV) --|
+```
+
+Reply format:
+
+```
+|-- status (1 byte) --|
+```
+
+### `msg`
+5
+
+### `list`
+
+Request format:
+
+```
+|-- 6 --|
+```
+
+Reply format:
+
+```
+|-- status (1 byte) --|-- channelnames(CSV) --|
+```
+
+### `chanprop`
 
