@@ -11,6 +11,7 @@ module dnetd.dchannel;
 import dnetd.dconnection : DConnection;
 import core.sync.mutex : Mutex;
 import std.conv : to;
+import std.stdio : writeln;
 
 public class DChannel
 {
@@ -98,7 +99,11 @@ public class DChannel
 			if(!(member is sender))
 			{
 				/* Send the message */
-				member.writeSocket(0, msg);
+				writeln("Delivering message for channel '"~name~"' to user '"~member.getUsername()~"'...");
+				bool status = member.writeSocket(0, msg);
+				writeln("Delivered message for channel '"~name~"' to user '"~member.getUsername()~"'!");
+
+				/* TODO: Errors from status */
 			}
 		}
 	}

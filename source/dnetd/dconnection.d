@@ -21,12 +21,20 @@ import dnetd.dchannel : DChannel;
 
 public class DConnection : Thread
 {
+	/* The connection type */
+	public enum ConnectionType
+	{
+		CLIENT, SERVER
+	}
+
 	/**
 	* Connection information
 	*/
 	private DServer server;
 	private Socket socket;
 	private bool hasAuthed;
+	private ConnectionType connType;
+	private string username;
 
 	/* Write lock for socket */
 	/* TODO: Forgot how bmessage works, might need, might not, if multipel calls
@@ -138,6 +146,11 @@ public class DConnection : Thread
 	private void process(DataMessage message)
 	{
 		/* Get the tag */
+		/**
+		* TODO: Client side will always do 1, because we don't have
+		* multi-thread job processing, only need this to differentiate
+		* between commands and async notifications
+		*/
 		long tag = message.tag;
 
 		/* Get the command byte */
@@ -156,6 +169,14 @@ public class DConnection : Thread
 			/* Authenticate */
 			bool status = authenticate(username, password);
 
+			/* TODO: What to do on bad authetication? */
+
+			/* Set the username */
+			this.username = username;
+
+			/* Set the type of this connection to `client` */
+			connType = ConnectionType.CLIENT;
+
 			/* Encode the reply */
 			byte[] reply = [status];
 
@@ -166,6 +187,10 @@ public class DConnection : Thread
 		else if(commandByte == 1 && !hasAuthed)
 		{
 			/* TODO: Implement me later */
+
+
+			/* Set the type of this connection to `server` */
+			connType = ConnectionType.SERVER;
 		}
 		/* If `register` command (requires: unauthed) */
 		else if(commandByte == 2 && !hasAuthed)
@@ -348,5 +373,10 @@ public class DConnection : Thread
 	{
 		/* TODO: Implement me */
 		return true;
+	}
+
+	public string getUsername()
+	{
+		return username;
 	}
 }
