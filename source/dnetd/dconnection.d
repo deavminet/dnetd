@@ -169,7 +169,7 @@ public class DConnection : Thread
 			byte usernameLength = message.data[1];
 
 			/* Get the username and password */
-			string username = cast(string)message.data[2..usernameLength];
+			string username = cast(string)message.data[2..cast(ulong)2+usernameLength];
 			string password = cast(string)message.data[cast(ulong)2+usernameLength..message.data.length];
 
 			/* Authenticate */
@@ -182,6 +182,7 @@ public class DConnection : Thread
 
 			/* Set the type of this connection to `client` */
 			connType = ConnectionType.CLIENT;
+			hasAuthed = true;
 
 			/* Encode the reply */
 			byte[] reply = [status];
