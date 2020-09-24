@@ -94,14 +94,20 @@ public class DConnection : Thread
 			bool status = receiveMessage(socket, receivedBytes);
 
 			/* TODO: Check status */
+			if(status)
+			{
+				/* Decode the tristanable message (tagged message) */
+				receivedMessage = DataMessage.decode(receivedBytes);
 
-			/* Decode the tristanable message (tagged message) */
-			receivedMessage = DataMessage.decode(receivedBytes);
+				/* Process the message */
+				process(receivedMessage);
 
-			/* Process the message */
-			process(receivedMessage);
-
-			/* TODO: Tristanable needs reserved-tag support (client-side concern) */
+				/* TODO: Tristanable needs reserved-tag support (client-side concern) */	
+			}
+			else
+			{
+				/* TODO: Error handling */
+			}
 		}
 	}
 
@@ -192,8 +198,8 @@ public class DConnection : Thread
 			/* Set the type of this connection to `server` */
 			connType = ConnectionType.SERVER;
 		}
-		/* If `register` command (requires: unauthed) */
-		else if(commandByte == 2 && !hasAuthed)
+		/* If `register` command (requires: unauthed, client) */
+		else if(commandByte == 2 && !hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			
 		}
@@ -290,8 +296,8 @@ public class DConnection : Thread
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
-		/* If `msg` command (requires: authed) */
-		else if(commandByte == 7 && hasAuthed)
+		/* If `msg` command (requires: authed, client) */
+		else if(commandByte == 7 && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Status */
 			bool status = true;
