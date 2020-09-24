@@ -319,10 +319,14 @@ public class DConnection : Thread
 			/* If we are sending to a channel */
 			else if(messageType == cast(ubyte)1)
 			{
+				/* The channel wanting to send to */
+				DChannel channel = server.getChannelByName(destination);
+
 				/* If the channel exists */
-				if(server.getChannelByName(destination))
+				if(channel)
 				{
 					/* TODO Implemet  me */
+					channel.sendMessage(this, msg);
 				}
 				/* If the channel does not exist */
 				else
