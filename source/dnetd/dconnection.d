@@ -18,6 +18,7 @@ import core.sync.mutex : Mutex;
 import dnetd.dserver : DServer;
 import std.string : split;
 import dnetd.dchannel : DChannel;
+import std.conv : to;
 
 public class DConnection : Thread
 {
@@ -226,6 +227,8 @@ public class DConnection : Thread
 				{
 					/* TODO: Thread safety for name choice */
 					channel = new DChannel(channelName);
+					
+					server.addChannel(this, channel);
 				}
 
 				/* Join the channel */
@@ -370,7 +373,8 @@ public class DConnection : Thread
 			}
 			else
 			{
-				
+				byte[] reply = [false];
+				writeSocket(tag, reply);
 			}
 		}
 	}
@@ -389,5 +393,21 @@ public class DConnection : Thread
 	public string getUsername()
 	{
 		return username;
+	}
+
+	public override string toString()
+	{
+		string toStr = to!(string)(connType)~"hjhf";
+		
+		if(connType == ConnectionType.CLIENT)
+		{
+			toStr = toStr ~ getUsername();
+		}
+		else
+		{
+			/* TODO Implement me */
+		}
+
+		return toStr;
 	}
 }

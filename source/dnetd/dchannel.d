@@ -31,6 +31,8 @@ public class DChannel
 	{
 		/* Initialize the lock */
 		memberLock = new Mutex();
+
+		this.name = name;
 	}
 
 	public string getName()
@@ -50,9 +52,12 @@ public class DChannel
 		* TODO: Error handling if the calling DConnection fails midway 
 		* and doesn't unlock it
 		*/
+		writeln(this);
 
 		/* Add the client */
 		members ~= client;
+		import std.stdio;
+		writeln(members);
 
 		/* Unlock the members list */
 		memberLock.unlock();
