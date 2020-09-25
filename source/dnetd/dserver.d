@@ -16,6 +16,7 @@ import dnetd.dconnection;
 import dnetd.dchannel;
 import std.string : cmp;
 import core.sync.mutex : Mutex;
+import std.stdio;
 
 public class DServer : Thread
 {

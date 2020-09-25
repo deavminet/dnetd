@@ -211,6 +211,8 @@ public class DConnection : Thread
 			/* Get the channel names */
 			string channelList = cast(string)message.data[1..message.data.length];
 			string[] channels = split(channelList, ",");
+			import std.stdio;
+			writeln("channelList length"~to!(string)(channelList.length));
 
 			/**
 			* Loop through each channel, check if it
