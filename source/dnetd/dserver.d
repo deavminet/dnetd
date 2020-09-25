@@ -131,6 +131,9 @@ public class DServer : Thread
 
 	public DChannel getChannelByName(string channelName)
 	{
+		/* The channel */
+		DChannel channel = null;
+		
 		/* Lock the channels list */
 		channelLock.lock();
 
@@ -138,14 +141,15 @@ public class DServer : Thread
 		{
 			if(cmp(currentChannel.getName(), channelName) == 0)
 			{
-				return currentChannel;
+				channel = currentChannel;
+				break;
 			}
 		}
 
 		/* Unlock the channels list */
 		channelLock.unlock();
 
-		return null;
+		return channel;
 	}
 
 	public DChannel[] getChannels()
