@@ -422,18 +422,21 @@ public class DConnection : Thread
 						/* TODO: Implement me, use return value */
 					//	writeSocket(tag, reply);
 		}
-		/* TODO: Handle this case */
+		/* If no matching built-in command was found */
 		else
 		{
 			/* TODO: Check plugins */
 			bool isPlugin = false;
 
+			/* A matching plugin was found */
 			if(isPlugin)
 			{
-				
+				/* TODO: Implement me */
 			}
+			/* The command was invalid */
 			else
 			{
+				/* Write error message */
 				byte[] reply = [2];
 				writeSocket(tag, reply);
 			}
