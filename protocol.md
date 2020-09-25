@@ -105,3 +105,19 @@ Request format:
 
 ### `chanprop`
 
+
+---
+
+Anything that isn't a command above will return with `2` which means _unknown command_.
+`0` generally means that everything went well but commands can send more data after it,
+it depends, and `1` means error - also more data may follow.
+
+## notifications
+
+We know as tristanable tag 1, but then _types_ of notifications is the important factor described here.
+
+### TODO: message receive format
+
+```
+|-- notifyTYpe (1 byte) --|-- ..
+```
