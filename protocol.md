@@ -103,14 +103,16 @@ Request format:
 
 * `type`, `0` - to user, `1` to channel
 
+Reply format *TODO*
+
 ### `chanprop`
 
 
 ---
 
 Anything that isn't a command above will return with `2` which means _unknown command_.
-`0` generally means that everything went well but commands can send more data after it,
-it depends, and `1` means error - also more data may follow.
+`1` generally means that everything went well but commands can send more data after it,
+it depends, and `0` means error - also more data may follow.
 
 ## notifications
 
