@@ -410,17 +410,13 @@ public class DConnection : Thread
 			{
 				status = false;
 			}
-
-			
 			
 			/* TODO: Handling here, should we make the user wait? */
 
 			/* Encode the reply */
-			// byte[] reply = [status];
-			// reply ~= channelList;
-			
-						/* TODO: Implement me, use return value */
-					//	writeSocket(tag, reply);
+			/* TODO: */
+			byte[] reply = [status];
+			writeSocket(tag, reply);
 		}
 		/* If no matching built-in command was found */
 		else
