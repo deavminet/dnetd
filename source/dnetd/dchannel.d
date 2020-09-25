@@ -43,24 +43,43 @@ public class DChannel
 	/**
 	* Joins the given client to this channel
 	*/
-	public void join(DConnection client)
+	public bool join(DConnection client)
 	{
 		/* Lock the members list */
 		memberLock.lock();
 
 		/**
+		* Don't allow the user to join a channel he
+		* is already in
+		*/
+		bool isPresent = false;
+		
+		foreach(DConnection member; members)
+		{
+			if(client is member)
+			{
+				isPresent = true;
+				break;
+			}
+		}
+
+		/**
 		* TODO: Error handling if the calling DConnection fails midway 
 		* and doesn't unlock it
 		*/
-		writeln(this);
 
-		/* Add the client */
-		members ~= client;
-		import std.stdio;
-		writeln(members);
+		/* Only join channel if not already joined */
+		if(!isPresent)
+		{
+			/* Add the client */
+			members ~= client;			
+		}
+
 
 		/* Unlock the members list */
 		memberLock.unlock();
+
+		return isPresent;
 	}
 
 	/**
@@ -95,7 +114,15 @@ public class DChannel
 		/* TODO: Generate message */
 		/* TODO: Spec out in protocol */
 		/* TODO: Reserved tag 0 for notifications */
-		byte[] msg;
+
+		/**
+		* Format
+		* 0 - dm
+		* 1 - channel (this case)
+		* byte length of name of channel/person (dm case)
+		* message-bytes
+		*/
+		byte[] msg = [cast(byte)1,(cast(byte)sender.getUsername().length)]~cast(byte[])sender.getUsername()~cast(byte[])message;
 		
 		/* Send the message to everyone else in the channel */
 		foreach(DConnection member; members)

@@ -19,6 +19,7 @@ import dnetd.dserver : DServer;
 import std.string : split;
 import dnetd.dchannel : DChannel;
 import std.conv : to;
+import std.stdio : writeln;
 
 public class DConnection : Thread
 {
@@ -145,7 +146,60 @@ public class DConnection : Thread
 		return status;
 	}
 	
+	private void commandLog(byte commandByte)
+	{
+		
+	}
 
+	public enum Command
+	{
+		JOIN,
+		PART,
+		AUTH,
+		LINK,
+		REGISTER,
+		LIST,
+		MSG,
+		UNKNOWN
+	}
+
+	private Command getCommand(byte commandByte)
+	{
+		Command command = Command.UNKNOWN;
+		
+		if(commandByte == cast(ulong)0)
+		{
+			command	= Command.AUTH;
+		}
+		else if(commandByte == cast(ulong)1)
+		{
+			command = Command.LINK;
+		}
+		else if(commandByte == cast(ulong)2)
+		{
+			command = Command.REGISTER;
+		}
+		else if(commandByte == cast(ulong)3)
+		{
+			command = Command.JOIN;
+		}
+		else if(commandByte == cast(ulong)4)
+		{
+			command = Command.PART;
+		}
+		else if(commandByte == cast(ulong)6)
+		{
+			command = Command.LIST;
+		}
+		else if(commandByte == cast(ulong)7)
+		{
+			command = Command.MSG;
+		}
+
+
+
+		return command;
+	}
 
 	/**
 	* Process the received message
@@ -163,8 +217,14 @@ public class DConnection : Thread
 		/* Get the command byte */
 		byte commandByte = message.data[0];
 
+		/* Print command info */
+		commandLog(commandByte);
+
+		Command command = getCommand(commandByte);
+		writeln(to!(string)(this)~" ~> "~to!(string)(command));
+
 		/* If `auth` command (requires: unauthed) */
-		if(commandByte == 0 && !hasAuthed)
+		if(command == Command.AUTH && !hasAuthed)
 		{
 			/* Get the length of the username */
 			byte usernameLength = message.data[1];
@@ -192,7 +252,7 @@ public class DConnection : Thread
 			writeSocket(tag, reply);
 		}
 		/* If `link` command (requires: unauthed) */
-		else if(commandByte == 1 && !hasAuthed)
+		else if(command == Command.LINK && !hasAuthed)
 		{
 			/* TODO: Implement me later */
 
@@ -201,24 +261,23 @@ public class DConnection : Thread
 			connType = ConnectionType.SERVER;
 		}
 		/* If `register` command (requires: unauthed, client) */
-		else if(commandByte == 2 && !hasAuthed && connType == ConnectionType.CLIENT)
+		else if(command == Command.REGISTER && !hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			
 		}
 		/* If `join` command (requires: authed, client) */
-		else if(commandByte == 3 && hasAuthed && connType == ConnectionType.CLIENT)
+		else if(command == Command.JOIN && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the channel names */
 			string channelList = cast(string)message.data[1..message.data.length];
 			string[] channels = split(channelList, ",");
-			import std.stdio;
-			writeln("channelList length"~to!(string)(channelList.length));
 
 			/**
 			* Loop through each channel, check if it
 			* exists, if so join it, else create it
 			* and then join it
 			*/
+			bool isPresentInfo = false;
 			foreach(string channelName; channels)
 			{
 				/* Attempt to find the channel */
@@ -234,18 +293,18 @@ public class DConnection : Thread
 				}
 
 				/* Join the channel */
-				channel.join(this);
+				isPresentInfo = channel.join(this);
 			}
 
 			/* TODO: Do reply */
 			/* Encode the reply */
-			byte[] reply = [true];
+			byte[] reply = [isPresentInfo];
 			
 			/* TODO: Implement me, use return value */
 			writeSocket(tag, reply);
 		}
 		/* If `part` command (requires: authed, client) */
-		else if(commandByte == 4 && hasAuthed && connType == ConnectionType.CLIENT)
+		else if(command == Command.PART && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the channel names */
 			string channelList = cast(string)message.data[1..message.data.length];
@@ -275,7 +334,7 @@ public class DConnection : Thread
 			writeSocket(tag, reply);
 		}
 		/* If `list` command (requires: authed, client) */
-		else if(commandByte == 6 && hasAuthed && connType == ConnectionType.CLIENT)
+		else if(command == Command.LIST && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get all channels */
 			DChannel[] channels = server.getChannels();
@@ -303,7 +362,7 @@ public class DConnection : Thread
 			writeSocket(tag, reply);
 		}
 		/* If `msg` command (requires: authed, client) */
-		else if(commandByte == 7 && hasAuthed && connType == ConnectionType.CLIENT)
+		else if(command == Command.MSG && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Status */
 			bool status = true;
@@ -375,7 +434,7 @@ public class DConnection : Thread
 			}
 			else
 			{
-				byte[] reply = [false];
+				byte[] reply = [2];
 				writeSocket(tag, reply);
 			}
 		}
@@ -399,7 +458,7 @@ public class DConnection : Thread
 
 	public override string toString()
 	{
-		string toStr = to!(string)(connType)~"hjhf";
+		string toStr = "["~to!(string)(connType)~"]: ";
 		
 		if(connType == ConnectionType.CLIENT)
 		{
