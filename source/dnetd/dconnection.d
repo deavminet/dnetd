@@ -26,7 +26,20 @@ public class DConnection : Thread
 	/* The connection type */
 	public enum ConnectionType
 	{
-		CLIENT, SERVER
+		CLIENT, SERVER, UNSPEC
+	}
+
+	/* Command types */
+	public enum Command
+	{
+		JOIN,
+		PART,
+		AUTH,
+		LINK,
+		REGISTER,
+		LIST,
+		MSG,
+		UNKNOWN
 	}
 
 	/**
@@ -58,6 +71,9 @@ public class DConnection : Thread
 
 		/* Set the socket */
 		this.socket = socket;
+
+		/* Set the default state */
+		connType = ConnectionType.UNSPEC;
 
 		/* Initialize locks */
 		initLocks();
@@ -145,23 +161,6 @@ public class DConnection : Thread
 
 		return status;
 	}
-	
-	private void commandLog(byte commandByte)
-	{
-		
-	}
-
-	public enum Command
-	{
-		JOIN,
-		PART,
-		AUTH,
-		LINK,
-		REGISTER,
-		LIST,
-		MSG,
-		UNKNOWN
-	}
 
 	private Command getCommand(byte commandByte)
 	{
@@ -214,12 +213,11 @@ public class DConnection : Thread
 		*/
 		long tag = message.tag;
 
-		/* Get the command byte */
+		/* The reply */
+		byte[] reply;
+
+		/* Get the command */
 		byte commandByte = message.data[0];
-
-		/* Print command info */
-		commandLog(commandByte);
-
 		Command command = getCommand(commandByte);
 		writeln(to!(string)(this)~" ~> "~to!(string)(command));
 
@@ -246,10 +244,7 @@ public class DConnection : Thread
 			hasAuthed = true;
 
 			/* Encode the reply */
-			byte[] reply = [status];
-
-			/* TODO: Implement me, use return value */
-			writeSocket(tag, reply);
+			reply = [status];
 		}
 		/* If `link` command (requires: unauthed) */
 		else if(command == Command.LINK && !hasAuthed)
@@ -259,6 +254,7 @@ public class DConnection : Thread
 
 			/* Set the type of this connection to `server` */
 			connType = ConnectionType.SERVER;
+			hasAuthed = true;
 		}
 		/* If `register` command (requires: unauthed, client) */
 		else if(command == Command.REGISTER && !hasAuthed && connType == ConnectionType.CLIENT)
@@ -298,10 +294,7 @@ public class DConnection : Thread
 
 			/* TODO: Do reply */
 			/* Encode the reply */
-			byte[] reply = [isPresentInfo];
-			
-			/* TODO: Implement me, use return value */
-			writeSocket(tag, reply);
+			reply = [isPresentInfo];
 		}
 		/* If `part` command (requires: authed, client) */
 		else if(command == Command.PART && hasAuthed && connType == ConnectionType.CLIENT)
@@ -328,10 +321,7 @@ public class DConnection : Thread
 
 			/* TODO: Do reply */
 			/* Encode the reply */
-			byte[] reply = [true];
-			
-			/* TODO: Implement me, use return value */
-			writeSocket(tag, reply);
+			reply = [true];
 		}
 		/* If `list` command (requires: authed, client) */
 		else if(command == Command.LIST && hasAuthed && connType == ConnectionType.CLIENT)
@@ -355,11 +345,8 @@ public class DConnection : Thread
 
 			/* TODO: Reply */
 			/* Encode the reply */
-			byte[] reply = [true];
+			reply = [true];
 			reply ~= channelList;
-
-			/* TODO: Implement me, use return value */
-			writeSocket(tag, reply);
 		}
 		/* If `msg` command (requires: authed, client) */
 		else if(command == Command.MSG && hasAuthed && connType == ConnectionType.CLIENT)
@@ -415,8 +402,7 @@ public class DConnection : Thread
 
 			/* Encode the reply */
 			/* TODO: */
-			byte[] reply = [status];
-			writeSocket(tag, reply);
+			reply = [status];
 		}
 		/* If no matching built-in command was found */
 		else
@@ -433,10 +419,12 @@ public class DConnection : Thread
 			else
 			{
 				/* Write error message */
-				byte[] reply = [2];
-				writeSocket(tag, reply);
+				reply = [2];
 			}
 		}
+
+		/* Write the response */
+		writeSocket(tag, reply);
 	}
 
 	/**
