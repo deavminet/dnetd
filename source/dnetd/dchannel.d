@@ -83,6 +83,26 @@ public class DChannel
 	}
 
 	/**
+	* Returns the number of members in this channel
+	*/
+	public ulong getMemberCount()
+	{
+		/* The count of members */
+		ulong memberCount;
+		
+		/* Lock the members list */
+		memberLock.lock();
+
+		/* Get the member count */
+		memberCount = members.length;
+
+		/* Unlock the members list */
+		memberLock.unlock();
+
+		return memberCount;
+	}
+
+	/**
 	* Removes the given client from this channel
 	*/
 	public void leave(DConnection client)

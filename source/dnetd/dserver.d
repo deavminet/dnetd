@@ -155,6 +155,17 @@ public class DServer : Thread
 
 	public DChannel[] getChannels()
 	{
-		return channels;
+		/* The current channels list */
+		DChannel[] currentChannels;
+		
+		/* Lock the channels list */
+		channelLock.lock();
+
+		currentChannels = channels;
+
+		/* Unlock the channels list */
+		channelLock.unlock();
+		
+		return currentChannels;
 	}
 }
