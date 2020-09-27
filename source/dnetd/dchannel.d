@@ -129,8 +129,9 @@ public class DChannel
 		memberLock.unlock();
 	}
 
-	public void sendMessage(DConnection sender, string message)
+	public bool sendMessage(DConnection sender, string message)
 	{
+		bool status;
 		/* TODO: Generate message */
 		/* TODO: Spec out in protocol */
 		/* TODO: Reserved tag 0 for notifications */
@@ -152,12 +153,15 @@ public class DChannel
 			{
 				/* Send the message */
 				writeln("Delivering message for channel '"~name~"' to user '"~member.getUsername()~"'...");
-				bool status = member.writeSocket(0, msg);
+				status = member.writeSocket(0, msg);
 				writeln("Delivered message for channel '"~name~"' to user '"~member.getUsername()~"'!");
 
 				/* TODO: Errors from status */
 			}
 		}
+
+
+		return status;
 	}
 
 	public override string toString()

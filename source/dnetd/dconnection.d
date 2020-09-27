@@ -381,7 +381,6 @@ public class DConnection : Thread
 			{
 				/* Send the message to the user */
 				sendStatus = sendUserMessage(destination, msg);
-				reply = [sendStatus];
 			}
 			/* If we are sending to a channel */
 			else if(messageType == cast(ubyte)1)
@@ -393,7 +392,7 @@ public class DConnection : Thread
 				if(channel)
 				{
 					/* TODO Implemet  me */
-					channel.sendMessage(this, msg);
+					sendStatus = channel.sendMessage(this, msg);
 				}
 				/* If the channel does not exist */
 				else
