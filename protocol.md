@@ -77,7 +77,22 @@ Reply format:
 ```
 
 ### `msg`
-5
+
+Request format:
+
+```
+|-- 5 --|-- channelToPart(CSV) --|
+```
+
+* The `type` field specifies whether the message is to be sent to a user or channel
+	1. `0` - this is for a **user** as the destination
+	2. `1` - this is for a **channel** as the destination
+
+Reply format:
+
+```
+|-- status (1 byte) --|
+```
 
 ### `list`
 
