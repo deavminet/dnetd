@@ -31,6 +31,7 @@ public class DServer : Thread
 	* Connection queue
 	*/
 	private DConnection[] connectionQueue;
+	private Mutex connectionLock;
 
 	/**
 	* Channels
@@ -89,7 +90,10 @@ public class DServer : Thread
 
 	private void initLocks()
 	{
-		/* Initialioze the channel lock */
+		/* Initialize the connection lock */
+		connectionLock = new Mutex();
+
+		/* Initialize the channel lock */
 		channelLock = new Mutex();
 	}
 	
@@ -112,8 +116,14 @@ public class DServer : Thread
 			/* Spawn a connection handler */
 			DConnection connection = new DConnection(this, socket);
 
+			/* Lock the connections list */
+			connectionLock.lock();
+
 			/* Add to the connection queue */
 			connectionQueue ~= connection;
+
+			/* Unlock the connections list */
+			connectionLock.unlock();
 		}
 	}
 
@@ -151,6 +161,48 @@ public class DServer : Thread
 		channelLock.unlock();
 
 		return channel;
+	}
+
+	/**
+	* Returns the DConnection with the matching
+	* username, null if not found
+	*/
+	public DConnection findUser(string username)
+	{
+		/* Get all the current connections */
+		DConnection[] connections = getConnections();
+
+		/* Find the user with the matching user name */
+		foreach(DConnection connection; connections)
+		{
+			/* The connection must be a user (not unspec or server) */
+			if(connection.getConnectionType() == DConnection.ConnectionType.CLIENT)
+			{
+				/* Match the username */
+				if(cmp(connection.getUsername(), username) == 0)
+				{
+					return connection;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public DConnection[] getConnections()
+	{
+		/* The current connections list */
+		DConnection[] currentConnections;
+		
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		currentConnections = connectionQueue;
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
+		
+		return currentConnections;
 	}
 
 	public DChannel[] getChannels()

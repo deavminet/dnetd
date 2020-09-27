@@ -186,6 +186,10 @@ public class DConnection : Thread
 		{
 			command = Command.PART;
 		}
+		else if(commandByte == cast(ulong)5)
+		{
+			command = Command.MSG;
+		}
 		else if(commandByte == cast(ulong)6)
 		{
 			command = Command.LIST;
@@ -372,7 +376,9 @@ public class DConnection : Thread
 			/* If we are sending to a user */
 			if(messageType == cast(byte)0)
 			{
-				/* TODO Implemet  me */
+				/* Send the message to the user */
+				bool sendStatus = sendUserMessage(destination, msg);
+				reply = [sendStatus];
 			}
 			/* If we are sending to a channel */
 			else if(messageType == cast(ubyte)1)
@@ -438,9 +444,41 @@ public class DConnection : Thread
 		return true;
 	}
 
+	/**
+	* Send user a message
+	*
+	* Sends the provided user the specified message
+	*/
+	private bool sendUserMessage(string username, string message)
+	{
+		/* Find the user to send to */
+		DConnection user = server.findUser(username);
+
+		/* If the user was found */
+		if(user)
+		{
+			/* Send the messge */
+			/* TODO: Implement me */
+			
+			
+			/* TODO: Return value should be based off message send success */
+			return true;
+		}
+		/* If the user was not found */
+		else
+		{
+			return false;
+		}
+	}
+
 	public string getUsername()
 	{
 		return username;
+	}
+
+	public ConnectionType getConnectionType()
+	{
+		return connType;
 	}
 
 	public override string toString()
