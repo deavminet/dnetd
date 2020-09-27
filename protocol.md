@@ -81,7 +81,7 @@ Reply format:
 Request format:
 
 ```
-|-- 5 --|-- channelToPart(CSV) --|
+|-- 5 --|-- type (1 byte) --|
 ```
 
 * The `type` field specifies whether the message is to be sent to a user or channel
