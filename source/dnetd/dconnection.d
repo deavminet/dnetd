@@ -373,11 +373,14 @@ public class DConnection : Thread
 			/* Get the message (offset from null-terminator, hence +1 at the end) */
 			string msg = cast(string)message.data[1+i+1..message.data.length];
 
+			/* Send status */
+			bool sendStatus;
+
 			/* If we are sending to a user */
 			if(messageType == cast(byte)0)
 			{
 				/* Send the message to the user */
-				bool sendStatus = sendUserMessage(destination, msg);
+				sendStatus = sendUserMessage(destination, msg);
 				reply = [sendStatus];
 			}
 			/* If we are sending to a channel */
