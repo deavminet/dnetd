@@ -373,8 +373,6 @@ public class DConnection : Thread
 			/* Send status */
 			bool sendStatus;
 
-			writeln("bababoi b4");
-
 			/* If we are sending to a user */
 			if(messageType == cast(byte)0)
 			{
@@ -407,8 +405,6 @@ public class DConnection : Thread
 			
 			/* TODO: Handling here, should we make the user wait? */
 
-
-			writeln("bababoi after");
 			/* Encode the reply */
 			/* TODO: */
 			reply = [status];
