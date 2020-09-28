@@ -45,6 +45,9 @@ public class DChannel
 	*/
 	public bool join(DConnection client)
 	{
+		/* Send a message stating the user has joined (TODO: This should be done later, possibly, how defensive should we program) */
+		broadcastJoin(client);
+	
 		/* Lock the members list */
 		memberLock.lock();
 
@@ -156,6 +159,10 @@ public class DChannel
 		broadcastLeave(client);
 	}
 
+	/**
+	* Sends a message to all users of this
+	* channel that the given user has left
+	*/
 	private void broadcastLeave(DConnection left)
 	{
 		/* Lock the members list */
@@ -171,6 +178,10 @@ public class DChannel
 		memberLock.unlock();
 	}
 
+	/**
+	* Sends a message to the user stating the given
+	* (other) user has left the channel
+	*/
 	private void sendLeaveMessage(DConnection member, DConnection left)
 	{
 		/* The protocol data to send */
@@ -179,12 +190,58 @@ public class DChannel
 		/* Set the notificaiton type to `channel status` */
 		protocolData ~= [1];
 
+		/* Set the sub-type to leave */
+		protocolData ~= [0];
+
 		/* Set the channel notificaiton type to `member leave` */
 		protocolData ~= cast(byte[])left.getUsername();
 
 		/* Write the notification */
 		member.writeSocket(0, protocolData);
 	}
+
+	/**
+	* Sends a message to all users of this
+	* channel that the given user has joined
+	*/
+	private void broadcastJoin(DConnection joined)
+	{
+		/* Lock the members list */
+		memberLock.lock();
+		
+		/* Send join message here */
+		foreach(DConnection currentMember; members)
+		{
+			sendJoinMessage(currentMember, joined);
+		}
+
+		/* Unlock the members list */
+		memberLock.unlock();
+	}
+
+	/**
+	* Sends a message to the user stating the given
+	* (other) user has joined the channel
+	*/
+	private void sendJoinMessage(DConnection member, DConnection joined)
+	{
+		/* The protocol data to send */
+		byte[] protocolData;
+
+		/* Set the notificaiton type to `channel status` */
+		protocolData ~= [1];
+
+		/* Set the sub-type to join */
+		protocolData ~= [1];
+
+		/* Set the channel notificaiton type to `member join` */
+		protocolData ~= cast(byte[])joined.getUsername();
+
+		/* Write the notification */
+		member.writeSocket(0, protocolData);
+	}
+
+
 
 	public bool sendMessage(DConnection sender, string message)
 	{
