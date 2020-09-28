@@ -484,11 +484,28 @@ public class DConnection : Thread
 		/* Find the user to send to */
 		DConnection user = server.findUser(username);
 
+		writeln("sendUserMessage(): ", user);
+
 		/* If the user was found */
 		if(user)
 		{
+			/* The protocol data to send */
+			byte[] protocolData;
+
+			/* Set the sub-type (ntype=0) */
+			protocolData ~= [0];
+
+			/* Encode the sender's length */
+			protocolData ~= [cast(byte)username.length];
+
+			/* Encode the username */
+			protocolData ~= cast(byte[])username;
+
+			/* Encode the message */
+			protocolData ~= cast(byte[])message;
+
 			/* Send the messge */
-			/* TODO: Implement me */
+			user.writeSocket(0, protocolData);
 			
 			
 			/* TODO: Return value should be based off message send success */
