@@ -118,7 +118,7 @@ public class DConnection : Thread
 				receivedMessage = DataMessage.decode(receivedBytes);
 
 				/* Process the message */
-				process(receivedMessage);
+				process(receivedMessage);	
 
 				/* TODO: Tristanable needs reserved-tag support (client-side concern) */	
 			}
@@ -359,22 +359,21 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* Get the type of message */
-			byte messageType = message.data[0];
+			byte messageType = message.data[1];
+
+			/* Get the location length */
+			byte locationLength = message.data[2];
 
 			/* Get the channel/person name */
-			string destination;
-			ulong i = 0;
-			while(message.data[1+i] != cast(byte)0)
-			{
-				destination ~= message.data[1+i];
-				i++;
-			}
+			string destination = cast(string)message.data[3..cast(ulong)3+locationLength];
 
-			/* Get the message (offset from null-terminator, hence +1 at the end) */
-			string msg = cast(string)message.data[1+i+1..message.data.length];
+			/* Get the message */
+			string msg = cast(string)message.data[cast(ulong)3+locationLength..message.data.length];
 
 			/* Send status */
 			bool sendStatus;
+
+			writeln("bababoi b4");
 
 			/* If we are sending to a user */
 			if(messageType == cast(byte)0)
@@ -408,6 +407,8 @@ public class DConnection : Thread
 			
 			/* TODO: Handling here, should we make the user wait? */
 
+
+			writeln("bababoi after");
 			/* Encode the reply */
 			/* TODO: */
 			reply = [status];
