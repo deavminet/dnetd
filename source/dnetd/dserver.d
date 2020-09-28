@@ -117,15 +117,8 @@ public class DServer : Thread
 			/* Spawn a connection handler */
 			DConnection connection = new DConnection(this, socket);
 
-			/* Lock the connections list */
-			connectionLock.lock();
-
 			/* Add to the connection queue */
-			connectionQueue ~= connection;
-			writeln("Added new connection to queue "~to!(string)(connection));
-
-			/* Unlock the connections list */
-			connectionLock.unlock();
+			addConnection(connection);
 		}
 	}
 
@@ -140,6 +133,25 @@ public class DServer : Thread
 
 		/* Unlock the channels list */
 		channelLock.unlock();
+	}
+
+	public void addConnection(DConnection connection)
+	{
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		/* Add to the connection queue */
+		connectionQueue ~= connection;
+		writeln("Added new connection to queue "~to!(string)(connection));
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
+	}
+
+	/* TODO Remove connection */
+	public void removeConnection(DConnection client)
+	{
+		
 	}
 
 	public DChannel getChannelByName(string channelName)
