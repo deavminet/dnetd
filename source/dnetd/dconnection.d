@@ -318,19 +318,12 @@ public class DConnection : Thread
 			bool isPresentInfo = false;
 			foreach(string channelName; channels)
 			{
-				// /* Attempt to find the channel */
-				// DChannel channel = server.getChannelByName(channelName);
-// 
-				// /* Create the channel if it doesn't exist */
-				// if(channel is null)
-				// {
-					// /* TODO: Thread safety for name choice */
-					// channel = new DChannel(channelName);
-					// 
-					// server.addChannel(this, channel);
-				// }
+				/**
+				* Finds the channel, if it exists then it returns it,
+				* if it does not exist then it will create it and then
+				* return it
+				*/
 				DChannel channel = server.getChannel(this, channelName);
-
 
 				/* Join the channel */
 				isPresentInfo = channel.join(this);
