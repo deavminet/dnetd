@@ -308,8 +308,6 @@ public class DConnection : Thread
 			string channelList = cast(string)message.data[1..message.data.length];
 			string[] channels = split(channelList, ",");
 
-			writeln("channels, ", channels);
-
 			/**
 			* Loop through each channel, check if it
 			* exists, if so join it, else create it
