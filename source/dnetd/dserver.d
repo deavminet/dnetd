@@ -125,14 +125,14 @@ public class DServer : Thread
 	public void addChannel(DConnection causer, DChannel channel)
 	{
 		/* Lock the channels list */
-		channelLock.lock();
+		// channelLock.lock();
 
 		channels ~= channel;
 
 		/* TODO: Use causer */
 
 		/* Unlock the channels list */
-		channelLock.unlock();
+		// channelLock.unlock();
 	}
 
 	public void addConnection(DConnection connection)
@@ -173,6 +173,41 @@ public class DServer : Thread
 		/* Unlock the connections list */
 		connectionLock.unlock();
 	}
+
+	/* TODO: neew method */
+	public DChannel getChannel(DConnection causer, string channelName)
+	{
+		DChannel channel = null;
+		
+		channelLock.lock();
+
+		
+		foreach(DChannel currentChannel; channels)
+		{
+			if(cmp(currentChannel.getName(), channelName) == 0)
+			{
+				channel = currentChannel;
+				break;
+			}
+		}
+
+		if(channel)
+		{
+			
+		}
+		else
+		{
+			channel = new DChannel(channelName);
+								
+								this.addChannel(causer, channel);
+		}
+
+		channelLock.unlock();
+
+
+		return channel;
+	}
+
 
 	public DChannel getChannelByName(string channelName)
 	{

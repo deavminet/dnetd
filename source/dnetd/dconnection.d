@@ -109,6 +109,7 @@ public class DConnection : Thread
 			*
 			* (Does decoding for bformat too)
 			*/
+			writeln("waiting");
 			bool status = receiveMessage(socket, receivedBytes);
 
 			/* TODO: Check status */
@@ -180,14 +181,18 @@ public class DConnection : Thread
 		/* Create the tagged message */
 		DataMessage message = new DataMessage(tag, data);
 
+		writeln("writeSocket: mutex lock");
 		/* Lock the write mutex */
 		writeLock.lock();
 
 		/* Send the message */
+		writeln("writeSocket: Data: "~to!(string)(data)~" Tag: "~to!(string)(tag));
 		status = sendMessage(socket, message.encode());
 
 		/* Unlock the write mutex */
 		writeLock.unlock();
+
+		writeln("writeSocket: mutex unlock");
 
 		return status;
 	}
@@ -246,6 +251,7 @@ public class DConnection : Thread
 		* between commands and async notifications
 		*/
 		long tag = message.tag;
+		writeln("tag:", tag);
 
 		/* The reply */
 		byte[] reply;
@@ -302,6 +308,8 @@ public class DConnection : Thread
 			string channelList = cast(string)message.data[1..message.data.length];
 			string[] channels = split(channelList, ",");
 
+			writeln("channels, ", channels);
+
 			/**
 			* Loop through each channel, check if it
 			* exists, if so join it, else create it
@@ -310,17 +318,19 @@ public class DConnection : Thread
 			bool isPresentInfo = false;
 			foreach(string channelName; channels)
 			{
-				/* Attempt to find the channel */
-				DChannel channel = server.getChannelByName(channelName);
+				// /* Attempt to find the channel */
+				// DChannel channel = server.getChannelByName(channelName);
+// 
+				// /* Create the channel if it doesn't exist */
+				// if(channel is null)
+				// {
+					// /* TODO: Thread safety for name choice */
+					// channel = new DChannel(channelName);
+					// 
+					// server.addChannel(this, channel);
+				// }
+				DChannel channel = server.getChannel(this, channelName);
 
-				/* Create the channel if it doesn't exist */
-				if(channel is null)
-				{
-					/* TODO: Thread safety for name choice */
-					channel = new DChannel(channelName);
-					
-					server.addChannel(this, channel);
-				}
 
 				/* Join the channel */
 				isPresentInfo = channel.join(this);
