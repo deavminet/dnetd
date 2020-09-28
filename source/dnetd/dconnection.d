@@ -125,8 +125,36 @@ public class DConnection : Thread
 			else
 			{
 				/* TODO: Error handling */
+				writeln("Error with receive: "~to!(string)(this));
+				break;
 			}
 		}
+
+		/* Clean up */
+		cleanUp();
+	}
+
+	private void cleanUp()
+	{
+		writeln(to!(string)(this)~" Cleaning up connection...");
+
+		/* Remove this user from all channels he is in */
+		DChannel[] channels = server.getChannels();
+
+		/* Loop through each channel */
+		foreach(DChannel currentChannel; channels)
+		{
+			/* Check if you are a member of it */
+			if(currentChannel.isMember(this))
+			{
+				/* Leave the channel */
+				currentChannel.leave(this);
+				writeln(to!(string)(this)~" Leaving '"~currentChannel.getName()~"'...");
+			}
+		}
+		
+		/* Remove this user from the connection queue */
+		/* TODO: Implement me */
 	}
 
 	/* TODO: add mutex for writing with message and funciton for doing so */
@@ -482,7 +510,12 @@ public class DConnection : Thread
 
 	public override string toString()
 	{
-		string toStr = "["~to!(string)(connType)~"]: ";
+		string toStr = "["~to!(string)(connType)~" (";
+		toStr ~= socket.remoteAddress.toString();
+
+	
+		toStr ~= ")]: ";
+		
 		
 		if(connType == ConnectionType.CLIENT)
 		{

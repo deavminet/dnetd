@@ -17,6 +17,7 @@ import dnetd.dchannel;
 import std.string : cmp;
 import core.sync.mutex : Mutex;
 import std.stdio;
+import std.conv : to;
 
 public class DServer : Thread
 {
@@ -121,6 +122,7 @@ public class DServer : Thread
 
 			/* Add to the connection queue */
 			connectionQueue ~= connection;
+			writeln("Added new connection to queue "~to!(string)(connection));
 
 			/* Unlock the connections list */
 			connectionLock.unlock();

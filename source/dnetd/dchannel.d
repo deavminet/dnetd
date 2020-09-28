@@ -102,6 +102,30 @@ public class DChannel
 		return memberCount;
 	}
 
+	public bool isMember(DConnection client)
+	{
+		/* Whether or not you are a member */
+		bool isMem;
+
+		/* Lock the members list */
+		memberLock.lock();
+
+		/* CHeck if you are in this channel */
+		foreach(DConnection member; members)
+		{
+			if(member is client)
+			{
+				isMem = true;
+				break;
+			}
+		}
+
+		/* Unlock the members list */
+		memberLock.unlock();
+
+		return isMem;
+	}
+
 	/**
 	* Removes the given client from this channel
 	*/
@@ -125,6 +149,8 @@ public class DChannel
 		/* Set it as the new list */
 		members = newMembers;
 
+		/* TODO: Send left message here */
+
 		/* Unlock the members list */
 		memberLock.unlock();
 	}
@@ -132,9 +158,12 @@ public class DChannel
 	public bool sendMessage(DConnection sender, string message)
 	{
 		bool status;
-		/* TODO: Generate message */
-		/* TODO: Spec out in protocol */
-		/* TODO: Reserved tag 0 for notifications */
+
+		/* The protocol data to send */
+		byte[] msg;
+
+		/* Set the notificaiton type */
+		msg ~= [0];
 
 		/**
 		* Format
@@ -143,7 +172,7 @@ public class DChannel
 		* byte length of name of channel/person (dm case)
 		* message-bytes
 		*/
-		byte[] msg = [cast(byte)1,(cast(byte)sender.getUsername().length)]~cast(byte[])sender.getUsername()~cast(byte[])message;
+		msg ~= [cast(byte)1,(cast(byte)sender.getUsername().length)]~cast(byte[])sender.getUsername()~cast(byte[])message;
 		
 		/* Send the message to everyone else in the channel */
 		foreach(DConnection member; members)
@@ -152,9 +181,9 @@ public class DChannel
 			if(!(member is sender))
 			{
 				/* Send the message */
-				writeln("Delivering message for channel '"~name~"' to user '"~member.getUsername()~"'...");
+				writeln("Delivering message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'...");
 				status = member.writeSocket(0, msg);
-				writeln("Delivered message for channel '"~name~"' to user '"~member.getUsername()~"'!");
+				writeln("Delivered message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");
 
 				/* TODO: Errors from status */
 			}
