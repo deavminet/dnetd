@@ -46,7 +46,7 @@ public class DChannel
 	public bool join(DConnection client)
 	{
 		/* Send a message stating the user has joined (TODO: This should be done later, possibly, how defensive should we program) */
-		//broadcastJoin(client);
+		broadcastJoin(client);
 
 		/* Lock the members list */
 		writeln("join: mutex lock (about to call)");
@@ -159,7 +159,7 @@ public class DChannel
 		memberLock.unlock();
 
 		/* Send broadcast leave message */
-		//broadcastLeave(client);
+		broadcastLeave(client);
 	}
 
 	/**
