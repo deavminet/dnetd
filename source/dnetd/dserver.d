@@ -168,8 +168,7 @@ public class DServer : Thread
 		/* Set this as the new queue */
 		connectionQueue = connectionQueueNew;
 
-		/* TODO: Implement removal */
-		writeln("Remove connection from queue "~to!(string)(connection));
+		writeln("Removed connection from queue "~to!(string)(connection));
 
 		/* Unlock the connections list */
 		connectionLock.unlock();
