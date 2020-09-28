@@ -142,16 +142,37 @@ public class DServer : Thread
 
 		/* Add to the connection queue */
 		connectionQueue ~= connection;
-		writeln("Added new connection to queue "~to!(string)(connection));
+		writeln("Added connection to queue "~to!(string)(connection));
 
 		/* Unlock the connections list */
 		connectionLock.unlock();
 	}
 
 	/* TODO Remove connection */
-	public void removeConnection(DConnection client)
+	public void removeConnection(DConnection connection)
 	{
-		
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		/* The new connection queue */
+		DConnection[] connectionQueueNew;
+
+		foreach(DConnection currentConnection; connectionQueue)
+		{
+			if(!(currentConnection is connection))
+			{
+				connectionQueueNew ~= currentConnection;
+			}
+		}
+
+		/* Set this as the new queue */
+		connectionQueue = connectionQueueNew;
+
+		/* TODO: Implement removal */
+		writeln("Remove connection from queue "~to!(string)(connection));
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
 	}
 
 	public DChannel getChannelByName(string channelName)

@@ -154,7 +154,7 @@ public class DConnection : Thread
 		}
 		
 		/* Remove this user from the connection queue */
-		/* TODO: Implement me */
+		server.removeConnection(this);
 	}
 
 	/* TODO: add mutex for writing with message and funciton for doing so */
