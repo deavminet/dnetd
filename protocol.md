@@ -81,7 +81,7 @@ Reply format:
 Request format:
 
 ```
-|-- 5 --|-- type (1 byte) --|
+|-- 5 --|-- type (1 byte) --|-- locationSize (1 byte) --|-- location (n-bytes) --|-- message (n-bytes) --|
 ```
 
 * The `type` field specifies whether the message is to be sent to a user or channel
@@ -133,8 +133,19 @@ it depends, and `0` means error - also more data may follow.
 
 We know as tristanable tag 1, but then _types_ of notifications is the important factor described here.
 
-### TODO: message receive format
-
 ```
 |-- notifyTYpe (1 byte) --|-- ..
 ```
+
+### TODO: message receive format (`notifyType=0`)
+
+For a normal channel message or direct message
+
+TODO
+
+### TODO: channel status message (`notifyType=1`)
+
+types within:
+
+1. `0` - 1 byte: Member leave
+2. `1` - 1 byte: Member join
