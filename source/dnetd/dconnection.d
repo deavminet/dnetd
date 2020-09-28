@@ -155,6 +155,8 @@ public class DConnection : Thread
 		
 		/* Remove this user from the connection queue */
 		server.removeConnection(this);
+
+		writeln(to!(string)(this)~" Connection cleaned up");
 	}
 
 	/* TODO: add mutex for writing with message and funciton for doing so */
@@ -182,7 +184,7 @@ public class DConnection : Thread
 		writeLock.lock();
 
 		/* Send the message */
-		status  = sendMessage(socket, message.encode());
+		status = sendMessage(socket, message.encode());
 
 		/* Unlock the write mutex */
 		writeLock.unlock();

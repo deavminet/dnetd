@@ -149,10 +149,41 @@ public class DChannel
 		/* Set it as the new list */
 		members = newMembers;
 
-		/* TODO: Send left message here */
+		/* Unlock the members list */
+		memberLock.unlock();
+
+		/* Send broadcast leave message */
+		broadcastLeave(client);
+	}
+
+	private void broadcastLeave(DConnection left)
+	{
+		/* Lock the members list */
+		memberLock.lock();
+		
+		/* Send left message here */
+		foreach(DConnection currentMember; members)
+		{
+			sendLeaveMessage(currentMember, left);
+		}
 
 		/* Unlock the members list */
 		memberLock.unlock();
+	}
+
+	private void sendLeaveMessage(DConnection member, DConnection left)
+	{
+		/* The protocol data to send */
+		byte[] protocolData;
+
+		/* Set the notificaiton type to `channel status` */
+		protocolData ~= [1];
+
+		/* Set the channel notificaiton type to `member leave` */
+		protocolData ~= cast(byte[])left.getUsername();
+
+		/* Write the notification */
+		member.writeSocket(0, protocolData);
 	}
 
 	public bool sendMessage(DConnection sender, string message)
@@ -162,7 +193,7 @@ public class DChannel
 		/* The protocol data to send */
 		byte[] msg;
 
-		/* Set the notificaiton type */
+		/* Set the notificaiton type to `message notification` */
 		msg ~= [0];
 
 		/**
@@ -183,14 +214,21 @@ public class DChannel
 				/* Send the message */
 				writeln("Delivering message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'...");
 				status = member.writeSocket(0, msg);
-				writeln("Delivered message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");
 
-				/* TODO: Errors from status */
+				if(status)
+				{
+					writeln("Delivered message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");	
+				}
+				else
+				{
+					writeln("Failed to deliver message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");	
+				}
 			}
 		}
 
 
-		return status;
+		/* TODO: Don't, retur true */
+		return true;
 	}
 
 	public override string toString()
