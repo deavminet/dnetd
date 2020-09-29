@@ -120,6 +120,24 @@ Request format:
 
 Reply format *TODO*
 
+
+### `membercount`
+
+Request format: 
+
+```
+|-- 8 --|-- channel --|
+```
+
+* `type`, `0` - to user, `1` to channel
+
+Reply format *TODO*
+
+```
+|-- status (1 byte) --|-- member count (4 bytes - big endian) --|
+```
+
+
 ### `chanprop`
 
 
