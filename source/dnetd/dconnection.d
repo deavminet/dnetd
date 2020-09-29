@@ -41,6 +41,7 @@ public class DConnection : Thread
 		LIST,
 		MSG,
 		MEMBER_COUNT,
+		MEMBER_LIST,
 		UNKNOWN
 	}
 
@@ -484,6 +485,59 @@ public class DConnection : Thread
 				/* Append the length */
 				reply ~= numberBytes;
 			}
+		}
+		/* If `memberlist` command (requires: authed, client) */
+		else if(command == Command.MEMBER_LIST && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+			/* Status */
+			bool status = true;
+
+			/* Get the channel name */
+			string channelName = cast(string)message.data[1..message.data.length];
+
+			/* Get the channel */
+			DChannel channel = server.getChannelByName(channelName);
+
+			/* Encode the status */
+			reply ~= [channel !is null];
+
+			/* If the channel exists */
+			if(channel)
+			{
+				/* Get the list of members in the channel */
+				DConnection[] members = channel.getMembers();
+
+				/* Construct a CSV string of the members */
+				string memberString;
+
+				for(ulong i = 0; i < members.length; i++)
+				{
+					if(i == members.length-1)
+					{
+						memberString ~= members[i].getUsername();
+					}
+					else
+					{
+						memberString ~= members[i].getUsername()~",";
+					}
+				}
+
+				/* Encode the string into the reply */
+				reply ~= cast(byte[])memberString;
+			}
+			/* If the channel does not exist */
+			else
+			{
+				status = false;
+			}
+
+
+
+
+			
+
+
+			
 		}
 		/* If no matching built-in command was found */
 		else

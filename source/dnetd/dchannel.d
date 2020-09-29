@@ -291,6 +291,26 @@ public class DChannel
 		return true;
 	}
 
+	/**
+	* Returns a list of all the members
+	*/
+	public DConnection[] getMembers()
+	{
+		/* Members list */
+		DConnection[] memberList;
+
+		/* Lock the members list */
+		memberLock.lock();
+		
+		memberList = members;
+
+		/* Unlock the members list */
+		memberLock.unlock();
+
+		return memberList;
+	}
+
+
 	public override string toString()
 	{
 		string toStr;
