@@ -20,6 +20,7 @@ import std.string : split;
 import dnetd.dchannel : DChannel;
 import std.conv : to;
 import std.stdio : writeln;
+import std.algorithm : reverse;
 
 public class DConnection : Thread
 {
@@ -39,6 +40,7 @@ public class DConnection : Thread
 		REGISTER,
 		LIST,
 		MSG,
+		MEMBER_COUNT,
 		UNKNOWN
 	}
 
@@ -232,6 +234,10 @@ public class DConnection : Thread
 		else if(commandByte == cast(ulong)7)
 		{
 			command = Command.MSG;
+		}
+		else if(commandByte == cast(ulong)8)
+		{
+			command = Command.MEMBER_COUNT;
 		}
 
 
@@ -440,6 +446,45 @@ public class DConnection : Thread
 			/* TODO: */
 			reply = [status];
 		}
+		/* If `membercount` command (requires: authed, client) */
+		else if(command == Command.MEMBER_COUNT && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+			/* Status */
+			bool status = true;
+
+			/* Get the channel name */
+			string channelName = cast(string)message.data[1..message.data.length];
+
+			/* The memebr count */
+			long memberCount;
+
+			/* Get the member count */
+			status = getMemberCount(channelName, memberCount);
+
+			/* Encode the status */
+			reply = [status];
+
+			/* If there was no error fetching the member count */
+			if(status)
+			{
+				/* Data bytes */
+				byte[] numberBytes;
+				numberBytes.length = 8;
+
+				/* Encode the length (Big Endian) from Little Endian */
+				numberBytes[0] = *((cast(byte*)&memberCount)+7);
+				numberBytes[1] = *((cast(byte*)&memberCount)+6);
+				numberBytes[2] = *((cast(byte*)&memberCount)+5);
+				numberBytes[3] = *((cast(byte*)&memberCount)+4);
+				numberBytes[4] = *((cast(byte*)&memberCount)+3);
+				numberBytes[5] = *((cast(byte*)&memberCount)+2);
+				numberBytes[6] = *((cast(byte*)&memberCount)+1);
+				numberBytes[7] = *((cast(byte*)&memberCount)+0);
+
+				/* Append the length */
+				reply ~= numberBytes;
+			}
+		}
 		/* If no matching built-in command was found */
 		else
 		{
@@ -475,6 +520,37 @@ public class DConnection : Thread
 	}
 
 	/**
+	* Get member count
+	*
+	* Gets the member count of a given channel
+	*/
+	private bool getMemberCount(string channelName, ref long count)
+	{
+		/* Status of operation */
+		bool status;
+
+		/* The channel */
+		DChannel channel = server.getChannelByName(channelName);
+		
+		/* Check if the channel exists */
+		if(channel)
+		{
+			/* Get the channel count */
+			count = channel.getMemberCount();
+			
+		
+			status = true;
+		}
+		/* If the channel does not exist */
+		else
+		{
+			status = false;
+		}
+
+		return status;
+	}
+
+	/**
 	* Send user a message
 	*
 	* Sends the provided user the specified message
@@ -505,11 +581,9 @@ public class DConnection : Thread
 			protocolData ~= cast(byte[])message;
 
 			/* Send the messge */
-			user.writeSocket(0, protocolData);
-			
-			
-			/* TODO: Return value should be based off message send success */
-			return true;
+			bool sendStatus = user.writeSocket(0, protocolData);
+
+			return sendStatus;
 		}
 		/* If the user was not found */
 		else

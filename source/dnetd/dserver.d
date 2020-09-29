@@ -274,6 +274,26 @@ public class DServer : Thread
 		return currentConnections;
 	}
 
+	public bool channelExists(string channelName)
+	{
+		/* Whether or not it exists */
+		bool exists;
+
+		/* Get all channels */
+		DChannel[] currentChannels = getChannels();
+
+		foreach(DChannel currentChannel; currentChannels)
+		{
+			if(cmp(currentChannel.getName(), channelName) == 0)
+			{
+				exists = true;
+				break;
+			}
+		}
+
+		return exists;
+	}
+
 	public DChannel[] getChannels()
 	{
 		/* The current channels list */
