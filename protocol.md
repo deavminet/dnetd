@@ -129,14 +129,26 @@ Request format:
 |-- 8 --|-- channel --|
 ```
 
-* `type`, `0` - to user, `1` to channel
-
-Reply format *TODO*
+Reply format:
 
 ```
 |-- status (1 byte) --|-- member count (4 bytes - big endian) --|
 ```
 
+### `memberlist`
+
+Request format: 
+
+```
+|-- 9 --|-- channel --|
+```
+
+
+Reply format:
+
+```
+|-- status (1 byte) --|-- channel members (CSV) --|
+```
 
 ### `chanprop`
 
