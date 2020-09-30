@@ -240,8 +240,11 @@ public class DConnection : Thread
 		{
 			command = Command.MEMBER_COUNT;
 		}
-
-
+		else if(commandByte == cast(ulong)9)
+		{
+			command = Command.MEMBER_LIST;
+		}
+		
 
 		return command;
 	}
