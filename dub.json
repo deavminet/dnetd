@@ -8,5 +8,6 @@
 	},
 	"description": "dnet server",
 	"license": "AGPLv3",
-	"name": "dnet"
+	"name": "dnet",
+	"targetPath": "bin"
 }
