@@ -46,7 +46,7 @@ public final class DConfig
             config.generalConfig = DGeneralConfig.getConfig(generalBlock);
 
             /* Get the `links` block */
-            JSONValue linksBlock = json["links"];
+            //JSONValue linksBlock = json["links"];
             //config.linksConfig = DLinkConfig.getConfig(linksBlock);
         }
         catch(JSONException e)

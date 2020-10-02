@@ -11,13 +11,13 @@ void main(string[] args)
 	string configFilename;
 	
 	/* If there are no arguments */
-	if(!args.length)
+	if(args.length == 1)
 	{
 		/* Use the default file */
 		configFilename = "config.json";
 	}
 	/* If there is one argument */
-	else if(args.length == 1)
+	else if(args.length == 2)
 	{
 		/* use the specified one */
 		configFilename = args[0];
