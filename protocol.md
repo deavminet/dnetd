@@ -143,11 +143,44 @@ Request format:
 |-- 9 --|-- channel --|
 ```
 
-
 Reply format:
 
 ```
 |-- status (1 byte) --|-- channel members (CSV) --|
+```
+
+### `serverinfo`
+
+Request format: 
+
+```
+|-- 10 --|
+```
+
+Reply format:
+
+```
+|-- status (1 byte) --|-- server info(CSV) --|
+```
+
+#### Format of server info (CSV)
+
+```
+<serverName>,<networkName>,<userCount>,<channelCount>
+```
+
+### `motd`
+
+Request format: 
+
+```
+|-- 11 --|
+```
+
+Reply format:
+
+```
+|-- status (1 byte) --|-- motd --|
 ```
 
 ### `chanprop`

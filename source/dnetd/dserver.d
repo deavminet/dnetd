@@ -18,6 +18,7 @@ import std.string : cmp;
 import core.sync.mutex : Mutex;
 import std.stdio;
 import std.conv : to;
+import dnetd.dconfig;
 
 public class DServer : Thread
 {
@@ -27,6 +28,9 @@ public class DServer : Thread
 	/* Bind address */
 	private Address sockAddress;
 
+
+	/* Server configuration */
+	private DConfig config;
 
 	/**
 	* Connection queue
@@ -40,19 +44,28 @@ public class DServer : Thread
 	private DChannel[] channels;
 	private Mutex channelLock;
 	
-	this(Address sockAddress)
+	/* TODO: Implement new constructor */
+	this(DConfig config)
 	{
 		/* Set the function to be called on thread start */
 		super(&dequeueLoop);
+
+		/* Set the server's config */
+		this.config = config;
 	
 		/* Set the listening address */
-		this.sockAddress = sockAddress;
+		this.sockAddress = config.getGeneral().getAddress();
 
 		/* Initialize the server */
 		init();
 
 		/* Start the server */
 		startServer();
+	}
+
+	public DConfig getConfig()
+	{
+		return config;
 	}
 
 	private void init()
@@ -308,5 +321,19 @@ public class DServer : Thread
 		channelLock.unlock();
 		
 		return currentChannels;
+	}
+
+	public string getServerInfo()
+	{
+		/* The server information */
+		string serverInfo;
+
+		/* TODO: Fetch serverName */
+		/* TODO: Fetch networkName */
+		/* TODO: Fetch userCount */
+		/* TODO: Fetch channelCount */
+
+
+		return serverInfo;
 	}
 }

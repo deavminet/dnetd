@@ -1,8 +1,9 @@
 {
     "general" : {
-        "address" : "0.0.0.0",
+        "addresses" : ["0.0.0.0"],
         "port" : "7777",
         "network" : "aBasedIRCNetwork",
-        "name" : "MyBrandSpankingNewIRCServer"
+        "name" : "MyBrandSpankingNewIRCServer",
+        "motd" : "Welcome to my generic dnet chat server!"
     }
 }

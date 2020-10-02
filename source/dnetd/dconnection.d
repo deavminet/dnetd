@@ -42,6 +42,8 @@ public class DConnection : Thread
 		MSG,
 		MEMBER_COUNT,
 		MEMBER_LIST,
+		SERVER_INFO,
+		MOTD,
 		UNKNOWN
 	}
 
@@ -244,6 +246,16 @@ public class DConnection : Thread
 		{
 			command = Command.MEMBER_LIST;
 		}
+		else if(commandByte == cast(ulong)10)
+		{
+			command = Command.SERVER_INFO;
+		}
+		else if(commandByte == cast(ulong)11)
+		{
+			command = Command.MOTD;
+		}
+		
+		
 		
 
 		return command;
@@ -541,6 +553,32 @@ public class DConnection : Thread
 
 
 			
+		}
+		/* If `serverinfo` command (requires: authed, !unspec) */
+		else if(command == Command.SERVER_INFO && hasAuthed && connType != ConnectionType.UNSPEC)
+		{
+			/* Status */
+			bool status = true;
+
+			/* Get the server info */
+			string serverInfo = server.getServerInfo();
+
+			/* Encode the reply */
+			reply ~= [status];
+			reply ~= serverInfo;
+		}
+		/* If `motd` command (requires: _nothing_) */
+		else if(command == Command.MOTD)
+		{
+			/* Status */
+			bool status = true;
+
+			/* Get the message of the day */
+			string motd = server.getConfig().getGeneral().getMotd();
+
+			/* Encode the reply */
+			reply ~= [status];
+			reply ~= motd;
 		}
 		/* If no matching built-in command was found */
 		else
