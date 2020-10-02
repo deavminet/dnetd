@@ -1,0 +1,8 @@
+{
+    "general" : {
+        "address" : "0.0.0.0",
+        "port" : "7777",
+        "network" : "aBasedIRCNetwork",
+        "name" : "MyBrandSpankingNewIRCServer"
+    }
+}
