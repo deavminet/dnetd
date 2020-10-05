@@ -7,15 +7,6 @@ import std.exception;
 
 void main(string[] args)
 {
-	uint i = -1;
-	long k = i;
-	writeln(cast(ulong)k);
-
-	// byte d = 1;
-
-	// d = d==1;
-
-
 	/* Configuration file */
 	string configFilename;
 	

@@ -290,8 +290,8 @@ public class DConnection : Thread
 			ubyte usernameLength = message.data[1];
 
 			/* Get the username and password */
-			string username = cast(string)message.data[2..cast(ulong)2+cast(ulong)usernameLength];
-			string password = cast(string)message.data[cast(ulong)2+cast(uint)usernameLength..message.data.length];
+			string username = cast(string)message.data[2..2+cast(uint)usernameLength];
+			string password = cast(string)message.data[2+cast(uint)usernameLength..message.data.length];
 
 			/* Authenticate */
 			bool status = authenticate(username, password);
@@ -421,10 +421,10 @@ public class DConnection : Thread
 			ubyte locationLength = message.data[2];
 
 			/* Get the channel/person name */
-			string destination = cast(string)message.data[3..3UL+cast(uint)locationLength];
+			string destination = cast(string)message.data[3..3+cast(uint)locationLength];
 
 			/* Get the message */
-			string msg = cast(string)message.data[3UL+cast(uint)locationLength..message.data.length];
+			string msg = cast(string)message.data[3+cast(uint)locationLength..message.data.length];
 
 			/* Send status */
 			bool sendStatus;
