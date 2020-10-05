@@ -287,11 +287,11 @@ public class DConnection : Thread
 		if(command == Command.AUTH && !hasAuthed)
 		{
 			/* Get the length of the username */
-			byte usernameLength = message.data[1];
+			ubyte usernameLength = message.data[1];
 
 			/* Get the username and password */
-			string username = cast(string)message.data[2..cast(ulong)2+usernameLength];
-			string password = cast(string)message.data[cast(ulong)2+usernameLength..message.data.length];
+			string username = cast(string)message.data[2..cast(ulong)2+cast(ulong)usernameLength];
+			string password = cast(string)message.data[cast(ulong)2+cast(uint)usernameLength..message.data.length];
 
 			/* Authenticate */
 			bool status = authenticate(username, password);
@@ -415,28 +415,28 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* Get the type of message */
-			byte messageType = message.data[1];
+			ubyte messageType = message.data[1];
 
 			/* Get the location length */
-			byte locationLength = message.data[2];
+			ubyte locationLength = message.data[2];
 
 			/* Get the channel/person name */
-			string destination = cast(string)message.data[3..cast(ulong)3+locationLength];
+			string destination = cast(string)message.data[3..3UL+cast(uint)locationLength];
 
 			/* Get the message */
-			string msg = cast(string)message.data[cast(ulong)3+locationLength..message.data.length];
+			string msg = cast(string)message.data[3UL+cast(uint)locationLength..message.data.length];
 
 			/* Send status */
 			bool sendStatus;
 
 			/* If we are sending to a user */
-			if(messageType == cast(byte)0)
+			if(cast(uint)messageType == 0)
 			{
 				/* Send the message to the user */
 				sendStatus = sendUserMessage(destination, msg);
 			}
 			/* If we are sending to a channel */
-			else if(messageType == cast(ubyte)1)
+			else if(cast(int)messageType == 1)
 			{
 				/* The channel wanting to send to */
 				DChannel channel = server.getChannelByName(destination);
