@@ -202,55 +202,55 @@ public class DConnection : Thread
 		return status;
 	}
 
-	private Command getCommand(byte commandByte)
+	private Command getCommand(ubyte commandByte)
 	{
 		Command command = Command.UNKNOWN;
 		
-		if(commandByte == cast(ulong)0)
+		if(commandByte == 0)
 		{
 			command	= Command.AUTH;
 		}
-		else if(commandByte == cast(ulong)1)
+		else if(commandByte == 1)
 		{
 			command = Command.LINK;
 		}
-		else if(commandByte == cast(ulong)2)
+		else if(commandByte == 2)
 		{
 			command = Command.REGISTER;
 		}
-		else if(commandByte == cast(ulong)3)
+		else if(commandByte == 3)
 		{
 			command = Command.JOIN;
 		}
-		else if(commandByte == cast(ulong)4)
+		else if(commandByte == 4)
 		{
 			command = Command.PART;
 		}
-		else if(commandByte == cast(ulong)5)
+		else if(commandByte == 5)
 		{
 			command = Command.MSG;
 		}
-		else if(commandByte == cast(ulong)6)
+		else if(commandByte == 6)
 		{
 			command = Command.LIST;
 		}
-		else if(commandByte == cast(ulong)7)
+		else if(commandByte == 7)
 		{
 			command = Command.MSG;
 		}
-		else if(commandByte == cast(ulong)8)
+		else if(commandByte == 8)
 		{
 			command = Command.MEMBER_COUNT;
 		}
-		else if(commandByte == cast(ulong)9)
+		else if(commandByte == 9)
 		{
 			command = Command.MEMBER_LIST;
 		}
-		else if(commandByte == cast(ulong)10)
+		else if(commandByte == 10)
 		{
 			command = Command.SERVER_INFO;
 		}
-		else if(commandByte == cast(ulong)11)
+		else if(commandByte == 11)
 		{
 			command = Command.MOTD;
 		}
