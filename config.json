@@ -5,5 +5,13 @@
         "network" : "aBasedIRCNetwork",
         "name" : "MyBrandSpankingNewIRCServer",
         "motd" : "Welcome to my generic dnet chat server!"
+    },
+
+    "links" : {
+        "server1" : {
+            "name" : "server1",
+            "address" : "",
+            "port" : ""
+        }
     }
 }

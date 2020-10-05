@@ -313,6 +313,9 @@ public class DConnection : Thread
 		{
 			/* TODO: Implement me later */
 
+			/* Check if this connection is a DLink'd one */
+			//server.getMeyer().get
+
 
 			/* Set the type of this connection to `server` */
 			connType = ConnectionType.SERVER;

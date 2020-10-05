@@ -7,6 +7,12 @@ import std.exception;
 
 void main(string[] args)
 {
+	int i = -1;
+	long k = i;
+	writeln(cast(ulong)k);
+
+
+
 	/* Configuration file */
 	string configFilename;
 	

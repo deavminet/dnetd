@@ -19,6 +19,7 @@ import core.sync.mutex : Mutex;
 import std.stdio;
 import std.conv : to;
 import dnetd.dconfig;
+import dnetd.dlink;
 
 public class DServer : Thread
 {
@@ -43,6 +44,11 @@ public class DServer : Thread
 	*/
 	private DChannel[] channels;
 	private Mutex channelLock;
+
+	/**
+	* Meyer linking subsystem
+	*/
+	private DMeyer meyerSS;
 	
 	/* TODO: Implement new constructor */
 	this(DConfig config)
@@ -111,8 +117,16 @@ public class DServer : Thread
 		channelLock = new Mutex();
 	}
 	
+	public DMeyer getMeyer()
+	{
+		return meyerSS;
+	}
+
 	private void startServer()
 	{
+		/* Initialize the Meyer linking sub-system */
+		meyerSS = new DMeyer(this);
+
 		/* Start the connection dequeue thread */
 		start();
 	}
