@@ -430,13 +430,13 @@ public class DConnection : Thread
 			bool sendStatus;
 
 			/* If we are sending to a user */
-			if(cast(uint)messageType == 0)
+			if(messageType == 0)
 			{
 				/* Send the message to the user */
 				sendStatus = sendUserMessage(destination, msg);
 			}
 			/* If we are sending to a channel */
-			else if(cast(int)messageType == 1)
+			else if(messageType == 1)
 			{
 				/* The channel wanting to send to */
 				DChannel channel = server.getChannelByName(destination);
