@@ -61,6 +61,7 @@ public class DConnection : Thread
 	private bool hasAuthed;
 	private ConnectionType connType;
 	private string username;
+	private string currentStatus;
 
 	/* Write lock for socket */
 	/* TODO: Forgot how bmessage works, might need, might not, if multipel calls
@@ -68,6 +69,11 @@ public class DConnection : Thread
 	* thread safe code
 	*/
 	private Mutex writeLock;
+
+	/**
+	* Mutex to provide safe access to the status message
+	*/
+	private Mutex statusMessageLock;
 	
 	/* Reserved tag for push notifications */
 	private long notificationTag = 0;
@@ -98,8 +104,11 @@ public class DConnection : Thread
 	*/
 	private void initLocks()
 	{
-		/* Initialie the socket write lock */
+		/* Initialize the socket write lock */
 		writeLock = new Mutex();
+
+		/* Initialize the status message lock */
+		statusMessageLock = new Mutex();
 	}
 
 	/**
@@ -260,7 +269,14 @@ public class DConnection : Thread
 		{
 			command = Command.MOTD;
 		}
-		
+		else if(commandByte == 12)
+		{
+			command = Command.MEMBER_INFO;
+		}
+		else if(commandByte == 13)
+		{
+			command = Command.STATUS;
+		}
 		
 		
 
@@ -589,6 +605,23 @@ public class DConnection : Thread
 			reply ~= [status];
 			reply ~= motd;
 		}
+		/* If `memberinfo` command (requires: authed, client) */
+		else if(command == Command.MEMBER_INFO && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+			/* TODO: Implement me */
+		}
+		/* If `status` command (requires: authed, client) */
+		else if(command == Command.STATUS && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+			/* Get the new status line */
+			string statusMessage = cast(string)message.data[1..message.data.length];
+
+			/* Set the new status message */
+			setStatusMessage(statusMessage);
+
+			/* Encode the reply */
+			reply ~= [true];
+		}
 		/* If no matching built-in command was found */
 		else
 		{
@@ -699,6 +732,41 @@ public class DConnection : Thread
 	public string getUsername()
 	{
 		return username;
+	}
+
+	/**
+	* Set the status message
+	*/
+	private void setStatusMessage(string statusMessage)
+	{
+		/* Lock the status message mutex */
+		statusMessageLock.lock();
+
+		/* Set the status message */
+		currentStatus = statusMessage;
+
+		/* Unlock the statue message mutex */
+		statusMessageLock.unlock();
+	}
+
+	/**
+	* Returns the current status message
+	*/
+	public string getStatusMessage()
+	{
+		/* The current status message */
+		string currentStatusMessage;
+
+		/* Lock the status message mutex */
+		statusMessageLock.lock();
+
+		/* Copy the status message */
+		currentStatusMessage = currentStatus;
+
+		/* Unlock the statue message mutex */
+		statusMessageLock.unlock();
+
+		return currentStatusMessage;
 	}
 
 	public ConnectionType getConnectionType()
