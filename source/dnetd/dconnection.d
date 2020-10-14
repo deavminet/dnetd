@@ -44,6 +44,12 @@ public class DConnection : Thread
 		MEMBER_LIST,
 		SERVER_INFO,
 		MOTD,
+
+
+		/* TODO: Still to implement */
+		MEMBER_INFO,
+		STATUS,
+
 		UNKNOWN
 	}
 
