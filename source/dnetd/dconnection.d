@@ -626,6 +626,7 @@ public class DConnection : Thread
 			/* Encode the reply */
 			reply ~= [true];
 		}
+		/* TODO: `CHAN_PROP`, `SET_PROP` */
 		/* If no matching built-in command was found */
 		else
 		{
