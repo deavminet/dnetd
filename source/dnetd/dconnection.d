@@ -274,6 +274,15 @@ public class DConnection : Thread
 		{
 			command = Command.STATUS;
 		}
+		else if(commandByte == 14)
+		{
+			command = Command.CHAN_PROP;
+		}
+		else if(commandByte == 15)
+		{
+			command = Command.SET_PROP;
+		}
+		
 		
 		return command;
 	}
