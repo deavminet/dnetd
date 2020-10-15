@@ -46,6 +46,8 @@ public class DConnection : Thread
 		MOTD,
 		MEMBER_INFO,
 		STATUS,
+		CHAN_PROP,
+		SET_PROP,
 		UNKNOWN
 	}
 
@@ -125,7 +127,6 @@ public class DConnection : Thread
 			*
 			* (Does decoding for bformat too)
 			*/
-			writeln("waiting");
 			bool status = receiveMessage(socket, receivedBytes);
 
 			/* TODO: Check status */
@@ -274,8 +275,6 @@ public class DConnection : Thread
 			command = Command.STATUS;
 		}
 		
-		
-
 		return command;
 	}
 
