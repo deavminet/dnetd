@@ -612,7 +612,22 @@ public class DConnection : Thread
 		/* If `memberinfo` command (requires: authed, client) */
 		else if(command == Command.MEMBER_INFO && hasAuthed && connType == ConnectionType.CLIENT)
 		{
+			/* Status */
+			bool status = true;
+
 			/* TODO: Implement me */
+
+			/* TODO: fetch longontime, serveron, status */
+			string logontime;
+			string serveron;
+
+			/* Encode the reply */
+			reply ~= [status];
+			reply ~= [cast(byte)logontime.length];
+			reply ~= logontime;
+			reply ~= [cast(byte)serveron.length];
+			reply ~= serveron;
+			reply ~= getStatusMessage();
 		}
 		/* If `status` command (requires: authed, client) */
 		else if(command == Command.STATUS && hasAuthed && connType == ConnectionType.CLIENT)
