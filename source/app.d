@@ -20,7 +20,7 @@ void main(string[] args)
 	else if(args.length == 2)
 	{
 		/* use the specified one */
-		configFilename = args[0];
+		configFilename = args[1];
 	}
 	/* Illegal amount of guns in one household (no such thing) */
 	else
