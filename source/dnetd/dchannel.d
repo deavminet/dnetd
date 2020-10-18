@@ -197,7 +197,10 @@ public class DChannel
 		protocolData ~= [0];
 
 		/* Set the channel notificaiton type to `member leave` */
-		protocolData ~= cast(byte[])left.getUsername();
+
+		/* LeaveInfo: <channel>,<username> */
+		string leaveInfo = name~","~left.getUsername();
+		protocolData ~= cast(byte[])leaveInfo;
 
 		/* Write the notification */
 		member.writeSocket(0, protocolData);
