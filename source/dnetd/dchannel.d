@@ -238,7 +238,10 @@ public class DChannel
 		protocolData ~= [1];
 
 		/* Set the channel notificaiton type to `member join` */
-		protocolData ~= cast(byte[])joined.getUsername();
+
+		/* JoinInfo: <channel>,<username> */
+		string joinInfo = name~","~joined.getUsername();
+		protocolData ~= cast(byte[])joinInfo;
 
 		/* Write the notification */
 		member.writeSocket(0, protocolData);
