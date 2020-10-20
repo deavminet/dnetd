@@ -362,6 +362,76 @@ public class DServer : Thread
 		return matchedConnection.getStatusMessage(username);
 	}
 
+	/**
+	* Checks whether the given user has the given
+	* property
+	*/
+	public bool isProperty(string username, string propertyName)
+	{
+		/* Whether or not the user has the given property */
+		bool status;
+
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		/* The matching connection */
+		DConnection matchedConnection;
+
+		/* Find the connection */
+		foreach(DConnection connection; connectionQueue)
+		{
+			if(cmp(connection.getUsername(), username) == 0)
+			{
+				matchedConnection = connection;
+				break;
+			}
+		}
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
+
+		/* Check for the user's property */
+		status = matchedConnection.isProperty(propertyName);
+
+		return status;
+	}
+
+	/**
+	* Checks whether the given user has the given
+	* property
+	*/
+	public string getProperty(string username, string propertyName)
+	{
+		/* The retrieved property value */
+		string propertyValue;
+
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		/* The matching connection */
+		DConnection matchedConnection;
+
+		/* Find the connection */
+		foreach(DConnection connection; connectionQueue)
+		{
+			if(cmp(connection.getUsername(), username) == 0)
+			{
+				matchedConnection = connection;
+				break;
+			}
+		}
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
+
+		/* Check for the user's property */
+		propertyValue = matchedConnection.getProperty(propertyName);
+
+		return propertyValue;
+	}
+
+	
+
 	public string getServerInfo()
 	{
 		/* The server information */

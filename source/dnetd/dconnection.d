@@ -293,8 +293,21 @@ public class DConnection : Thread
 		}
 		else if(commandByte == 15)
 		{
-			command = Command.SET_PROP;
+			command = Command.GET_USER_PROPS;
 		}
+		else if(commandByte == 16)
+		{
+			command = Command.GET_USER_PROP;
+		}
+		else if(commandByte == 17)
+		{
+			command = Command.SET_USER_PROP;
+		}
+		else if(commandByte == 18)
+		{
+			command = Command.DELETE_USER_PROP;
+		}
+		
 		
 		
 		return command;
@@ -690,11 +703,17 @@ public class DConnection : Thread
 		/* If `get_user_prop` (requires: authed, client) */
 		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
+			/* Get the <user>,<propertyName> */
+			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
+
+			/* Get the username */
+			string username = dataLine[0];
+
 			/* Get the proerty */
-			string propertyName = cast(string)message.data[1..message.data.length];
+			string propertyName = dataLine[1];
 
 			/* Determine if it is a valid property */
-			bool status = isProperty(propertyName);
+			bool status = server.isProperty(username, propertyName);
 
 			/* Encode the status */
 			reply ~= [status];
@@ -703,7 +722,7 @@ public class DConnection : Thread
 			if(status)
 			{
 				/* Get the property value */
-				string propertyValue = getProperty(propertyName);
+				string propertyValue = server.getProperty(username, propertyName);
 
 				/* Encode the property value */
 				reply ~= propertyValue;
