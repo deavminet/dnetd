@@ -989,8 +989,14 @@ public class DConnection : Thread
 	*/
 	public void deleteProperty(string propertyName)
 	{
-		/* TODO: Implement me */
+		/* Lock the properties store */
+		propertiesLock.lock();
+
+		/* Remove the property */
 		properties.remove(propertyName);
+
+		/* Unlock the properties store */
+		propertiesLock.unlock();
 	}
 
 	public ConnectionType getConnectionType()
