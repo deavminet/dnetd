@@ -48,6 +48,15 @@ public class DConnection : Thread
 		STATUS,
 		CHAN_PROP,
 		SET_PROP,
+
+
+		/* User property commands */
+		GET_USER_PROPS,
+		GET_USER_PROP,
+		SET_USER_PROP,
+		DELETE_USER_PROP,
+
+
 		UNKNOWN
 	}
 
@@ -701,7 +710,7 @@ public class DConnection : Thread
 			}
 		}
 		/* If `set_user_prop` (requires: authed, client) */
-		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
+		else if(command == Command.SET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 
 		}
