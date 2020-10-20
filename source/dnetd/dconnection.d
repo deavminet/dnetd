@@ -766,7 +766,20 @@ public class DConnection : Thread
 		/* If `delete_user_prop` (requires: authed, client) */
 		else if(command == Command.DELETE_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
+			/* Get the property */
+			string property = cast(string)message.data[1..message.data.length];
 
+			/* Check if the key exists */
+			bool keyExists = isProperty(property);
+
+			/* If the property exists */
+			if(keyExists)
+			{
+				/* Delete the property */
+				deleteProperty(property);
+			}
+
+			reply ~= [keyExists];
 		}
 		/* If `is_user_prop` (requires: authed, client) */
 		else if(command == Command.IS_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
@@ -824,6 +837,7 @@ public class DConnection : Thread
 	private bool authenticate(string username, string password)
 	{
 		/* TODO: Implement me */
+		this.username = username;
 		return true;
 	}
 

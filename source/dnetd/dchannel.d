@@ -269,7 +269,20 @@ public class DChannel
 		* byte length of name of channel/person (dm case)
 		* message-bytes
 		*/
-		msg ~= [cast(byte)1,(cast(byte)sender.getUsername().length)]~cast(byte[])sender.getUsername()~cast(byte[])message;
+
+		/* Set mode to channel message */
+		msg ~= [cast(byte)1];
+		
+		/* Encode the [usernameLength, username] */
+		msg ~= [(cast(byte)sender.getUsername().length)];
+		msg ~= cast(byte[])sender.getUsername();
+		
+		/* Encode the [channelLength, channel] */
+		msg ~= [(cast(byte)name.length)];
+		msg ~= cast(byte[])name;
+
+		/* Encode the message */
+		msg ~= cast(byte[])message;
 		
 		/* Send the message to everyone else in the channel */
 		foreach(DConnection member; members)
