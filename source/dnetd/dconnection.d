@@ -748,30 +748,20 @@ public class DConnection : Thread
 		/* If `set_user_prop` (requires: authed, client) */
 		else if(command == Command.SET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
-			/* Get the <user>,<propertyName>,<propertyValue> */
+			/* Set the <propertyName>,<propertyValue> */
 			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
 
-			/* Get the username */
-			string username = dataLine[0];
-
 			/* Get the property */
-			string propertyName = dataLine[1];
+			string propertyName = dataLine[0];
 
 			/* Get the property value */
-			string propertyValue = dataLine[2];
-
-			/* Determine if it is a valid property */
-			bool status = server.isProperty(username, propertyName);
+			string propertyValue = dataLine[1];
 
 			/* Encode the status */
-			reply ~= [status];
+			reply ~= [true];
 
-			/* Encode the property value if one exists */
-			if(status)
-			{
-				/* Set the property value */
-				server.setProperty(username, propertyName, propertyValue);
-			}
+			/* Set the property value */
+			setProperty(propertyName, propertyValue);
 		}
 		/* If `delete_user_prop` (requires: authed, client) */
 		else if(command == Command.DELETE_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
@@ -876,7 +866,7 @@ public class DConnection : Thread
 	private bool sendUserMessage(string username, string message)
 	{
 		/* Find the user to send to */
-		DConnection user = server.findUser(username);
+		DConnection user = server.findUser(username); /*TODO: Ins erver not just use it directly */
 
 		writeln("sendUserMessage(): ", user);
 
