@@ -60,6 +60,7 @@ public class DConnection : Thread
 	private ConnectionType connType;
 	private string username;
 	private string currentStatus;
+	private string[string] properties; /* TODO: New, replace old status mechanism */
 
 	/* Write lock for socket */
 	/* TODO: Forgot how bmessage works, might need, might not, if multipel calls
@@ -793,6 +794,23 @@ public class DConnection : Thread
 		statusMessageLock.unlock();
 
 		return statusMessage;
+	}
+
+	/**
+	* Sets a property for this user
+	*/
+	public void setProperty(string propertyName, string propertyValue)
+	{
+		properties[propertyName] = propertyValue;
+	}
+
+	/**
+	* Returns a property
+	*/
+	public string getProperty(string propertyName)
+	{
+		/* TODO: Error handling */
+		return "";
 	}
 
 	public ConnectionType getConnectionType()
