@@ -909,7 +909,14 @@ public class DConnection : Thread
 	*/
 	public void setProperty(string propertyName, string propertyValue)
 	{
+		/* Lock the properties store */
+		propertiesLock.lock();
+
+		/* Set the property's value */
 		properties[propertyName] = propertyValue;
+
+		/* Unlock the properties store */
+		propertiesLock.unlock();
 	}
 
 	/**
@@ -918,7 +925,22 @@ public class DConnection : Thread
 	*/
 	public bool isProperty(string propertyName)
 	{
-		return cast(bool)(propertyName in properties);
+		/**
+		* Whether or not the given property is a property
+		* of this user
+		*/
+		bool status;
+
+		/* Lock the properties store */
+		propertiesLock.lock();
+
+		/* Check for the property's existence */
+		status = cast(bool)(propertyName in properties);
+
+		/* Unlock the properties store */
+		propertiesLock.unlock();
+
+		return status;
 	}
 
 	/**
