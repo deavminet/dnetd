@@ -93,6 +93,9 @@ public class DConnection : Thread
 		/* Initialize locks */
 		initLocks();
 
+		/* Initialize status */
+		currentStatus = "available,Hey there I'm using DNET!";
+
 		/* Start the connection handler */
 		start();
 	}
@@ -616,6 +619,7 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* TODO: Implement me */
+			string user = cast(string)message.data[1..message.data.length];
 
 			/* TODO: fetch longontime, serveron, status */
 			string logontime;
@@ -627,7 +631,7 @@ public class DConnection : Thread
 			reply ~= logontime;
 			reply ~= [cast(byte)serveron.length];
 			reply ~= serveron;
-			reply ~= getStatusMessage();
+			reply ~= server.getStatusMessage(user);
 		}
 		/* If `status` command (requires: authed, client) */
 		else if(command == Command.STATUS && hasAuthed && connType == ConnectionType.CLIENT)
@@ -772,21 +776,23 @@ public class DConnection : Thread
 	/**
 	* Returns the current status message
 	*/
-	public string getStatusMessage()
+	public string getStatusMessage(string username)
 	{
-		/* The current status message */
-		string currentStatusMessage;
+		/* The status message */
+		string statusMessage;
+
+		writeln("hfsjkhfjsdkhfdskj");
 
 		/* Lock the status message mutex */
 		statusMessageLock.lock();
 
-		/* Copy the status message */
-		currentStatusMessage = currentStatus;
+		/* Get the status message */
+		statusMessage = currentStatus;
 
 		/* Unlock the statue message mutex */
 		statusMessageLock.unlock();
 
-		return currentStatusMessage;
+		return statusMessage;
 	}
 
 	public ConnectionType getConnectionType()
