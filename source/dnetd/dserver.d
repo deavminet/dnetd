@@ -430,6 +430,33 @@ public class DServer : Thread
 		return propertyValue;
 	}
 
+	/**
+	* Set the property of the given user to the given value
+	*/
+	public void setProperty(string username, string propertyName, string propertyValue)
+	{
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		/* The matching connection */
+		DConnection matchedConnection;
+
+		/* Find the connection */
+		foreach(DConnection connection; connectionQueue)
+		{
+			if(cmp(connection.getUsername(), username) == 0)
+			{
+				matchedConnection = connection;
+				break;
+			}
+		}
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
+
+		/* Set the property's value of the user */
+		matchedConnection.setProperty(propertyName, propertyValue);
+	}
 	
 
 	public string getServerInfo()

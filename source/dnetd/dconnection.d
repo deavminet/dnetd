@@ -55,6 +55,7 @@ public class DConnection : Thread
 		GET_USER_PROP,
 		SET_USER_PROP,
 		DELETE_USER_PROP,
+		IS_USER_PROP,
 
 
 		UNKNOWN
@@ -318,6 +319,11 @@ public class DConnection : Thread
 		{
 			command = Command.DELETE_USER_PROP;
 		}
+		else if(commandByte == 19)
+		{
+			command = Command.IS_USER_PROP;
+		}
+		
 		
 		
 		
@@ -742,12 +748,54 @@ public class DConnection : Thread
 		/* If `set_user_prop` (requires: authed, client) */
 		else if(command == Command.SET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
+			/* Get the <user>,<propertyName>,<propertyValue> */
+			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
 
+			/* Get the username */
+			string username = dataLine[0];
+
+			/* Get the property */
+			string propertyName = dataLine[1];
+
+			/* Get the property value */
+			string propertyValue = dataLine[2];
+
+			/* Determine if it is a valid property */
+			bool status = server.isProperty(username, propertyName);
+
+			/* Encode the status */
+			reply ~= [status];
+
+			/* Encode the property value if one exists */
+			if(status)
+			{
+				/* Set the property value */
+				server.setProperty(username, propertyName, propertyValue);
+			}
 		}
 		/* If `delete_user_prop` (requires: authed, client) */
 		else if(command == Command.DELETE_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 
+		}
+		/* If `is_user_prop` (requires: authed, client) */
+		else if(command == Command.IS_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+			/* Get the <user>,<propertyName> */
+			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
+
+			/* Get the username */
+			string username = dataLine[0];
+
+			/* Get the proerty */
+			string propertyName = dataLine[1];
+
+			/* Determine if it is a valid property */
+			bool status = server.isProperty(username, propertyName);
+
+			/* Encode the status */
+			reply ~= [true];
+			reply ~= [status];
 		}
 		
 
