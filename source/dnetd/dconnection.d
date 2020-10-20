@@ -69,7 +69,15 @@ public class DConnection : Thread
 	private ConnectionType connType;
 	private string username;
 	private string currentStatus;
+
+	/**
+	* User property support
+	*
+	* `properties` -  the property store
+	* `propertiesMutex` - the mutex
+	*/
 	private string[string] properties; /* TODO: New, replace old status mechanism */
+	private Mutex propertiesLock;
 
 	/* Write lock for socket */
 	/* TODO: Forgot how bmessage works, might need, might not, if multipel calls
@@ -120,6 +128,9 @@ public class DConnection : Thread
 
 		/* Initialize the status message lock */
 		statusMessageLock = new Mutex();
+
+		/* Initialize the properties lock */
+		propertiesLock = new Mutex();
 	}
 
 	/**
