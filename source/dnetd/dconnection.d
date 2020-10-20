@@ -681,7 +681,24 @@ public class DConnection : Thread
 		/* If `get_user_prop` (requires: authed, client) */
 		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
+			/* Get the proerty */
+			string propertyName = cast(string)message.data[1..message.data.length];
 
+			/* Determine if it is a valid property */
+			bool status = isProperty(propertyName);
+
+			/* Encode the status */
+			reply ~= [status];
+
+			/* Encode the property value if one exists */
+			if(status)
+			{
+				/* Get the property value */
+				string propertyValue = getProperty(propertyName);
+
+				/* Encode the property value */
+				reply ~= propertyValue;
+			}
 		}
 		/* If `set_user_prop` (requires: authed, client) */
 		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
@@ -854,6 +871,15 @@ public class DConnection : Thread
 	public void setProperty(string propertyName, string propertyValue)
 	{
 		properties[propertyName] = propertyValue;
+	}
+
+	/**
+	* Determines whether or not the given property
+	* exists
+	*/
+	public bool isProperty(string propertyName)
+	{
+		return cast(bool)(propertyName in properties);
 	}
 
 	/**
