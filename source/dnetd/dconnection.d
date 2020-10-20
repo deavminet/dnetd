@@ -948,8 +948,20 @@ public class DConnection : Thread
 	*/
 	public string getProperty(string propertyName)
 	{
+		/* The fetched property */
+		string propertyValue;
+
+		/* Lock the properties store */
+		propertiesLock.lock();
+
+		/* Check for the property's existence */
+		propertyValue = properties[propertyName];
+
+		/* Unlock the properties store */
+		propertiesLock.unlock();
+
 		/* TODO: Error handling */
-		return properties[propertyName];
+		return propertyValue;
 	}
 
 	/**
@@ -957,7 +969,19 @@ public class DConnection : Thread
 	*/
 	public string[] getProperties()
 	{
-		return properties.keys();
+		/* The list of keys */
+		string[] propertiesString;
+
+		/* Lock the properties store */
+		propertiesLock.lock();
+
+		/* Check for the property's existence */
+		propertiesString = properties.keys();
+
+		/* Unlock the properties store */
+		propertiesLock.unlock();
+
+		return propertiesString;
 	}
 
 	/**
