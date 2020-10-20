@@ -646,6 +646,58 @@ public class DConnection : Thread
 			/* Encode the reply */
 			reply ~= [true];
 		}
+
+		/* If `get_user_props` (requires: authed, client) */
+		else if(command == Command.GET_USER_PROPS && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+			/* Get all properties */
+			string[] propertyKeys = getProperties();
+
+			/* Encode the status */
+			reply ~= [true];
+
+			/* Encode the keys */
+			for(ulong i = 0; i < propertyKeys.length; i++)
+			{
+				/* The data to add to the reply */
+				string replyData;
+
+				if(i == propertyKeys.length-1)
+				{
+					replyData = propertyKeys[i];
+				}
+				else
+				{
+					replyData = propertyKeys[i]~",";
+				}
+
+				/* Encode the `replyData` */
+				reply ~= replyData;
+			}
+
+			/* Encode the number of keys (TODO: FOr now you cannot have more than 255 keys) */
+			reply ~= [cast(byte)propertyKeys.length];
+		}
+		/* If `get_user_prop` (requires: authed, client) */
+		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+
+		}
+		/* If `set_user_prop` (requires: authed, client) */
+		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+
+		}
+		/* If `delete_user_prop` (requires: authed, client) */
+		else if(command == Command.DELETE_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
+		{
+
+		}
+		
+
+
+
+
 		/* TODO: `CHAN_PROP`, `SET_PROP` */
 		/* If no matching built-in command was found */
 		else
