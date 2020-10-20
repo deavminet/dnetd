@@ -810,7 +810,7 @@ public class DConnection : Thread
 	public string getProperty(string propertyName)
 	{
 		/* TODO: Error handling */
-		return "";
+		return properties[propertyName];
 	}
 
 	/**
@@ -818,7 +818,7 @@ public class DConnection : Thread
 	*/
 	public string[] getProperties()
 	{
-		return [];
+		return properties.keys();
 	}
 
 	/**
@@ -827,6 +827,7 @@ public class DConnection : Thread
 	public void deleteProperty(string propertyName)
 	{
 		/* TODO: Implement me */
+		properties.remove(propertyName);
 	}
 
 	public ConnectionType getConnectionType()
