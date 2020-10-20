@@ -813,6 +813,22 @@ public class DConnection : Thread
 		return "";
 	}
 
+	/**
+	* Returns a list of proerties
+	*/
+	public string[] getProperties()
+	{
+		return [];
+	}
+
+	/**
+	* Deletes a given proerty
+	*/
+	public void deleteProperty(string propertyName)
+	{
+		/* TODO: Implement me */
+	}
+
 	public ConnectionType getConnectionType()
 	{
 		return connType;
