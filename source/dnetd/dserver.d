@@ -337,6 +337,31 @@ public class DServer : Thread
 		return currentChannels;
 	}
 
+	public string getStatusMessage(string username)
+	{
+		/* Lock the connections list */
+		connectionLock.lock();
+
+		/* The matching connection */
+		DConnection matchedConnection;
+
+		/* Find the connection */
+		foreach(DConnection connection; connectionQueue)
+		{
+			if(cmp(connection.getUsername(), username) == 0)
+			{
+				matchedConnection = connection;
+				break;
+			}
+		}
+
+
+		/* Unlock the connections list */
+		connectionLock.unlock();
+
+		return matchedConnection.getStatusMessage(username);
+	}
+
 	public string getServerInfo()
 	{
 		/* The server information */
