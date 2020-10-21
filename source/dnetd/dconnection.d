@@ -715,7 +715,7 @@ public class DConnection : Thread
 			}
 
 			/* Encode the number of keys (TODO: FOr now you cannot have more than 255 keys) */
-			reply ~= [cast(byte)propertyKeys.length];
+			// reply ~= [cast(byte)propertyKeys.length];
 		}
 		/* If `get_user_prop` (requires: authed, client) */
 		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
