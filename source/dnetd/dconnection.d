@@ -689,10 +689,14 @@ public class DConnection : Thread
 		/* If `get_user_props` (requires: authed, client) */
 		else if(command == Command.GET_USER_PROPS && hasAuthed && connType == ConnectionType.CLIENT)
 		{
-			/* Get all properties */
-			string[] propertyKeys = getProperties();
+			/* Get the username */
+			string username = cast(string)message.data[1..message.data.length];
 
-			/* TODO: This should take in a username */
+			/* Get the user */
+			DConnection connection = server.findUser(username);
+
+			/* Get all properties of the user */
+			string[] propertyKeys = connection.getProperties();
 
 			/* Encode the status */
 			reply ~= [true];

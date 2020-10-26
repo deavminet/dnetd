@@ -265,11 +265,14 @@ public class DServer : Thread
 	*/
 	public DConnection findUser(string username)
 	{
-		/* Get all the current connections */
-		DConnection[] connections = getConnections();
+		/* The found Connection */
+		DConnection foundConnection;
+
+		/* Lock the connections list */
+		connectionLock.lock();
 
 		/* Find the user with the matching user name */
-		foreach(DConnection connection; connections)
+		foreach(DConnection connection; connectionQueue)
 		{
 			/* The connection must be a user (not unspec or server) */
 			if(connection.getConnectionType() == DConnection.ConnectionType.CLIENT)
@@ -277,28 +280,15 @@ public class DServer : Thread
 				/* Match the username */
 				if(cmp(connection.getUsername(), username) == 0)
 				{
-					return connection;
+					foundConnection = connection;
 				}
 			}
 		}
 
-		return null;
-	}
-
-	public DConnection[] getConnections()
-	{
-		/* The current connections list */
-		DConnection[] currentConnections;
-		
-		/* Lock the connections list */
-		connectionLock.lock();
-
-		currentConnections = connectionQueue;
-
 		/* Unlock the connections list */
 		connectionLock.unlock();
-		
-		return currentConnections;
+
+		return foundConnection;
 	}
 
 	public bool channelExists(string channelName)
@@ -395,6 +385,8 @@ public class DServer : Thread
 
 		return status;
 	}
+
+	/* TODO: All these functions can really be re-duced, why am I not using getConnection() */
 
 	/**
 	* Checks whether the given user has the given
