@@ -692,6 +692,8 @@ public class DConnection : Thread
 			/* Get all properties */
 			string[] propertyKeys = getProperties();
 
+			/* TODO: This should take in a username */
+
 			/* Encode the status */
 			reply ~= [true];
 
