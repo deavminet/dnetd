@@ -162,9 +162,7 @@ public class DConnection : Thread
 				receivedMessage = DataMessage.decode(receivedBytes);
 
 				/* Process the message */
-				process(receivedMessage);	
-
-				/* TODO: Tristanable needs reserved-tag support (client-side concern) */	
+				process(receivedMessage);
 			}
 			else
 			{
