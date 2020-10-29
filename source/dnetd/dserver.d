@@ -20,6 +20,7 @@ import std.stdio;
 import std.conv : to;
 import dnetd.dconfig;
 import dnetd.dlink;
+import gogga;
 
 public class DServer : Thread
 {
@@ -169,7 +170,7 @@ public class DServer : Thread
 
 		/* Add to the connection queue */
 		connectionQueue ~= connection;
-		writeln("Added connection to queue "~to!(string)(connection));
+		gprintln("Added connection to queue "~to!(string)(connection));
 
 		/* Unlock the connections list */
 		connectionLock.unlock();
@@ -195,7 +196,7 @@ public class DServer : Thread
 		/* Set this as the new queue */
 		connectionQueue = connectionQueueNew;
 
-		writeln("Removed connection from queue "~to!(string)(connection));
+		gprintln("Removed connection from queue "~to!(string)(connection));
 
 		/* Unlock the connections list */
 		connectionLock.unlock();
