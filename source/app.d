@@ -4,6 +4,7 @@ import dnetd.dserver : DServer;
 import dnetd.dconfig : DConfig;
 import std.json;
 import std.exception;
+import gogga;
 
 void main(string[] args)
 {
@@ -25,7 +26,7 @@ void main(string[] args)
 	/* Illegal amount of guns in one household (no such thing) */
 	else
 	{
-		writeln("Invalid number of arguments");
+		gprintln("Invalid number of arguments", DebugType.ERROR);
 		return;
 	}
 	
@@ -45,7 +46,7 @@ void main(string[] args)
 	}
 	catch(ErrnoException e)
 	{
-		writeln("Failure to use configuration file'"~configFilename~"' with error:\n\n"~e.toString());
+		gprintln("Failure to use configuration file'"~configFilename~"' with error:\n\n"~e.toString(), DebugType.ERROR);
 		return;
 	}
 
@@ -59,7 +60,7 @@ void main(string[] args)
 	}
 	catch(JSONException e)
 	{
-		writeln("Failure to parse configuration file'"~configFilename~"' with error:\n\n"~e.toString());
+		gprintln("Failure to parse configuration file'"~configFilename~"' with error:\n\n"~e.toString(), DebugType.ERROR);
 		return;
 	}
 
@@ -74,7 +75,7 @@ void main(string[] args)
 	}
 	else
 	{
-		writeln("Failure to read a valid dnetd configuration file'"~configFilename~"'");	
+		gprintln("Failure to read a valid dnetd configuration file'"~configFilename~"'", DebugType.ERROR);	
 	}
 	
 	
