@@ -2,6 +2,7 @@
 	"fileVersion": 1,
 	"versions": {
 		"bformat": "1.0.8",
+		"gogga": "0.0.2",
 		"tristanable": "0.0.33"
 	}
 }
