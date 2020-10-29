@@ -21,6 +21,7 @@ import dnetd.dchannel : DChannel;
 import std.conv : to;
 import std.stdio : writeln;
 import std.algorithm : reverse;
+import gogga;
 
 public class DConnection : Thread
 {
@@ -168,7 +169,7 @@ public class DConnection : Thread
 			else
 			{
 				/* TODO: Error handling */
-				writeln("Error with receive: "~to!(string)(this));
+				gprintln("Error with receive: "~to!(string)(this), DebugType.ERROR);
 				break;
 			}
 		}
@@ -179,7 +180,7 @@ public class DConnection : Thread
 
 	private void cleanUp()
 	{
-		writeln(to!(string)(this)~" Cleaning up connection...");
+		grpintln(to!(string)(this)~" Cleaning up connection...");
 
 		/* Remove this user from all channels he is in */
 		DChannel[] channels = server.getChannels();
@@ -192,14 +193,14 @@ public class DConnection : Thread
 			{
 				/* Leave the channel */
 				currentChannel.leave(this);
-				writeln(to!(string)(this)~" Leaving '"~currentChannel.getName()~"'...");
+				gprintln(to!(string)(this)~" Leaving '"~currentChannel.getName()~"'...");
 			}
 		}
 		
 		/* Remove this user from the connection queue */
 		server.removeConnection(this);
 
-		writeln(to!(string)(this)~" Connection cleaned up");
+		gprintln(to!(string)(this)~" Connection cleaned up");
 	}
 
 	/* TODO: add mutex for writing with message and funciton for doing so */
@@ -223,18 +224,18 @@ public class DConnection : Thread
 		/* Create the tagged message */
 		DataMessage message = new DataMessage(tag, data);
 
-		writeln("writeSocket: mutex lock");
+		gprintln("writeSocket: mutex lock");
 		/* Lock the write mutex */
 		writeLock.lock();
 
 		/* Send the message */
-		writeln("writeSocket: Data: "~to!(string)(data)~" Tag: "~to!(string)(tag));
+		gprintln("writeSocket: Data: "~to!(string)(data)~" Tag: "~to!(string)(tag));
 		status = sendMessage(socket, message.encode());
 
 		/* Unlock the write mutex */
 		writeLock.unlock();
 
-		writeln("writeSocket: mutex unlock");
+		gprintln("writeSocket: mutex unlock");
 
 		return status;
 	}
@@ -342,7 +343,7 @@ public class DConnection : Thread
 		* between commands and async notifications
 		*/
 		long tag = message.tag;
-		writeln("tag:", tag);
+		gprintln("tag: "~ to!(string)(tag));
 
 		/* The reply */
 		byte[] reply;
@@ -350,7 +351,7 @@ public class DConnection : Thread
 		/* Get the command */
 		byte commandByte = message.data[0];
 		Command command = getCommand(commandByte);
-		writeln(to!(string)(this)~" ~> "~to!(string)(command));
+		gprintln(to!(string)(this)~" ~> "~to!(string)(command));
 
 		/* If `auth` command (requires: unauthed) */
 		if(command == Command.AUTH && !hasAuthed)
@@ -894,7 +895,7 @@ public class DConnection : Thread
 		/* Find the user to send to */
 		DConnection user = server.findUser(username); /*TODO: Ins erver not just use it directly */
 
-		writeln("sendUserMessage(): ", user);
+		gprintln("sendUserMessage(): ", user);
 
 		/* If the user was found */
 		if(user)
@@ -954,7 +955,7 @@ public class DConnection : Thread
 		/* The status message */
 		string statusMessage;
 
-		writeln("hfsjkhfjsdkhfdskj");
+		gprintln("hfsjkhfjsdkhfdskj");
 
 		/* Lock the status message mutex */
 		statusMessageLock.lock();
