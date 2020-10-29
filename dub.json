@@ -4,6 +4,7 @@
 	],
 	"copyright": "Copyright © 2020, Tristan B. Kildaire",
 	"dependencies": {
+		"gogga": "~>0.0.1",
 		"tristanable": "~>0.0.33"
 	},
 	"description": "dnet server",
