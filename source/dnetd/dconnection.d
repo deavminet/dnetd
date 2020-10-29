@@ -180,7 +180,7 @@ public class DConnection : Thread
 
 	private void cleanUp()
 	{
-		grpintln(to!(string)(this)~" Cleaning up connection...");
+		gprintln(to!(string)(this)~" Cleaning up connection...");
 
 		/* Remove this user from all channels he is in */
 		DChannel[] channels = server.getChannels();
@@ -895,7 +895,7 @@ public class DConnection : Thread
 		/* Find the user to send to */
 		DConnection user = server.findUser(username); /*TODO: Ins erver not just use it directly */
 
-		gprintln("sendUserMessage(): ", user);
+		gprintln("sendUserMessage(): "~to!(string)(user));
 
 		/* If the user was found */
 		if(user)
