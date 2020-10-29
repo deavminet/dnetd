@@ -735,8 +735,11 @@ public class DConnection : Thread
 			/* Get the proerty */
 			string propertyName = dataLine[1];
 
+			/* Get the user */
+			DConnection connection = server.findUser(username);
+
 			/* Determine if it is a valid property */
-			bool status = server.isProperty(username, propertyName);
+			bool status = connection.isProperty(propertyName);
 
 			/* Encode the status */
 			reply ~= [status];
@@ -799,8 +802,11 @@ public class DConnection : Thread
 			/* Get the proerty */
 			string propertyName = dataLine[1];
 
+			/* Get the user */
+			DConnection connection = server.findUser(username);
+
 			/* Determine if it is a valid property */
-			bool status = server.isProperty(username, propertyName);
+			bool status = connection.isProperty(propertyName);
 
 			/* Encode the status */
 			reply ~= [true];
