@@ -12,6 +12,7 @@ import dnetd.dconnection : DConnection;
 import core.sync.mutex : Mutex;
 import std.conv : to;
 import std.stdio : writeln;
+import gogga;
 
 public class DChannel
 {
@@ -49,9 +50,9 @@ public class DChannel
 		broadcastJoin(client);
 
 		/* Lock the members list */
-		writeln("join: mutex lock (about to call)");
+		gprintln("join: mutex lock (about to call)");
 		memberLock.lock();
-		writeln("join: mutex lock (completed)");
+		gprintln("join: mutex lock (completed)");
 
 		/**
 		* Don't allow the user to join a channel he
@@ -81,9 +82,9 @@ public class DChannel
 		}
 
 		/* Unlock the members list */
-		writeln("join: mutex unlock (about to call)");
+		gprintln("join: mutex unlock (about to call)");
 		memberLock.unlock();
-		writeln("join: mutex unlock (completed)");
+		gprintln("join: mutex unlock (completed)");
 
 		return isPresent;
 	}
@@ -291,16 +292,16 @@ public class DChannel
 			if(!(member is sender))
 			{
 				/* Send the message */
-				writeln("Delivering message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'...");
+				gprintln("Delivering message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'...");
 				status = member.writeSocket(0, msg);
 
 				if(status)
 				{
-					writeln("Delivered message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");	
+					gprintln("Delivered message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");	
 				}
 				else
 				{
-					writeln("Failed to deliver message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!");	
+					gprintln("Failed to deliver message '"~message~"' for channel '"~name~"' to user '"~member.getUsername()~"'!", DebugType.ERROR);	
 				}
 			}
 		}
