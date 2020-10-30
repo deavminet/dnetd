@@ -92,9 +92,6 @@ public class DConnection : Thread
 	* Mutex to provide safe access to the status message
 	*/
 	private Mutex statusMessageLock;
-	
-	/* Reserved tag for push notifications */
-	private long notificationTag = 0;
 
 	this(DServer server, Socket socket)
 	{
