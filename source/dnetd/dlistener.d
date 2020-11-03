@@ -4,6 +4,8 @@ import std.socket;
 import dnetd.dserver;
 import core.thread;
 import dnetd.dconnection;
+import gogga;
+import std.conv : to;
 
 public final class DListener : Thread
 {
@@ -28,6 +30,7 @@ public final class DListener : Thread
         // Address address = addressInfo.address;
 
 
+
         /* TODO: Check AF_FAMILY (can only be INET,INET6,UNIX) */
         /* TODO: Check SocketType (can only be STREAM) */
         /* TODO: Check Protocol, can only be RAW (assuming UNIX) or TCP */
@@ -35,6 +38,7 @@ public final class DListener : Thread
 
         /* Create the Socket and bind it */
         serverSocket = new Socket(addressInfo);
+        gprintln("New listener started with address "~to!(string)(addressInfo));
 
         /* Start the connection dequeue thread */
 		start();
