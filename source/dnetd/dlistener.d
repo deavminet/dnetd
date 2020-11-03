@@ -2,14 +2,16 @@ module dnetd.dlistener;
 
 import std.socket;
 import dnetd.dserver;
+import core.thread;
+import dnetd.dconnection;
 
-public final class DListener
+public final class DListener : Thread
 {
     /* Associated server */
     private DServer server;
 
     /* The socket */
-    private Socket socket;
+    private Socket serverSocket;
 
     /**
     * Creates new listener with the associated server
@@ -17,9 +19,11 @@ public final class DListener
     */
     this(DServer server, AddressInfo addressInfo)
     {
+        super(&dequeueLoop);
+
         /* Set the server */
         this.server = server;
-        
+
         // /* Get the Address */
         // Address address = addressInfo.address;
 
@@ -30,6 +34,27 @@ public final class DListener
         /* address.addressFamily, addressInfo.type, addressInfo.protocol */
 
         /* Create the Socket and bind it */
-        socket = new Socket(addressInfo);
+        serverSocket = new Socket(addressInfo);
+
+        /* Start the connection dequeue thread */
+		start();
     }
+
+    private void dequeueLoop()
+	{
+		/* Start accepting-and-enqueuing connections */
+		serverSocket.listen(0); /* TODO: Linux be lile, hehahahhahahah who gives one - I give zero */
+		
+		while(true)
+		{
+			/* Dequeue a connection */
+			Socket socket = serverSocket.accept();
+
+			/* Spawn a connection handler */
+			DConnection connection = new DConnection(server, socket);
+
+			/* Add to the connection queue */
+			server.addConnection(connection);
+		}
+	}
 }
