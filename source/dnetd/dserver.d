@@ -20,6 +20,7 @@ import std.stdio;
 import std.conv : to;
 import dnetd.dconfig;
 import dnetd.dlink;
+import dnetd.dlistener;
 import gogga;
 
 public class DServer : Thread
@@ -51,6 +52,11 @@ public class DServer : Thread
 	*/
 	private DMeyer meyerSS;
 	
+	/**
+	* The listeners attached to this server
+	*/
+	private DListener[] listeners;
+
 	/* TODO: Implement new constructor */
 	this(DConfig config)
 	{
