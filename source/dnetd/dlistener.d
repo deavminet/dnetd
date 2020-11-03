@@ -1,19 +1,25 @@
 module dnetd.dlistener;
 
 import std.socket;
+import dnetd.dserver;
 
 public final class DListener
 {
+    /* Associated server */
+    private DServer server;
+
     /* The socket */
     private Socket socket;
 
     /**
     * Creates new listener with the associated server
-    * and the given Add
-    *
+    * and listens on the given address
     */
-    this(AddressInfo addressInfo)
+    this(DServer server, AddressInfo addressInfo)
     {
+        /* Set the server */
+        this.server = server;
+        
         // /* Get the Address */
         // Address address = addressInfo.address;
 
