@@ -54,19 +54,23 @@ public final class DPlugin
         /* TODO: Error handling */
         status = sendMessage(socket, data);
 
-        /* Get the reply */
-        /* TODO: Error handling */
-        byte[] reply;
-        receiveMessage(socket, reply);
-
-        /* Close the connetion to the plugin server */
-        socket.close();
-
         /* Encode the status in the reply */
         response ~= [status];
 
-        /* Encode the response */
-        response ~= reply;
+        /* If the send succeeded */
+        if(status)
+        {
+            /* Get the reply */
+            /* TODO: Error handling */
+            byte[] reply;
+            receiveMessage(socket, reply);
+
+            /* Close the connetion to the plugin server */
+            socket.close();
+
+            /* Encode the response */
+            response ~= reply;
+        }
 
         return response;
     }
