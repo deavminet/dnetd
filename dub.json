@@ -6,7 +6,7 @@
 	"dependencies": {
 		"bformat": "~>3.1.0",
 		"gogga": "~>0.0.2",
-		"tristanable": "~>2.2.0"
+		"tristanable": "~>0.0.33"
 	},
 	"description": "dnet server",
 	"license": "AGPLv3",
