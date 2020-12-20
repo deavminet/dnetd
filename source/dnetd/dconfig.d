@@ -8,6 +8,7 @@ module dnetd.dconfig;
 import std.json;
 import std.conv;
 import std.socket : Address, parseAddress;
+import gogga;
 
 public final class DConfig
 {
@@ -83,6 +84,7 @@ public final class DGeneralConfig
     {
         /* The generated general config */
         DGeneralConfig config = new DGeneralConfig();
+        gprintln("Reading config:\n"~generalBlock.toPrettyString());
 
         try
         {
