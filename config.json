@@ -11,7 +11,6 @@
 			"port" : "7778"
 		},
 	],
-        "port" : "7777",
         "network" : "aBasedIRCNetwork",
         "name" : "MyBrandSpankingNewIRCServer",
         "motd" : "Welcome to my generic dnet chat server!"
