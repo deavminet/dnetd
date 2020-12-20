@@ -29,6 +29,10 @@ public final class DListener : Thread
         // /* Get the Address */
         Address address = addressInfo.address;
 
+    
+
+        gprintln("DListener: Hello there I am a new listener "~to!(string)(addressInfo));
+
 
 
         /* TODO: Check AF_FAMILY (can only be INET,INET6,UNIX) */
@@ -38,6 +42,8 @@ public final class DListener : Thread
 
         /* Create the Socket and bind it */
         serverSocket = new Socket(addressInfo);
+        // serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM, ProtocolType.TCP);
+        serverSocket.bind(address);
         gprintln("New listener started with address "~to!(string)(addressInfo));
 
         /* Start the connection dequeue thread */
@@ -46,7 +52,7 @@ public final class DListener : Thread
 
     private void dequeueLoop()
 	{
-        gprintln("Starting listener...");
+        gprintln("Starting dequeue loop. on socket "~to!(string)(serverSocket)~"...");
         
 		/* Start accepting-and-enqueuing connections */
 		serverSocket.listen(0); /* TODO: Linux be lile, hehahahhahahah who gives one - I give zero */
@@ -54,7 +60,9 @@ public final class DListener : Thread
 		while(true)
 		{
 			/* Dequeue a connection */
+            gprintln("Awaiting a connection...");
 			Socket socket = serverSocket.accept();
+            gprintln("Dequeued a socket");
 
 			/* Spawn a connection handler */
 			DConnection connection = new DConnection(server, socket);

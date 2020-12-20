@@ -109,6 +109,7 @@ public class DServer : Thread
 		foreach(DListener listener; listeners)
 		{
 			/* Start the listener */
+			gprintln("Starting listener "~to!(string)(listener)~"...");
 			listener.start();
 		}
 	}
