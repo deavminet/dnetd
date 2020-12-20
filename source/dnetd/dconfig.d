@@ -79,11 +79,6 @@ public final class DGeneralConfig
     private string name;
     private string motd;
 
-    private this()
-    {
-
-    }
-
     public static DGeneralConfig getConfig(JSONValue generalBlock)
     {
         /* The generated general config */
@@ -119,7 +114,6 @@ public final class DGeneralConfig
             /* Set the config to null (signals an error) */
             config = null;
         }
-
 
         return config;
     }
