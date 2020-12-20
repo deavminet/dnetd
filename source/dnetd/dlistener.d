@@ -27,7 +27,7 @@ public final class DListener : Thread
         this.server = server;
 
         // /* Get the Address */
-        // Address address = addressInfo.address;
+        Address address = addressInfo.address;
 
 
 

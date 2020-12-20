@@ -66,14 +66,42 @@ public class DServer : Thread
 		/* Set the server's config */
 		this.config = config;
 	
-		/* Set the listening address */
-		this.sockAddress = config.getGeneral().getAddress();
+		/* Construct the listeners */
+		constructListeners(config.getGeneral().getAddresses());
 
 		/* Initialize the server */
 		init();
 
 		/* Start the server */
 		startServer();
+	}
+
+	private void constructListeners(Address[] listenAddresses)
+	{
+		gprintln("Constructing "~to!(string)(listenAddresses.length)~" listsners...");
+
+		foreach(Address listenAddress; listenAddresses)
+		{
+			gprintln("Constructing listener for address '"~to!(string)(listenAddress)~"'");
+
+			import std.socket : AddressInfo;
+			AddressInfo addrInfo;
+
+			/* Set the address (and port) to the current one along with address family */
+			addrInfo.address = listenAddress;
+			addrInfo.family = listenAddress.addressFamily;
+		
+			/* Set standard stuff */
+			addrInfo.protocol = ProtocolType.TCP;
+			
+			addrInfo.type = SocketType.STREAM;
+
+			/* Construct the listener */
+			listeners ~= new DListener(this, addrInfo);
+			gprintln("Listener for '"~to!(string)(listenAddress)~"' constructed");
+		}
+
+		gprintln("Listener construction complete.");
 	}
 
 	public DConfig getConfig()
