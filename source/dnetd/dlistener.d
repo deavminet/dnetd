@@ -42,7 +42,6 @@ public final class DListener : Thread
 
         /* Create the Socket and bind it */
         serverSocket = new Socket(addressInfo);
-        // serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM, ProtocolType.TCP);
         serverSocket.bind(address);
         gprintln("New listener started with address "~to!(string)(addressInfo));
 
@@ -52,7 +51,7 @@ public final class DListener : Thread
 
     private void dequeueLoop()
 	{
-        gprintln("Starting dequeue loop. on socket "~to!(string)(serverSocket)~"...");
+        gprintln("Starting dequeue loop...");
         
 		/* Start accepting-and-enqueuing connections */
 		serverSocket.listen(0); /* TODO: Linux be lile, hehahahhahahah who gives one - I give zero */
