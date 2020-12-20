@@ -1,6 +1,5 @@
 {
     "general" : {
-	"addresses" : ["0.0.0.0"],
         "binds" : [
 		{
 			"address" : "0.0.0.0",
