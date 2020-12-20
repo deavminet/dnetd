@@ -71,7 +71,7 @@ public final class DGeneralConfig
 {
 
     /* Addresses to bind sockets to */
-    private string[] addresses;
+    private Address[] addresses;
     private ushort port;
 
     /* Server information */
@@ -91,14 +91,18 @@ public final class DGeneralConfig
 
         try
         {
-            /* Set the addresses */
-            foreach(JSONValue address; generalBlock["addresses"].array())
+            /* Set the addresses to bind to */
+            foreach(JSONValue bindBlock; generalBlock["binds"].array())
             {
-                config.addresses ~= [address.str()];
+                /* Get the address */
+                string address = bindBlock["address"].str();
+
+                /* Get the port */
+                ushort port = to!(ushort)(bindBlock["port"].str());
+
+                /* Add the address and port tuple to the list of addresses to bind to */
+                config.addresses ~= parseAddress(address, port);
             }
-            
-            /* Set the ports */
-            config.port = to!(ushort)(generalBlock["port"].str());
 
             /* Set the network name */
             config.network = generalBlock["network"].str();
@@ -127,16 +131,7 @@ public final class DGeneralConfig
 
     public Address[] getAddresses()
     {
-        /* Address(es) to listen on */
-        Address[] listenAddresses;
-
-        /* Create the addresses */
-        foreach(string address; addresses)
-        {
-            listenAddresses ~= parseAddress(address, port);
-        }
-
-        return listenAddresses;
+        return addresses;
     }
 }
 
