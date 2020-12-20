@@ -25,13 +25,6 @@ import gogga;
 
 public class DServer : Thread
 {
-	/* The server's socket to bind, listen and accept connections from */
-	private Socket serverSocket;
-
-	/* Bind address */
-	private Address sockAddress;
-
-
 	/* Server configuration */
 	private DConfig config;
 
@@ -67,7 +60,7 @@ public class DServer : Thread
 		this.config = config;
 	
 		/* Construct the listeners */
-		constructListeners(config.getGeneral().getAddresses());
+		initListeners(config.getGeneral().getAddresses());
 
 		/* Initialize the server */
 		init();
@@ -76,7 +69,12 @@ public class DServer : Thread
 		startServer();
 	}
 
-	private void constructListeners(Address[] listenAddresses)
+	/**
+	* Given an array of Address(es) this will construct all
+	* the corresponding listsners (DListener) and append them
+	* to the array
+	*/
+	private void initListeners(Address[] listenAddresses)
 	{
 		gprintln("Constructing "~to!(string)(listenAddresses.length)~" listsners...");
 
@@ -110,27 +108,11 @@ public class DServer : Thread
 
 	private void init()
 	{
-		/* Setup socket */
-		initNetwork();
-
 		/* Setup queues */
 		initQueues();
 
 		/* Setup locks */
 		initLocks();
-	}
-
-	/**
-	* Creates the socket, binds it
-	* to the given address
-	*/
-	private void initNetwork()
-	{
-		/* Create the socket */
-		serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM, ProtocolType.TCP);
-
-		/* Bind the socket to the given address */
-		serverSocket.bind(sockAddress);
 	}
 
 	/**
@@ -163,24 +145,6 @@ public class DServer : Thread
 
 		/* Start the connection dequeue thread */
 		start();
-	}
-
-	private void dequeueLoop()
-	{
-		/* Start accepting-and-enqueuing connections */
-		serverSocket.listen(0); /* TODO: Linux be lile, hehahahhahahah who gives one - I give zero */
-		
-		while(true)
-		{
-			/* Dequeue a connection */
-			Socket socket = serverSocket.accept();
-
-			/* Spawn a connection handler */
-			DConnection connection = new DConnection(this, socket);
-
-			/* Add to the connection queue */
-			addConnection(connection);
-		}
 	}
 
 	public void addChannel(DConnection causer, DChannel channel)
