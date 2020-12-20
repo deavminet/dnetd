@@ -91,9 +91,8 @@ public class DServer : Thread
 			addrInfo.address = listenAddress;
 			addrInfo.family = listenAddress.addressFamily;
 		
-			/* Set standard stuff */
+			/* Set standard (it will always be TCP and in stream access mode) */
 			addrInfo.protocol = ProtocolType.TCP;
-			
 			addrInfo.type = SocketType.STREAM;
 
 			/* Construct the listener */
