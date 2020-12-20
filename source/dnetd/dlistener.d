@@ -41,11 +41,13 @@ public final class DListener : Thread
         gprintln("New listener started with address "~to!(string)(addressInfo));
 
         /* Start the connection dequeue thread */
-		start();
+		//start();
     }
 
     private void dequeueLoop()
 	{
+        gprintln("Starting listener...");
+        
 		/* Start accepting-and-enqueuing connections */
 		serverSocket.listen(0); /* TODO: Linux be lile, hehahahhahahah who gives one - I give zero */
 		

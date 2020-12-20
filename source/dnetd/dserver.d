@@ -54,7 +54,7 @@ public class DServer : Thread
 	this(DConfig config)
 	{
 		/* Set the function to be called on thread start */
-		super(&dequeueLoop);
+		super(&startListeners);
 
 		/* Set the server's config */
 		this.config = config;
@@ -101,6 +101,18 @@ public class DServer : Thread
 		gprintln("Listener construction complete.");
 	}
 
+	/**
+	* Starts all the listeners
+	*/
+	private void startListeners()
+	{
+		foreach(DListener listener; listeners)
+		{
+			/* Start the listener */
+			listener.start();
+		}
+	}
+
 	public DConfig getConfig()
 	{
 		return config;
@@ -143,7 +155,7 @@ public class DServer : Thread
 		/* Initialize the Meyer linking sub-system */
 		meyerSS = new DMeyer(this);
 
-		/* Start the connection dequeue thread */
+		/* Start the listener starter */
 		start();
 	}
 
