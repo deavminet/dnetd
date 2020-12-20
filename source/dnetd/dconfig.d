@@ -125,10 +125,18 @@ public final class DGeneralConfig
         return motd;
     }
 
-    public Address getAddress()
+    public Address[] getAddresses()
     {
-        /* TODO: Add multi address support later */
-        return parseAddress(addresses[0], port);
+        /* Address(es) to listen on */
+        Address[] listenAddresses;
+
+        /* Create the addresses */
+        foreach(string address; addresses)
+        {
+            listenAddresses ~= parseAddress(address, port);
+        }
+
+        return listenAddresses;
     }
 }
 
