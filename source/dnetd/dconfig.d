@@ -70,7 +70,6 @@ public final class DConfig
 
 public final class DGeneralConfig
 {
-
     /* Addresses to bind sockets to */
     private Address[] addresses;
     private ushort port;
