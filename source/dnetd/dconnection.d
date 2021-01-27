@@ -110,7 +110,7 @@ public class DConnection : Thread
 		/* Initialize locks */
 		initLocks();
 
-		/* Initialize status */
+		/* Initialize status (TODO: Remove, we use props now) */
 		currentStatus = "available,Hey there I'm using DNET!";
 
 		/* Start the connection handler */
