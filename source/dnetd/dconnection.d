@@ -844,9 +844,26 @@ public class DConnection : Thread
 	*/
 	private bool authenticate(string username, string password)
 	{
+		/* TODO: Check username and password */
+		/* TODO: Multi-client/session support */
+
 		/* TODO: Implement me */
 		this.username = username;
+
+		/* TODO (Sessions): Generate a session ID for this connection */
+
+
 		return true;
+	}
+
+	private uint generateSessionID()
+	{
+		/* TODO: Basically find a number that isn't taken by matching usernames */
+	}
+
+	private uint getMySessionID()
+	{
+		/* TODO: */
 	}
 
 	/**
