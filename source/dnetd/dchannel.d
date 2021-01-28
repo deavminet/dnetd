@@ -272,7 +272,7 @@ public class DChannel
 		*/
 
 		/* Set mode to channel message */
-		msg ~= [cast(byte)1];
+		msg ~= [cast(byte)0];
 		
 		/* Encode the [usernameLength, username] */
 		msg ~= [(cast(byte)sender.getUsername().length)];
