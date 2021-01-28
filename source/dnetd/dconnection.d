@@ -923,11 +923,17 @@ public class DConnection : Thread
 			/* Set to user message (direct message, sub-sub-type) */
 			protocolData ~= [1];
 
-			/* Encode the sender's length */
+			/* Encode the recipients's length */
 			protocolData ~= [cast(byte)username.length];
 
 			/* Encode the username */
 			protocolData ~= cast(byte[])username;
+
+			/* Encode the sender's's length */
+			protocolData ~= [cast(byte)this.username.length];
+
+			/* Encode the sender */
+			protocolData ~= cast(byte[])this.username;
 
 			/* Encode the message */
 			protocolData ~= cast(byte[])message;
