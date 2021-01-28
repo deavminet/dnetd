@@ -929,7 +929,7 @@ public class DConnection : Thread
 			/* Encode the username */
 			protocolData ~= cast(byte[])username;
 
-			/* Encode the sender's's length */
+			/* Encode the sender's length */
 			protocolData ~= [cast(byte)this.username.length];
 
 			/* Encode the sender */
