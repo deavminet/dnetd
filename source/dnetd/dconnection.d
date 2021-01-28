@@ -859,11 +859,13 @@ public class DConnection : Thread
 	private uint generateSessionID()
 	{
 		/* TODO: Basically find a number that isn't taken by matching usernames */
+		return 1;
 	}
 
 	private uint getMySessionID()
 	{
 		/* TODO: */
+		return 1;
 	}
 
 	/**
