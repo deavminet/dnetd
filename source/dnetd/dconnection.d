@@ -917,8 +917,11 @@ public class DConnection : Thread
 			/* The protocol data to send */
 			byte[] protocolData;
 
-			/* Set the sub-type (ntype=0) */
+			/* Set the sub-type (ntype=0 / channel/directmessage) */
 			protocolData ~= [0];
+
+			/* Set to user message (direct message, sub-sub-type) */
+			protocolData ~= [1];
 
 			/* Encode the sender's length */
 			protocolData ~= [cast(byte)username.length];
