@@ -1,0 +1,25 @@
+{
+    "general" : {
+        "binds" : [
+		{
+			"address" : "0.0.0.0",
+			"port" : "6666"
+		},
+		{
+			"address" : "::",
+			"port" : "6667"
+		}
+	],
+        "network" : "aBasedIRCNetwork",
+        "name" : "MyBrandSpankingNewIRCServer",
+        "motd" : "Welcome to my generic dnet chat server!"
+    },
+
+    "links" : {
+        "server1" : {
+            "name" : "server1",
+            "address" : "127.0.0.1",
+            "port" : "5555"
+        }
+    }
+}

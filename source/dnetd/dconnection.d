@@ -377,9 +377,11 @@ public class DConnection : Thread
 		else if(command == Command.LINK && !hasAuthed)
 		{
 			/* TODO: Implement me later */
+			gprintln("Server is requesting a link...");
 
 			/* Check if this connection is a DLink'd one */
 			//server.getMeyer().get
+			gprintln("OurMeyer: "~to!(string)(server.getMeyer()));
 
 
 			/* Set the type of this connection to `server` */
@@ -389,7 +391,7 @@ public class DConnection : Thread
 		/* If `register` command (requires: unauthed, client) */
 		else if(command == Command.REGISTER && !hasAuthed && connType == ConnectionType.CLIENT)
 		{
-			
+			/* TODO: Implement me */
 		}
 		/* If `join` command (requires: authed, client) */
 		else if(command == Command.JOIN && hasAuthed && connType == ConnectionType.CLIENT)

@@ -5,6 +5,7 @@ import core.sync.mutex : Mutex;
 import std.stdio;
 import std.conv;
 import dnetd.dserver;
+import dnetd.dconfig;
 
 /**
 * DLink
@@ -35,13 +36,14 @@ public final class DLink
 
 public final class DMeyer
 {
-    /* List of links (direct peers + additional information) */
+    /* Direct peers */
     private DLink[] links;
     private Mutex linksMutex;
 
+    /* Associated server */
     private DServer server;
 
-    this(DServer server)
+    this(DServer server, DLinkConfig linkConfig)
     {
         this.server = server;
         linksMutex = new Mutex();

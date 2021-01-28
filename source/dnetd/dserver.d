@@ -154,7 +154,7 @@ public class DServer : Thread
 	private void startServer()
 	{
 		/* Initialize the Meyer linking sub-system */
-		meyerSS = new DMeyer(this);
+		meyerSS = new DMeyer(this, config.getLinks());
 
 		/* Start the listener starter */
 		start();

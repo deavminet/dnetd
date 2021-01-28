@@ -47,8 +47,8 @@ public final class DConfig
             config.generalConfig = DGeneralConfig.getConfig(generalBlock);
 
             /* Get the `links` block */
-            //JSONValue linksBlock = json["links"];
-            //config.linksConfig = DLinkConfig.getConfig(linksBlock);
+            JSONValue linksBlock = json["links"];
+            config.linksConfig = DLinkConfig.getConfig(linksBlock);
         }
         catch(JSONException e)
         {
@@ -108,7 +108,6 @@ public final class DGeneralConfig
 
             /* Set the message of the day */
             config.motd = generalBlock["motd"].str();
-
         }
         catch(JSONException e)
         {
@@ -132,5 +131,13 @@ public final class DGeneralConfig
 
 public final class DLinkConfig
 {
+    public static DLinkConfig getConfig(JSONValue linksBlocks)
+    {
+        DLinkConfig dlinkConfig;
 
+
+        
+
+        return dlinkConfig;
+    }
 }
