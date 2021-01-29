@@ -81,6 +81,8 @@ void main(string[] args)
 
 		/* TODO: Start meyer here (remove from inside DServer) */
 
+		
+
 		/* Start the server */
 		dserver.startServer();
 	}
