@@ -175,6 +175,9 @@ public final class DMeyer
         /* Open a connection to the server */
 
         /* TODO: Open connections to all servers we are yet to open a connection to (check the `links` array) */
+
+
+        this.links = links;
     }
 
     /**
@@ -191,18 +194,8 @@ public final class DMeyer
         linksMutex = new Mutex();
     }
 
-    /**
-    * Adds a peer to the links list
-    */
-    public void addLink(DLink newLink)
+    public DLink[] getOutboundLinks()
     {
-        /* Lock the list */
-        linksMutex.lock();
-
-        /* Add the link */
-        links ~= newLink;
-
-        /* Unlock the list */
-        linksMutex.unlock();
+        return links;
     }
 }

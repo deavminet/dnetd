@@ -162,6 +162,27 @@ public class DServer : Thread
 	{
 		/* Start the listener starter */
 		start();
+
+		/* Start outbound server linking */
+		startOutboundLinks();
+		gprintln("poes");
+	}
+
+	/**
+	* This will look at the link manager (DMeyer)
+	* and loop through each DLink in it and
+	* establish an outbound connection and therefore
+	* connection handler for each of them
+	*/
+	private void startOutboundLinks()
+	{
+		DLink[] serverLinks = meyerSS.getOutboundLinks();
+
+		/* Start all DLink outbound handlers (TODO: Move to DServer) */
+		foreach(DLink link; serverLinks)
+		{
+			link.start();
+		}
 	}
 
 	public void addChannel(DConnection causer, DChannel channel)
