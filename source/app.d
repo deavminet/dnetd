@@ -77,6 +77,7 @@ void main(string[] args)
 		DMeyer meyer = new DMeyer(dserver, serverLinks);
 		
 		/* Attach the Meyer to the server */
+		dserver.attachLinkManager(meyer);
 
 		
 
