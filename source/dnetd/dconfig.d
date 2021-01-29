@@ -12,7 +12,6 @@ import gogga;
 import dnetd.dlink : DLink;
 import dnetd.dserver : DServer;
 
-
 public final class DGeneralConfig
 {
     /* Addresses to bind sockets to */

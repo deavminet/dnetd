@@ -51,26 +51,19 @@ void main(string[] args)
 		return;
 	}
 
-	/* The JSON */
-	JSONValue json;
+	
 
 	try
 	{
+		/* The JSON */
+		JSONValue json;
+
 		/* Parse the configuration file */
 		json = parseJSON(cast(string)data);
-	}
-	catch(JSONException e)
-	{
-		gprintln("Failure to parse configuration file'"~configFilename~"' with error:\n\n"~e.toString(), DebugType.ERROR);
-		return;
-	}
 
-	/* Create a new configuration file and check configuration parameters */
-	DGeneralConfig config = DGeneralConfig.getConfig(json["general"]);
+		/* Create a new configuration file and check configuration parameters */
+		DGeneralConfig config = DGeneralConfig.getConfig(json["general"]);
 
-	/* If the configuration reading was successful (valid JSON) */
-	if(config)
-	{
 		/* Create a new server */
 		DServer dserver = new DServer(config);
 
@@ -90,12 +83,11 @@ void main(string[] args)
 
 		/* Start the server (TODO: This should start Meyer) */
 		dserver.startServer();
-	}
-	else
-	{
-		gprintln("Failure to read a valid dnetd configuration file'"~configFilename~"'", DebugType.ERROR);	
-	}
-	
-	
 
+	}
+	catch(JSONException e)
+	{
+		gprintln("Failure to parse configuration file'"~configFilename~"' with error:\n\n"~e.toString(), DebugType.ERROR);
+		return;
+	}
 }
