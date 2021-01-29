@@ -11,6 +11,32 @@ import core.thread : Thread;
 
 
 /**
+* Link manager
+*
+* Given a set of original DLink objects, it will open connections to them
+* It also facilitates DConnection making a call to `.addLink` here when an
+* inbound peering request comes in
+*/
+public final class DLinkManager
+{
+    this(DServer server, DLink[] seedLinks)
+    {
+        
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/**
 * Represents a server link
 *
 * Either used for inbound or outbound
@@ -99,38 +125,32 @@ public final class DMeyer
         /* TODO: Open connections to all servers we are yet to open a connection to (check the `links` array) */
     }
 
+    /**
+    * Locks the link list 
+    */
+    private void openAllOutboundConnections()
+    {
+
+    }
+
     /* Initialize locks */
     private void initLocks()
     {
         linksMutex = new Mutex();
     }
 
-    // /* Attach a direct peer */
-    // public void attachDirectPeer(DConnection peer)
-    // {
-    //     /* TODO: Add to `directPeers` */
-    //     linksMutex.lock();
+    /**
+    * Adds a peer to the links list
+    */
+    public void addLink(DLink newLink)
+    {
+        /* Lock the list */
+        linksMutex.lock();
 
-    //     links ~= new DLink(peer);
-    //     writeln("Attached direct peer: "~to!(string)(peer));
+        /* Add the link */
+        links ~= newLink;
 
-    //     linksMutex.unlock();
-    // }
-
-    /* Get a list of all servers we know of */
-
-
-    // public DLink getLink(DConnection peer)
-    // {
-    //     DLink link;
-
-    //     linksMutex.lock();
-
-        
-
-    //     linksMutex.unlock();
-
-    //     return link;
-    // }
-
+        /* Unlock the list */
+        linksMutex.unlock();
+    }
 }
