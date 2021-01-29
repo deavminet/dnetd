@@ -21,6 +21,6 @@
             "address" : "127.0.0.1",
             "port" : "6666"
         },
-        "active" : ["server1"]
+        "active" : ["server2"]
     }
 }
