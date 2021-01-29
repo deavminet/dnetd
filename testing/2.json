@@ -11,7 +11,7 @@
 		}
 	],
         "network" : "aBasedIRCNetwork",
-        "name" : "MyBrandSpankingNewIRCServer",
+        "name" : "server2",
         "motd" : "Welcome to my generic dnet chat server!"
     },
 

@@ -1,7 +1,7 @@
 import std.stdio;
 import std.socket : parseAddress;
 import dnetd.dserver : DServer;
-import dnetd.dconfig : DConfig;
+import dnetd.dconfig : DConfig, DLinkConfig;
 import std.json;
 import std.exception;
 import gogga;
@@ -72,6 +72,14 @@ void main(string[] args)
 	{
 		/* Start the server */
 		DServer dserver = new DServer(config);
+
+		/* Now configure the the linking */
+		DLinkConfig linkConfig = DLinkConfig.getConfig(dserver, json["links"]);
+
+		/* TODO: COnfigure here */
+
+
+		/* TODO: Start meyer here (remove from inside DServer) */
 	}
 	else
 	{

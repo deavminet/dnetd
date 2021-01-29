@@ -11,13 +11,13 @@
 		},
 	],
         "network" : "aBasedIRCNetwork",
-        "name" : "MyBrandSpankingNewIRCServer",
+        "name" : "server1",
         "motd" : "Welcome to my generic dnet chat server!"
     },
 
     "links" : {
-        "server1" : {
-            "name" : "server2",
+        "server2" : {
+            "name": "server2",
             "address" : "127.0.0.1",
             "port" : "6666"
         },

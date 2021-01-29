@@ -9,6 +9,8 @@ import std.json;
 import std.conv;
 import std.socket : Address, parseAddress;
 import gogga;
+import dnetd.dlink : DLink;
+import dnetd.dserver : DServer;
 
 public final class DConfig
 {
@@ -131,9 +133,13 @@ public final class DGeneralConfig
 
 public final class DLinkConfig
 {
-    public static DLinkConfig getConfig(JSONValue linksBlock)
+    /* Server links */
+    private DLink[] links;
+    private Address[] addresses;
+
+    public static DLinkConfig getConfig(DServer dserver, JSONValue linksBlock)
     {
-        DLinkConfig dlinkConfig;
+        DLinkConfig dlinkConfig = new DLinkConfig();
 
         /* Get the active servers */
         string[] activeServers;
@@ -143,6 +149,25 @@ public final class DLinkConfig
             string server = activeServer.str();
             gprintln("Found active server to be linked with \""~server~"\"");
             activeServers ~= server;
+        }
+
+        /* Parse each link and add it to the link-list */
+        foreach(string server; activeServers)
+        {
+            /* Get the peer block */
+            JSONValue peerBlock = linksBlock[server];
+
+            /* Get the name */
+            string name = peerBlock["name"].str();
+
+            /* Get the address */
+            string address = peerBlock["address"].str();
+
+            /* Get the port */
+            ushort port = to!(ushort)(peerBlock["port"].str());
+
+            /* Add the address and port tuple to the list of addresses to bind to */
+            dlinkConfig.links ~= new DLink(server, name, parseAddress(address, port));
         }
 
 
