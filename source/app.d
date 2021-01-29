@@ -86,6 +86,12 @@ void main(string[] args)
 		/* Start the server (TODO: This should start Meyer) */
 		dserver.startServer();
 
+
+		foreach(DLink link; serverLinks)
+		{
+			link.start();
+		}
+
 	}
 	catch(JSONException e)
 	{

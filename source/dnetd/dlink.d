@@ -84,8 +84,7 @@ public final class DLink : Thread
         /* Create an outbound connection */
         /* TODO: Fuuuuuuuuuuuuuuuuuuuck handling of shit here bababooey and not in dconnection.d as we would have done below */
 
-        /* Initialize a new outbound connection */
-        initializeOutboundConnection();
+        
     }
 
     /**
@@ -95,9 +94,29 @@ public final class DLink : Thread
     {
         /* Open a connection to the server */
         import std.socket;
+        import gogga;
+        import core.thread;
 
         Socket socket = new Socket(address.addressFamily, SocketType.STREAM, ProtocolType.TCP);
-        socket.connect(address);
+
+        gprintln(address);
+
+
+
+        while(true)
+        {
+            try
+            {
+                socket.connect(address);
+                break;
+            }
+            catch(SocketOSException)
+            {
+                gprintln("Could not link with server "~name~"!", DebugType.ERROR);
+                Thread.sleep(dur!("seconds")(3));
+            }
+        }
+        
 
 
         
@@ -105,6 +124,9 @@ public final class DLink : Thread
 
     private void outboundWorker()
     {
+        /* Initialize a new outbound connection */
+        initializeOutboundConnection();
+
         /* TODO: Implement me */
         while(true)
         {
