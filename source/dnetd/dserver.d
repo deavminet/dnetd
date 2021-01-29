@@ -64,9 +64,6 @@ public class DServer : Thread
 
 		/* Initialize the server */
 		init();
-
-		/* Start the server */
-		startServer();
 	}
 
 	/**
