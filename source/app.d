@@ -70,7 +70,7 @@ void main(string[] args)
 	/* If the configuration reading was successful (valid JSON) */
 	if(config)
 	{
-		/* Start the server */
+		/* Create a new server */
 		DServer dserver = new DServer(config);
 
 		/* Now configure the the linking */
@@ -80,6 +80,9 @@ void main(string[] args)
 
 
 		/* TODO: Start meyer here (remove from inside DServer) */
+
+		/* Start the server */
+		dserver.startServer();
 	}
 	else
 	{
