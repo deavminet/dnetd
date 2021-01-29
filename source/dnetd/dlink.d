@@ -9,32 +9,6 @@ import dnetd.dconfig;
 import std.socket : Address;
 import core.thread : Thread;
 
-/**
-* DLink
-*
-* Couples a DConneciton (direct peer)
-* with information about what this link
-* knows and can tell us
-*/
-public final class DLidnk
-{
-    /* The directly attached peer */
-    private DConnection directPeer;
-
-    /* Servers (by name) this server is aware of */
-    private string[] knowledgeList;
-
-    this(DConnection directPeer)
-    {
-        this.directPeer = directPeer;
-    }
-
-    /* Call this to update list */
-    public void updateKB()
-    {
-        /* TODO: Ask DConneciton here for the servers he knows */
-    }
-}
 
 /**
 * Represents a server link
@@ -82,6 +56,10 @@ public final class DLink : Thread
     private void outboundWorker()
     {
         /* TODO: Implement me */
+        while(true)
+        {
+
+        }
     }
 
 
@@ -90,6 +68,9 @@ public final class DLink : Thread
     */
     this(DServer server, string name, Address address, DConnection connection)
     {
+        /* Save the server, name and address */
+
+        /* Save the active connection */
         /* Save name and address */
         this(server, name, address);
 

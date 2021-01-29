@@ -79,9 +79,6 @@ void main(string[] args)
 		/* Attach the Meyer to the server */
 		dserver.attachLinkManager(meyer);
 
-		
-
-
 		/* Start the server (TODO: This should start Meyer) */
 		dserver.startServer();
 
