@@ -62,7 +62,7 @@ public final class DLink : Thread
     {
         /* Set the worker thread for outbound connections */
         super(&outboundWorker);
-        
+
         /* Create an outbound connection */
         /* TODO: Fuuuuuuuuuuuuuuuuuuuck handling of shit here bababooey and not in dconnection.d as we would have done below */
 

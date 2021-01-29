@@ -166,7 +166,7 @@ public final class DLinkConfig
             ushort port = to!(ushort)(peerBlock["port"].str());
 
             /* Add the address and port tuple to the list of addresses to bind to */
-            dlinkConfig.links ~= new DLink(server, name, parseAddress(address, port));
+            dlinkConfig.links ~= new DLink(dserver, name, parseAddress(address, port));
         }
 
         return dlinkConfig;
