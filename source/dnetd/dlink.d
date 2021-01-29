@@ -46,6 +46,14 @@ public final class DMeyer
     this(DServer server, DLinkConfig linkConfig)
     {
         this.server = server;
+        
+        /* Initialize the locks */
+        initLocks();
+    }
+
+    /* Initialize locks */
+    private void initLocks()
+    {
         linksMutex = new Mutex();
     }
 

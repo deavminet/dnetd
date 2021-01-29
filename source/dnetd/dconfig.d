@@ -131,12 +131,20 @@ public final class DGeneralConfig
 
 public final class DLinkConfig
 {
-    public static DLinkConfig getConfig(JSONValue linksBlocks)
+    public static DLinkConfig getConfig(JSONValue linksBlock)
     {
         DLinkConfig dlinkConfig;
 
+        /* Get the active servers */
+        string[] activeServers;
+        JSONValue[] serversActive = linksBlock["active"].array();
+        foreach(JSONValue activeServer; serversActive)
+        {
+            string server = activeServer.str();
+            gprintln("Found active server to be linked with \""~server~"\"");
+            activeServers ~= server;
+        }
 
-        
 
         return dlinkConfig;
     }
