@@ -60,6 +60,9 @@ public final class DLink : Thread
     */
     this(DServer server, string name, Address address)
     {
+        /* Set the worker thread for outbound connections */
+        super(&outboundWorker);
+        
         /* Create an outbound connection */
         /* TODO: Fuuuuuuuuuuuuuuuuuuuck handling of shit here bababooey and not in dconnection.d as we would have done below */
 
@@ -75,6 +78,12 @@ public final class DLink : Thread
         /* Open a connection to the server */
         // connection = new DConnection();
     }
+
+    private void outboundWorker()
+    {
+        /* TODO: Implement me */
+    }
+
 
     /**
     * Constructs a DLink for an inbound peering

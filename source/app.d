@@ -5,6 +5,7 @@ import dnetd.dconfig : DConfig, DLinkConfig;
 import std.json;
 import std.exception;
 import gogga;
+import dnetd.dlink : DLink, DMeyer;
 
 void main(string[] args)
 {
@@ -76,14 +77,17 @@ void main(string[] args)
 		/* Now configure the the linking */
 		DLinkConfig linkConfig = DLinkConfig.getConfig(dserver, json["links"]);
 
-		/* TODO: COnfigure here */
+		/* Get all server links */
+		DLink[] serverLinks = linkConfig.getLinks();
 
-
-		/* TODO: Start meyer here (remove from inside DServer) */
-
+		/* Create a new Meyer */
 		
 
-		/* Start the server */
+		/* Attach the Meyer to the server */
+		
+
+
+		/* Start the server (TODO: This should start Meyer) */
 		dserver.startServer();
 	}
 	else

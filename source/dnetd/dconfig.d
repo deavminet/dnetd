@@ -135,7 +135,6 @@ public final class DLinkConfig
 {
     /* Server links */
     private DLink[] links;
-    private Address[] addresses;
 
     public static DLinkConfig getConfig(DServer dserver, JSONValue linksBlock)
     {
@@ -170,7 +169,11 @@ public final class DLinkConfig
             dlinkConfig.links ~= new DLink(server, name, parseAddress(address, port));
         }
 
-
         return dlinkConfig;
+    }
+
+    public DLink[] getLinks()
+    {
+        return links;
     }
 }
