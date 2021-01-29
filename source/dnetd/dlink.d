@@ -159,13 +159,13 @@ public final class DLink : Thread
 public final class DMeyer
 {
     /* Direct peers */
-    private DLink[] links;
+    private DLink[] outboundPeers;
     private Mutex linksMutex;
 
     /* Associated server */
     private DServer server;
 
-    this(DServer server, DLink[] links)
+    this(DServer server, DLink[] outboundPeers)
     {
         this.server = server;
         
@@ -177,16 +177,9 @@ public final class DMeyer
         /* TODO: Open connections to all servers we are yet to open a connection to (check the `links` array) */
 
 
-        this.links = links;
+        this.outboundPeers = outboundPeers;
     }
 
-    /**
-    * Locks the link list 
-    */
-    private void openAllOutboundConnections()
-    {
-
-    }
 
     /* Initialize locks */
     private void initLocks()
@@ -196,6 +189,6 @@ public final class DMeyer
 
     public DLink[] getOutboundLinks()
     {
-        return links;
+        return outboundPeers;
     }
 }
