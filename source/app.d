@@ -86,7 +86,7 @@ void main(string[] args)
 		/* Start the server (TODO: This should start Meyer) */
 		dserver.startServer();
 
-
+		/* Start all DLink outbound handlers (TODO: Move to DServer) */
 		foreach(DLink link; serverLinks)
 		{
 			link.start();
