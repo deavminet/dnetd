@@ -19,9 +19,24 @@ import core.thread : Thread;
 */
 public final class DLinkManager
 {
-    this(DServer server, DLink[] seedLinks)
+
+    this(DServer server)
     {
         
+    }
+
+    /**
+    * Goes through the DConnection[] array in DServer and returns
+    * all connections that are SERVER connections
+    */
+    public DConnection[] getLinkedServers()
+    {
+        DConnection[] links;
+
+        /* TODO: Implement me */
+
+
+        return links;
     }
 
 }
@@ -63,6 +78,9 @@ public final class DLink : Thread
         /* Set the worker thread for outbound connections */
         super(&outboundWorker);
 
+        this.name = name;
+        this.address = address;
+
         /* Create an outbound connection */
         /* TODO: Fuuuuuuuuuuuuuuuuuuuck handling of shit here bababooey and not in dconnection.d as we would have done below */
 
@@ -76,7 +94,13 @@ public final class DLink : Thread
     private void initializeOutboundConnection()
     {
         /* Open a connection to the server */
-        // connection = new DConnection();
+        import std.socket;
+
+        Socket socket = new Socket(address.addressFamily, SocketType.STREAM, ProtocolType.TCP);
+        socket.connect(address);
+
+
+        
     }
 
     private void outboundWorker()
@@ -86,6 +110,12 @@ public final class DLink : Thread
         {
 
         }
+    }
+
+
+    override public string toString()
+    {
+        return "Server: "~name~", Address: "~to!(string)(address);
     }
 
 

@@ -72,6 +72,10 @@ void main(string[] args)
 
 		/* Get all server links */
 		DLink[] serverLinks = linkConfig.getLinks();
+		
+
+		import std.conv : to;
+		gprintln("Links I will be opening: " ~to!(string)(serverLinks));
 
 		/* Create a new Meyer (link manager) and attach the links to it */
 		DMeyer meyer = new DMeyer(dserver, serverLinks);
