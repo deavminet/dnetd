@@ -1,7 +1,7 @@
 import std.stdio;
 import std.socket : parseAddress;
 import dnetd.dserver : DServer;
-import dnetd.dconfig : DConfig, DLinkConfig;
+import dnetd.dconfig : DGeneralConfig, DLinkConfig;
 import std.json;
 import std.exception;
 import gogga;
@@ -66,7 +66,7 @@ void main(string[] args)
 	}
 
 	/* Create a new configuration file and check configuration parameters */
-	DConfig config = DConfig.getConfig(json);
+	DGeneralConfig config = DGeneralConfig.getConfig(json["general"]);
 
 	/* If the configuration reading was successful (valid JSON) */
 	if(config)
@@ -80,10 +80,11 @@ void main(string[] args)
 		/* Get all server links */
 		DLink[] serverLinks = linkConfig.getLinks();
 
-		/* Create a new Meyer */
+		/* Create a new Meyer (link manager) and attach the links to it */
+		DMeyer meyer = new DMeyer(dserver, serverLinks);
 		
-
 		/* Attach the Meyer to the server */
+
 		
 
 

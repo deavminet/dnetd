@@ -26,7 +26,7 @@ import gogga;
 public class DServer : Thread
 {
 	/* Server configuration */
-	private DConfig config;
+	private DGeneralConfig generalConfig;
 
 	/**
 	* Connection queue
@@ -51,16 +51,16 @@ public class DServer : Thread
 	private DListener[] listeners;
 
 	/* TODO: Implement new constructor */
-	this(DConfig config)
+	this(DGeneralConfig generalConfig)
 	{
 		/* Set the function to be called on thread start */
 		super(&startListeners);
 
-		/* Set the server's config */
-		this.config = config;
+		/* Set the server's general config */
+		this.generalConfig = generalConfig;
 	
 		/* Construct the listeners */
-		initListeners(config.getGeneral().getAddresses());
+		initListeners(generalConfig.getAddresses());
 
 		/* Initialize the server */
 		init();
@@ -111,9 +111,9 @@ public class DServer : Thread
 		}
 	}
 
-	public DConfig getConfig()
+	public DGeneralConfig getGeneralConfig()
 	{
-		return config;
+		return generalConfig;
 	}
 
 	private void init()
@@ -148,11 +148,18 @@ public class DServer : Thread
 		return meyerSS;
 	}
 
+	public DMeyer getLinkManager()
+	{
+		return getMeyer();
+	}
+
+	public void attachLinkManager(DMeyer linkManager)
+	{
+		meyerSS = linkManager;
+	}
+
 	public void startServer()
 	{
-		// /* Initialize the Meyer linking sub-system */
-		// meyerSS = new DMeyer(this, config.getLinks());
-
 		/* Start the listener starter */
 		start();
 	}

@@ -106,7 +106,7 @@ public final class DMeyer
     /* Associated server */
     private DServer server;
 
-    this(DServer server, DLinkConfig linkConfig)
+    this(DServer server, DLink[] links)
     {
         this.server = server;
         

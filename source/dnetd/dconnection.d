@@ -644,7 +644,7 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* Get the message of the day */
-			string motd = server.getConfig().getGeneral().getMotd();
+			string motd = server.getGeneralConfig().getMotd();
 
 			/* Encode the reply */
 			reply ~= [status];
