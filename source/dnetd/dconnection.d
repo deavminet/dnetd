@@ -225,6 +225,7 @@ public class DConnection : Thread
 	*/
 	private void cleanUp_delinkServers()
 	{
+		/* Only clean up if this connection is a SERVER */
 		if(connType == ConnectionType.SERVER)
 		{
 			server.getLinkManager().removeLinkInbounded(this);

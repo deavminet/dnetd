@@ -390,9 +390,18 @@ public final class DMeyer : Thread
 }
 
 /**
-* Initializes a new inbound connection that is to be used for linking
+* Broadcast a message to the given server
 */
-void initializeLink(DServer server, DConnection newConnection)
+public void broadcastMessage_toLink(Socket linkedServer, byte[] data)
 {
+    
+}
 
+/**
+* Given a server link this will send the users
+* this server is aware of
+*/
+public string[] getUsers(DLink link)
+{
+    
 }
