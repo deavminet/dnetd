@@ -127,6 +127,16 @@ public final class DLink : Thread
         /* Initialize a new outbound connection */
         initializeOutboundConnection();
 
+        /* TODO: Send LINK (1) command */
+        byte[] data;
+        data ~= [1];
+
+        /* TODO: Encode [nameLen, name] */
+        import tristanable.encoding : DataMessage;
+
+        DataMessage message = new DataMessage(0, [1]);
+
+
         /* TODO: Implement me */
         while(true)
         {
@@ -156,6 +166,7 @@ public final class DLink : Thread
     }
 }
 
+/* TODO: Remove this from here and put it in DServer */
 public final class DMeyer
 {
     /* Direct peers */
@@ -191,4 +202,12 @@ public final class DMeyer
     {
         return outboundPeers;
     }
+}
+
+/**
+* Initializes a new inbound connection that is to be used for linking
+*/
+void initializeLink(DServer server, DConnection newConnection)
+{
+
 }
