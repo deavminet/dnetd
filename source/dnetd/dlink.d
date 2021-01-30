@@ -256,7 +256,7 @@ public final class DMeyer
         /* TODO: Open connections to all servers we are yet to open a connection to (check the `links` array) */
 
 
-        this.links = links;
+        //this.links = links;
     }
 
 

@@ -396,7 +396,7 @@ public class DConnection : Thread
 
 			/* Add to the meyer system (this connectio) */
 			import dnetd.dlink : DLink;
-			DLink newLink = new DLink(server, serverNameIncoming, null);
+			DLink newLink = new DLink(server, serverNameIncoming, null, this);
 			bool linkSuccessful = server.getMeyer().attachLink(serverNameIncoming, newLink);
 			gprintln("Whether or not the link worked out (could be config error or possibly duplicate link): "~to!(string)(linkSuccessful));
 

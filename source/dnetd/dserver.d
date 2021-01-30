@@ -164,7 +164,7 @@ public class DServer : Thread
 		start();
 
 		/* Start outbound server linking */
-		startOutboundLinks();
+		//startOutboundLinks();
 		gprintln("poes");
 	}
 
@@ -174,12 +174,12 @@ public class DServer : Thread
 	* establish an outbound connection and therefore
 	* connection handler for each of them
 	*/
-	private void startOutboundLinks()
+	public void startOutboundLinks(DLink[] linksTest)
 	{
-		DLink[] serverLinks = meyerSS.getLinks();
+		//DLink[] serverLinks = meyerSS.getLinks();
 
 		/* Start all DLink outbound handlers (TODO: Move to DServer) */
-		foreach(DLink link; serverLinks)
+		foreach(DLink link; linksTest)
 		{
 			link.start();
 		}

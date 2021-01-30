@@ -85,6 +85,8 @@ void main(string[] args)
 
 		/* Start the server (TODO: This should start Meyer) */
 		dserver.startServer();
+
+		dserver.startOutboundLinks(serverLinks);
 	}
 	catch(JSONException e)
 	{
