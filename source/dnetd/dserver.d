@@ -176,7 +176,7 @@ public class DServer : Thread
 	*/
 	private void startOutboundLinks()
 	{
-		DLink[] serverLinks = meyerSS.getOutboundLinks();
+		DLink[] serverLinks = meyerSS.getLinks();
 
 		/* Start all DLink outbound handlers (TODO: Move to DServer) */
 		foreach(DLink link; serverLinks)
