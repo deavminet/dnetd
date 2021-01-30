@@ -389,6 +389,8 @@ public class DConnection : Thread
 			/* Set the type of this connection to `server` */
 			connType = ConnectionType.SERVER;
 			hasAuthed = true;
+
+			reply ~= [0]; // Testing for now
 		}
 		/* If `register` command (requires: unauthed, client) */
 		else if(command == Command.REGISTER && !hasAuthed && connType == ConnectionType.CLIENT)

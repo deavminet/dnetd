@@ -168,7 +168,9 @@ public final class DLink : Thread
 
         /* TODO: Await an acknowledgement [status] */
         byte[] receivedResponseBytes;
-        bReceiveMessage(outboundSocket, receivedResponseBytes);
+        bool recvStatus = bReceiveMessage(outboundSocket, receivedResponseBytes);
+        gprintln("Recev status: "~to!(string)(recvStatus), DebugType.WARNING);
+
         DataMessage receivedResponse = DataMessage.decode(receivedResponseBytes);
 
         ubyte[] dataReply = cast(ubyte[])receivedResponse.getData();
