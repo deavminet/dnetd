@@ -503,7 +503,8 @@ public class DConnection : Thread
 			reply = [true];
 		}
 		/* If `list` command (requires: authed, client) */
-		else if(command == Command.LIST && hasAuthed && connType == ConnectionType.CLIENT)
+		/* TODO: Last condition not needed if you are authed you will always have last condition true x or y) */
+		else if(command == Command.LIST && hasAuthed && (connType == ConnectionType.CLIENT || connType == ConnectionType.SERVER))
 		{
 			/* Get all channels */
 			DChannel[] channels = server.getChannels();
