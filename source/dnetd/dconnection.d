@@ -385,8 +385,9 @@ public class DConnection : Thread
 			//server.getMeyer().get
 			gprintln("OurMeyer: "~to!(string)(server.getMeyer()));
 
-			
-			gprintln()
+			ubyte[] data = cast(ubyte[])message.getData()[1..message.getData().length];
+			string serverNameIncoming = cast(string)data[1..1+data[0]];
+			gprintln("Server incoming linking request with name '"~serverNameIncoming~"'", DebugType.WARNING);
 
 
 			/* Set the type of this connection to `server` */
