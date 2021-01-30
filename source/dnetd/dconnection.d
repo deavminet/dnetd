@@ -394,6 +394,12 @@ public class DConnection : Thread
 			connType = ConnectionType.SERVER;
 			hasAuthed = true;
 
+			/* Add to the meyer system (this connectio) */
+			import dnetd.dlink : DLink;
+			DLink newLink = new DLink(server, serverNameIncoming, null);
+			bool linkSuccessful = server.getMeyer().attachLink(serverNameIncoming, newLink);
+			gprintln("Whether or not the link worked out (could be config error or possibly duplicate link): "~to!(string)(linkSuccessful));
+
 			reply ~= [0]; // Testing for now
 			
 			/* Send [nameLen, name] */

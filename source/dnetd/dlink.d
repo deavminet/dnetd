@@ -13,6 +13,7 @@ import gogga;
 import core.thread;
 import tristanable.encoding : DataMessage;
 import bmessage : bSendMessage = sendMessage, bReceiveMessage = receiveMessage;
+import std.string : cmp;
 
 /**
 * Link manager
@@ -184,6 +185,10 @@ public final class DLink : Thread
             gprintln("Server said his name is '"~name~"'", DebugType.WARNING);
 
 
+            /* Attempt to attach server */
+            status = server.getMeyer().attachLink(name, this);
+            gprintln("Outbound link status: "~to!(string)(status));
+
         }
         else if(dataReply[0] == 1)
         {
@@ -270,9 +275,9 @@ public final class DMeyer
         linksMutex.lock();
 
         /* Search for this entry, only add it if it doens't exist */
-        foreach(DLink link; links)
+        foreach(DLink currentLink; links)
         {
-            if(cmp(link.getName(), serverName) == 0)
+            if(cmp(currentLink.getName(), serverName) == 0)
             {
                 linkGood = false;
                 break;
