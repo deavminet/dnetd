@@ -177,6 +177,25 @@ public class DConnection : Thread
 	{
 		gprintln(to!(string)(this)~" Cleaning up connection...");
 
+		/* Leave all channels this connetion was a member of */
+		cleanUp_channels();
+		
+		/* Remove this user from the connection queue */
+		server.removeConnection(this);
+
+		gprintln(to!(string)(this)~" Connection cleaned up");
+	}
+
+	/**
+	* Part of the clean up process - `cleanUp()`
+	*
+	* Will leave all channels this connection is
+	* a member of
+	*/
+	private void cleanUp_channels()
+	{
+		gprintln(to!(string)(this)~" Leaving all channels...");
+
 		/* Remove this user from all channels he is in */
 		DChannel[] channels = server.getChannels();
 
@@ -191,11 +210,8 @@ public class DConnection : Thread
 				gprintln(to!(string)(this)~" Leaving '"~currentChannel.getName()~"'...");
 			}
 		}
-		
-		/* Remove this user from the connection queue */
-		server.removeConnection(this);
 
-		gprintln(to!(string)(this)~" Connection cleaned up");
+		gprintln(to!(string)(this)~" Leaving all channels... [done]");
 	}
 
 	/* TODO: add mutex for writing with message and funciton for doing so */

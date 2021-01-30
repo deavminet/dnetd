@@ -227,6 +227,7 @@ public final class DLink : Thread
         this(server, name, address);
 
         /* Save connection */
+        //this.connection = connection;
     }
 
     public string getName()
@@ -258,6 +259,9 @@ public final class DMeyer : Thread
         start();
     }
 
+    /**
+    * Every 3 seconds information on what servers are linked will be printed out
+    */
     private void worker()
     {
         while(true)
@@ -265,6 +269,7 @@ public final class DMeyer : Thread
             linksMutex.lock();
             gprintln("Linked servers: "~to!(string)(links), DebugType.WARNING);
             linksMutex.unlock();
+            
             Thread.sleep(dur!("seconds")(3));
         }
     }
