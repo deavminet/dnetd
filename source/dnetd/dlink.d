@@ -284,6 +284,11 @@ public final class DMeyer
             }
         }
 
+        if(linkGood)
+        {
+            links ~= link;
+        }
+
         /* Unlock the links list */
         linksMutex.unlock();
 
