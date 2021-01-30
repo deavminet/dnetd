@@ -391,6 +391,11 @@ public class DConnection : Thread
 			hasAuthed = true;
 
 			reply ~= [0]; // Testing for now
+			
+			/* Send [nameLen, name] */
+			string serverName = server.getGeneralConfig().getName();
+			reply ~= [cast(byte)serverName.length];
+			reply ~= serverName;
 		}
 		/* If `register` command (requires: unauthed, client) */
 		else if(command == Command.REGISTER && !hasAuthed && connType == ConnectionType.CLIENT)
