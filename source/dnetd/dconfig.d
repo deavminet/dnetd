@@ -71,6 +71,11 @@ public final class DGeneralConfig
     {
         return addresses;
     }
+
+    public string getName()
+    {
+        return name;
+    }
 }
 
 public final class DLinkConfig
