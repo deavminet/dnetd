@@ -87,6 +87,7 @@ public final class DLink : Thread
         /* Set the worker thread for outbound connections */
         super(&outboundWorker);
 
+        this.server = server;
         this.name = name;
         this.address = address;
 
@@ -154,6 +155,8 @@ public final class DLink : Thread
         byte[] data;
         data ~= [1];
 
+        gprintln("Here", DebugType.WARNING);
+
         /* TODO: Encode [serverNameLen, serverName] */
         string serverName = server.getGeneralConfig().getName();
         data ~= [cast(byte)serverName.length];
@@ -175,7 +178,7 @@ public final class DLink : Thread
         {
             /* TODO: Get server name, makes sure it matches on in config file */
 
-            
+
         }
         else if(dataReply[0] == 1)
         {
