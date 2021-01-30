@@ -139,8 +139,22 @@ public final class DLink : Thread
         /* TODO: Implement me */
         while(true)
         {
+            byte[] dataIn;
+            bool statusRecv = bReceiveMessage(outboundSocket, dataIn);
 
+            if(statusRecv)
+            {
+
+            }
+            else
+            {
+                /* TODO: Connection error */
+                gprintln("Outbound server communication error, breaking", DebugType.ERROR);
+                break;
+            }
         }
+
+        /* TODO: Clean up connection */
     }
 
     /**
@@ -276,6 +290,37 @@ public final class DMeyer : Thread
         linksMutex = new Mutex();
     }
 
+
+    public void removeLinkOutbounded(string serverName)
+    {
+        /* Lock the links list */
+        linksMutex.lock();
+
+        DLink[] newList;
+        DLink removedLink;
+        foreach(DLink link; links)
+        {
+            if(cmp(link.getName(), serverName) != 0)
+            {
+                newList ~= link;
+            }
+            else
+            {
+                removedLink = link;
+            }
+        }
+
+
+        links = newList;
+
+
+        /* Unlock the links list */
+        linksMutex.unlock();
+
+
+        gprintln("Removed outbounded peer "~to!(string)(removedLink), DebugType.WARNING);
+    }
+
     public bool attachLink(string serverName, DLink link)
     {
         /* Link exists? */
@@ -333,7 +378,7 @@ public final class DMeyer : Thread
 
         linksMutex.unlock();
 
-        gprintln("Removed inbounded peer from link manager "~to!(string)(removedLink));
+        gprintln("Removed inbounded peer from link manager "~to!(string)(removedLink), DebugType.WARNING);
     }
 
 
