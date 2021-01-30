@@ -137,7 +137,7 @@ public final class DLink : Thread
         data ~= [1];
 
         /* TODO: Encode [serverNameLen, serverName] */
-        string serverName;
+        string serverName = server.getGeneralConfig().getName();
         data ~= [cast(byte)serverName.length];
         data ~= serverName;
 
