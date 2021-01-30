@@ -222,6 +222,11 @@ public final class DLink : Thread
 
         /* Save connection */
     }
+
+    public string getName()
+    {
+        return name;
+    }
 }
 
 /* TODO: Remove this from here and put it in DServer */
@@ -254,6 +259,30 @@ public final class DMeyer
     private void initLocks()
     {
         linksMutex = new Mutex();
+    }
+
+    public bool attachLink(string serverName, DLink link)
+    {
+        /* Link exists? */
+        bool linkGood = true;
+
+        /* Lock the links list */
+        linksMutex.lock();
+
+        /* Search for this entry, only add it if it doens't exist */
+        foreach(DLink link; links)
+        {
+            if(cmp(link.getName(), serverName) == 0)
+            {
+                linkGood = false;
+                break;
+            }
+        }
+
+        /* Unlock the links list */
+        linksMutex.unlock();
+
+        return linkGood;
     }
 
     public DLink[] getLinks()
