@@ -136,7 +136,10 @@ public final class DLink : Thread
         byte[] data;
         data ~= [1];
 
-        /* TODO: Encode [nameLen, name] */
+        /* TODO: Encode [serverNameLen, serverName] */
+        string serverName;
+        data ~= [cast(byte)serverName.length];
+        data ~= serverName;
 
         /* Encode and send LINK command */     
         DataMessage message = new DataMessage(0, data);
