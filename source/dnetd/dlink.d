@@ -8,7 +8,11 @@ import dnetd.dserver;
 import dnetd.dconfig;
 import std.socket : Address;
 import core.thread : Thread;
-
+import std.socket;
+import gogga;
+import core.thread;
+import tristanable.encoding : DataMessage;
+import bmessage : bSendMessage = sendMessage;
 
 /**
 * Link manager
@@ -71,6 +75,11 @@ public final class DLink : Thread
     private Address address;
 
     /**
+    * Outbound utilities
+    */
+    private Socket outboundSocket;
+
+    /**
     * Constructs a DLink for an outbound peering
     */
     this(DServer server, string name, Address address)
@@ -93,11 +102,7 @@ public final class DLink : Thread
     private void initializeOutboundConnection()
     {
         /* Open a connection to the server */
-        import std.socket;
-        import gogga;
-        import core.thread;
-
-        Socket socket = new Socket(address.addressFamily, SocketType.STREAM, ProtocolType.TCP);
+        outboundSocket = new Socket(address.addressFamily, SocketType.STREAM, ProtocolType.TCP);
 
         gprintln(address);
 
@@ -107,7 +112,7 @@ public final class DLink : Thread
         {
             try
             {
-                socket.connect(address);
+                outboundSocket.connect(address);
                 break;
             }
             catch(SocketOSException)
@@ -132,9 +137,11 @@ public final class DLink : Thread
         data ~= [1];
 
         /* TODO: Encode [nameLen, name] */
-        import tristanable.encoding : DataMessage;
 
-        DataMessage message = new DataMessage(0, [1]);
+        /* Encode and send LINK command */     
+        DataMessage message = new DataMessage(0, data);
+        bSendMessage(outboundSocket, message.encode());
+
 
 
         /* TODO: Implement me */
