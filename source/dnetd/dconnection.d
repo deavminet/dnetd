@@ -210,6 +210,8 @@ public class DConnection : Thread
 	* Locks the writeLock mutex, sends it over the
 	* socket to the client/server, and unlocks the
 	* mutex
+	* 
+	* TODO: I don't believe we need the mutex here
 	*/
 	public bool writeSocket(long tag, byte[] data)
 	{
