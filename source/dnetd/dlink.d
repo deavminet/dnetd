@@ -211,20 +211,16 @@ public final class DLink : Thread
     override public string toString()
     {
         return name;
-        // return "Server: "~name~", Address: "~to!(string)(address);
     }
 
 
     /**
     * Constructs a DLink for an inbound peering
     */
-    this(DServer server, string name, Address address, DConnection connection)
+    this(DServer server, string name, DConnection connection)
     {
-        /* Save the server, name and address */
-
-        /* Save the active connection */
-        /* Save name and address */
-        this(server, name, address);
+        /* Save the server and name  */
+        this(server, name, address=null);
 
         /* Save connection */
         //this.connection = connection;
@@ -269,7 +265,7 @@ public final class DMeyer : Thread
             linksMutex.lock();
             gprintln("Linked servers: "~to!(string)(links), DebugType.WARNING);
             linksMutex.unlock();
-            
+
             Thread.sleep(dur!("seconds")(3));
         }
     }

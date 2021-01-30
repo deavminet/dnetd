@@ -180,6 +180,9 @@ public class DConnection : Thread
 		/* Leave all channels this connetion was a member of */
 		cleanUp_channels();
 		
+		/* Delink this connection from this server */
+		cleanUp_delinkServers();
+
 		/* Remove this user from the connection queue */
 		server.removeConnection(this);
 
@@ -212,6 +215,20 @@ public class DConnection : Thread
 		}
 
 		gprintln(to!(string)(this)~" Leaving all channels... [done]");
+	}
+
+	/**
+	* Part of the clean up process - `cleanUp()`
+	*
+	* Will de-link Will leave all channels this connection is
+	* a member of
+	*/
+	private void cleanUp_delinkServers()
+	{
+		if(connType == ConnectionType.SERVER)
+		{
+			
+		}
 	}
 
 	/* TODO: add mutex for writing with message and funciton for doing so */
@@ -412,7 +429,7 @@ public class DConnection : Thread
 
 			/* Add to the meyer system (this connectio) */
 			import dnetd.dlink : DLink;
-			DLink newLink = new DLink(server, serverNameIncoming, null, this);
+			DLink newLink = new DLink(server, serverNameIncoming, this);
 			bool linkSuccessful = server.getMeyer().attachLink(serverNameIncoming, newLink);
 			gprintln("Whether or not the link worked out (could be config error or possibly duplicate link): "~to!(string)(linkSuccessful));
 
