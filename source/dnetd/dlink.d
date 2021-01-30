@@ -179,6 +179,9 @@ public final class DLink : Thread
         if(dataReply[0] == 0)
         {
             /* TODO: Get server name, makes sure it matches on in config file */
+            byte nameLen = dataReply[1];
+            string name = cast(string)dataReply[2..2+nameLen];
+            gprintln("Server said his name is '"~name~"'", DebugType.WARNING);
 
 
         }
@@ -225,13 +228,13 @@ public final class DLink : Thread
 public final class DMeyer
 {
     /* Direct peers */
-    private DLink[] outboundPeers;
+    private DLink[] links;
     private Mutex linksMutex;
 
     /* Associated server */
     private DServer server;
 
-    this(DServer server, DLink[] outboundPeers)
+    this(DServer server, DLink[] links)
     {
         this.server = server;
         
@@ -243,7 +246,7 @@ public final class DMeyer
         /* TODO: Open connections to all servers we are yet to open a connection to (check the `links` array) */
 
 
-        this.outboundPeers = outboundPeers;
+        this.links = links;
     }
 
 
@@ -253,9 +256,9 @@ public final class DMeyer
         linksMutex = new Mutex();
     }
 
-    public DLink[] getOutboundLinks()
+    public DLink[] getLinks()
     {
-        return outboundPeers;
+        return links;
     }
 }
 
