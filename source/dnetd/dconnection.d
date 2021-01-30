@@ -227,7 +227,7 @@ public class DConnection : Thread
 	{
 		if(connType == ConnectionType.SERVER)
 		{
-			
+			server.getLinkManager().removeLinkInbounded(this);
 		}
 	}
 

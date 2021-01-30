@@ -223,7 +223,7 @@ public final class DLink : Thread
         this(server, name, address=null);
 
         /* Save connection */
-        //this.connection = connection;
+        this.connection = connection;
     }
 
     public string getName()
@@ -304,6 +304,38 @@ public final class DMeyer : Thread
 
         return linkGood;
     }
+
+
+
+
+    /**
+    * Remove a link via DConnection (inbounded)
+    */
+    public void removeLinkInbounded(DConnection connection)
+    {
+        linksMutex.lock();
+
+        DLink[] newList;
+        DLink removedLink;
+        foreach(DLink link; links)
+        {
+            if(link.connection != connection)
+            {
+                newList ~= link;
+            }
+            else
+            {
+                removedLink = link;
+            }
+        }
+
+        links = newList;
+
+        linksMutex.unlock();
+
+        gprintln("Removed inbounded peer from link manager "~to!(string)(removedLink));
+    }
+
 
     public DLink[] getLinks()
     {
