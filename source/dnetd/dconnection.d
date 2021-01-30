@@ -385,6 +385,9 @@ public class DConnection : Thread
 			//server.getMeyer().get
 			gprintln("OurMeyer: "~to!(string)(server.getMeyer()));
 
+			
+			gprintln()
+
 
 			/* Set the type of this connection to `server` */
 			connType = ConnectionType.SERVER;

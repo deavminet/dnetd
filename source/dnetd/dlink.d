@@ -179,7 +179,7 @@ public final class DLink : Thread
         if(dataReply[0] == 0)
         {
             /* TODO: Get server name, makes sure it matches on in config file */
-            byte nameLen = dataReply[1];
+            ubyte nameLen = dataReply[1];
             string name = cast(string)dataReply[2..2+nameLen];
             gprintln("Server said his name is '"~name~"'", DebugType.WARNING);
 
