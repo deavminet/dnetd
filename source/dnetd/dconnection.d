@@ -339,14 +339,14 @@ public class DConnection : Thread
 		* multi-thread job processing, only need this to differentiate
 		* between commands and async notifications
 		*/
-		long tag = message.tag;
+		long tag = message.getTag();
 		gprintln("tag: "~ to!(string)(tag));
 
 		/* The reply */
 		byte[] reply;
 
 		/* Get the command */
-		byte commandByte = message.data[0];
+		byte commandByte = message.getData()[0];
 		Command command = getCommand(commandByte);
 		gprintln(to!(string)(this)~" ~> "~to!(string)(command));
 
@@ -354,11 +354,11 @@ public class DConnection : Thread
 		if(command == Command.AUTH && !hasAuthed)
 		{
 			/* Get the length of the username */
-			ubyte usernameLength = message.data[1];
+			ubyte usernameLength = message.getData()[1];
 
 			/* Get the username and password */
-			string username = cast(string)message.data[2..2+cast(uint)usernameLength];
-			string password = cast(string)message.data[2+cast(uint)usernameLength..message.data.length];
+			string username = cast(string)message.getData()[2..2+cast(uint)usernameLength];
+			string password = cast(string)message.getData()[2+cast(uint)usernameLength..message.getData().length];
 
 			/* Authenticate */
 			bool status = authenticate(username, password);
@@ -399,7 +399,7 @@ public class DConnection : Thread
 		else if(command == Command.JOIN && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the channel names */
-			string channelList = cast(string)message.data[1..message.data.length];
+			string channelList = cast(string)message.getData()[1..message.getData().length];
 			string[] channels = split(channelList, ",");
 
 			/**
@@ -429,7 +429,7 @@ public class DConnection : Thread
 		else if(command == Command.PART && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the channel names */
-			string channelList = cast(string)message.data[1..message.data.length];
+			string channelList = cast(string)message.getData()[1..message.getData().length];
 			string[] channels = split(channelList, ",");
 
 			/**
@@ -484,16 +484,16 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* Get the type of message */
-			ubyte messageType = message.data[1];
+			ubyte messageType = message.getData()[1];
 
 			/* Get the location length */
-			ubyte locationLength = message.data[2];
+			ubyte locationLength = message.getData()[2];
 
 			/* Get the channel/person name */
-			string destination = cast(string)message.data[3..3+cast(uint)locationLength];
+			string destination = cast(string)message.getData()[3..3+cast(uint)locationLength];
 
 			/* Get the message */
-			string msg = cast(string)message.data[3+cast(uint)locationLength..message.data.length];
+			string msg = cast(string)message.getData()[3+cast(uint)locationLength..message.getData().length];
 
 			/* Send status */
 			bool sendStatus;
@@ -541,7 +541,7 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* Get the channel name */
-			string channelName = cast(string)message.data[1..message.data.length];
+			string channelName = cast(string)message.getData()[1..message.getData().length];
 
 			/* The memebr count */
 			long memberCount;
@@ -580,7 +580,7 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* Get the channel name */
-			string channelName = cast(string)message.data[1..message.data.length];
+			string channelName = cast(string)message.getData()[1..message.getData().length];
 
 			/* Get the channel */
 			DChannel channel = server.getChannelByName(channelName);
@@ -659,7 +659,7 @@ public class DConnection : Thread
 			bool status = true;
 
 			/* TODO: Implement me */
-			string user = cast(string)message.data[1..message.data.length];
+			string user = cast(string)message.getData()[1..message.getData().length];
 
 			/* TODO: fetch longontime, serveron, status */
 			string logontime;
@@ -677,7 +677,7 @@ public class DConnection : Thread
 		else if(command == Command.STATUS && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the new status line */
-			string statusMessage = cast(string)message.data[1..message.data.length];
+			string statusMessage = cast(string)message.getData()[1..message.getData().length];
 
 			/* Set the new status message */
 			setStatusMessage(statusMessage);
@@ -690,7 +690,7 @@ public class DConnection : Thread
 		else if(command == Command.GET_USER_PROPS && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the username */
-			string username = cast(string)message.data[1..message.data.length];
+			string username = cast(string)message.getData()[1..message.getData().length];
 
 			/* Get the user */
 			DConnection connection = server.findUser(username);
@@ -727,7 +727,7 @@ public class DConnection : Thread
 		else if(command == Command.GET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the <user>,<propertyName> */
-			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
+			string[] dataLine = split(cast(string)message.getData()[1..message.getData().length],",");
 
 			/* Get the username */
 			string username = dataLine[0];
@@ -758,7 +758,7 @@ public class DConnection : Thread
 		else if(command == Command.SET_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Set the <propertyName>,<propertyValue> */
-			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
+			string[] dataLine = split(cast(string)message.getData()[1..message.getData().length],",");
 
 			/* Get the property */
 			string propertyName = dataLine[0];
@@ -776,7 +776,7 @@ public class DConnection : Thread
 		else if(command == Command.DELETE_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the property */
-			string property = cast(string)message.data[1..message.data.length];
+			string property = cast(string)message.getData()[1..message.getData().length];
 
 			/* Check if the key exists */
 			bool keyExists = isProperty(property);
@@ -794,7 +794,7 @@ public class DConnection : Thread
 		else if(command == Command.IS_USER_PROP && hasAuthed && connType == ConnectionType.CLIENT)
 		{
 			/* Get the <user>,<propertyName> */
-			string[] dataLine = split(cast(string)message.data[1..message.data.length],",");
+			string[] dataLine = split(cast(string)message.getData()[1..message.getData().length],",");
 
 			/* Get the username */
 			string username = dataLine[0];
