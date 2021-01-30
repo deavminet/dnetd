@@ -78,7 +78,7 @@ void main(string[] args)
 		gprintln("Links I will be opening: " ~to!(string)(serverLinks));
 
 		/* Create a new Meyer (link manager) and attach the links to it */
-		DMeyer meyer = new DMeyer(dserver, serverLinks);
+		DMeyer meyer = new DMeyer(dserver);
 		
 		/* Attach the Meyer to the server */
 		dserver.attachLinkManager(meyer);

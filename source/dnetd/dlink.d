@@ -210,7 +210,8 @@ public final class DLink : Thread
 
     override public string toString()
     {
-        return "Server: "~name~", Address: "~to!(string)(address);
+        return name;
+        // return "Server: "~name~", Address: "~to!(string)(address);
     }
 
 
@@ -235,7 +236,7 @@ public final class DLink : Thread
 }
 
 /* TODO: Remove this from here and put it in DServer */
-public final class DMeyer
+public final class DMeyer : Thread
 {
     /* Direct peers */
     private DLink[] links;
@@ -244,21 +245,29 @@ public final class DMeyer
     /* Associated server */
     private DServer server;
 
-    this(DServer server, DLink[] links)
+    this(DServer server)
     {
+        super(&worker);
+
+        /* save shit */
         this.server = server;
         
         /* Initialize the locks */
         initLocks();
 
-        /* Open a connection to the server */
-
-        /* TODO: Open connections to all servers we are yet to open a connection to (check the `links` array) */
-
-
-        //this.links = links;
+        start();
     }
 
+    private void worker()
+    {
+        while(true)
+        {
+            linksMutex.lock();
+            gprintln("Linked servers: "~to!(string)(links), DebugType.WARNING);
+            linksMutex.unlock();
+            Thread.sleep(dur!("seconds")(3));
+        }
+    }
 
     /* Initialize locks */
     private void initLocks()
