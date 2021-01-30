@@ -155,6 +155,7 @@ public final class DLink : Thread
         }
 
         /* TODO: Clean up connection */
+        server.getLinkManager().removeLinkOutbounded(name);
     }
 
     /**
@@ -224,7 +225,7 @@ public final class DLink : Thread
 
     override public string toString()
     {
-        return name;
+        return name~"(DConnection: "~to!(string)(connection)~", Socket: "~to!(string)(outboundSocket)~")";
     }
 
 
