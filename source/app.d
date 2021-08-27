@@ -60,33 +60,6 @@ void main(string[] args)
 
 		/* Parse the configuration file */
 		json = parseJSON(cast(string)data);
-
-		/* Create a new configuration file and check configuration parameters */
-		DGeneralConfig config = DGeneralConfig.getConfig(json["general"]);
-
-		/* Create a new server */
-		DServer dserver = new DServer(config);
-
-		/* Now configure the the linking */
-		DLinkConfig linkConfig = DLinkConfig.getConfig(dserver, json["links"]);
-
-		/* Get all server links */
-		DLink[] serverLinks = linkConfig.getLinks();
-		
-
-		import std.conv : to;
-		gprintln("Links I will be opening: " ~to!(string)(serverLinks));
-
-		/* Create a new Meyer (link manager) and attach the links to it */
-		DMeyer meyer = new DMeyer(dserver);
-		
-		/* Attach the Meyer to the server */
-		dserver.attachLinkManager(meyer);
-
-		/* Start the server (TODO: This should start Meyer) */
-		dserver.startServer();
-
-		dserver.startOutboundLinks(serverLinks);
 	}
 	catch(JSONException e)
 	{
