@@ -4,9 +4,9 @@
 	],
 	"copyright": "Copyright © 2020, Tristan B. Kildaire",
 	"dependencies": {
-		"bformat": "3.1.0",
-		"gogga": "0.0.2",
-		"tristanable": "2.2.0"
+		"bformat": "3.1.3",
+		"gogga": "0.1.3",
+		"tristanable": "2.3.13"
 	},
 	"description": "dnet server",
 	"license": "AGPLv3",
