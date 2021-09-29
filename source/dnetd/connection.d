@@ -2,6 +2,7 @@ module dnetd.connection;
 
 import std.socket;
 import dnetd.server;
+import core.thread;
 
 /**
 * Connection
