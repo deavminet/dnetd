@@ -4,6 +4,8 @@ import core.thread;
 import std.socket;
 import dnetd.server;
 import dnetd.connection;
+import gogga;
+import std.conv : to;
 
 /**
 * Listener
@@ -55,6 +57,7 @@ public class Listener : Thread
         {
             /* Accept a new connection */
             Socket clientSocket = servSocket.accept();
+            gprintln("["~to!(string)(this)~"] New connection incoming "~to!(string)(clientSocket));
 
             /* Create a new Connection */
             Connection connection = new Connection(clientSocket);
