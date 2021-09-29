@@ -96,6 +96,7 @@ private ServerConfig getServerConfig(JSONValue jsonConfig)
         Listener listener = new Listener(lAddr);
         listeners ~= listener;
     }
+    config.listeners = listeners;
 
     /**
     * Network information
