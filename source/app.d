@@ -32,7 +32,7 @@ private void startServer(string configPath)
     }
     catch(ErrnoException e)
     {
-        gprintln("error file read", DebugType.ERROR);
+        gprintln("error file read\n"~e.msg, DebugType.ERROR);
         return;
     }
 
@@ -43,14 +43,14 @@ private void startServer(string configPath)
     {
         configJSON = parseJSON(configFileData);
     }
-    catch(ConvException)
+    catch(ConvException e)
     {
-        gprintln("config parse error", DebugType.ERROR);
+        gprintln("config parse error\n"~e.msg, DebugType.ERROR);
         return;
     }
-    catch(JSONException)
+    catch(JSONException e)
     {
-        gprintln("config parse error", DebugType.ERROR);
+        gprintln("config parse error\n"~e.msg, DebugType.ERROR);
         return;
     }
 
@@ -63,7 +63,7 @@ private void startServer(string configPath)
     }
     catch(JSONException e)
     {
-        gprintln("Config bad", DebugType.ERROR);
+        gprintln("Config bad\n"~e.msg, DebugType.ERROR);
         return;
     }
 
@@ -96,6 +96,13 @@ private ServerConfig getServerConfig(JSONValue jsonConfig)
         listeners ~= listener;
     }
 
+    /**
+    * Network information
+    */
+    config.networkName = generalBlock["network"].str();
+    config.serverName = generalBlock["name"].str();
+    config.motd = generalBlock["motd"].str();
+    config.serverID = to!(ubyte)(generalBlock["sid"].str());
 
     return config;
 }
