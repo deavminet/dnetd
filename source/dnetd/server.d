@@ -27,4 +27,18 @@ public class Server
         Listener.server = this;
     }
 
+    public void run()
+    {
+        /* Start all listeners */
+        startListeners();
+    }
+
+    private void startListeners()
+    {
+        foreach(Listener listener; listeners)
+        {
+            listener.start();
+        }
+    }
+
 }
