@@ -24,6 +24,8 @@ public class Listener : Thread
     */
     this(Address address)
     {
+        super(&run);
+        
         /* TODO: Throw exception is the Family is not INET or INET6 */
         if(address.addressFamily != AddressFamily.INET && address.addressFamily != AddressFamily.INET6)
         {
