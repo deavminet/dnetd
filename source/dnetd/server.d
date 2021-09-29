@@ -6,6 +6,11 @@ public struct ServerConfig
 {
     Listener[] listeners;
 
+    string serverName;
+    string networkName;
+    ubyte serverID;
+    string motd;
+
 }
 
 public class Server
