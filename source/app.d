@@ -5,6 +5,7 @@ import dnetd.server;
 import std.conv;
 import std.socket : parseAddress, Address;
 import dnetd.listener : Listener;
+import gogga;
 
 void main(string[] args)
 {
@@ -16,7 +17,7 @@ void main(string[] args)
     }
     else
     {
-        writeln("error no args");
+        gprintln("error no args", DebugType.ERROR);
     }
 }
 
@@ -31,7 +32,7 @@ private void startServer(string configPath)
     }
     catch(ErrnoException e)
     {
-        writeln("error file read");
+        gprintln("error file read", DebugType.ERROR);
         return;
     }
 
@@ -44,12 +45,12 @@ private void startServer(string configPath)
     }
     catch(ConvException)
     {
-        writeln("config parse error");
+        gprintln("config parse error", DebugType.ERROR);
         return;
     }
     catch(JSONException)
     {
-        writeln("config parse error");
+        gprintln("config parse error", DebugType.ERROR);
         return;
     }
 
@@ -62,12 +63,17 @@ private void startServer(string configPath)
     }
     catch(JSONException e)
     {
-        writeln("Config bad");
+        gprintln("Config bad", DebugType.ERROR);
         return;
     }
 
     /* Create a new Server */
     Server server = new Server(config);
+
+
+
+
+    gprintln("good");
 }
 
 private ServerConfig getServerConfig(JSONValue jsonConfig)
