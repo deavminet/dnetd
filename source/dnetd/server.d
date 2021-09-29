@@ -1,6 +1,7 @@
 module dnetd.server;
 
 import dnetd.listener;
+import dnetd.connection;
 
 public struct ServerConfig
 {
@@ -26,6 +27,9 @@ public class Server
 
         /* Configure all listeners to use this server instance */
         Listener.server = this;
+
+        /* Configure all Connection's to use this Server */
+        Connection.server = this;
     }
 
     public void run()
