@@ -69,6 +69,7 @@ private void startServer(string configPath)
 
     /* Create a new Server */
     Server server = new Server(config);
+    server.run();
 
 
 
