@@ -1,6 +1,7 @@
 import std.stdio;
 import std.json;
 import std.exception;
+import dnetd.server;
 
 void main(string[] args)
 {
@@ -36,13 +37,28 @@ private void startServer(string configPath)
 
     try
     {
-        configJSON= parseJSON(configFileData);
+        configJSON = parseJSON(configFileData);
     }
     catch(JSONException)
     {
         writeln("config parse error");
         return;
     }
+
+    /* Get server config */
+    ServerConfig config = getServerConfig(configJSON);
+
+    /* Create a new Server */
+    Server server = new Server(config);
+}
+
+private ServerConfig getServerConfig(JSONValue jsonConfig)
+{
+    /* TODO: Implement me */
+    ServerConfig config;
+
+
+    return config;
 }
 
 private string readConfig(string configPath)
