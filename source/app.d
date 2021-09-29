@@ -2,6 +2,9 @@ import std.stdio;
 import std.json;
 import std.exception;
 import dnetd.server;
+import std.conv;
+import std.socket : parseAddress, Address;
+import dnetd.listener : Listener;
 
 void main(string[] args)
 {
@@ -39,6 +42,11 @@ private void startServer(string configPath)
     {
         configJSON = parseJSON(configFileData);
     }
+    catch(ConvException)
+    {
+        writeln("config parse error");
+        return;
+    }
     catch(JSONException)
     {
         writeln("config parse error");
@@ -46,7 +54,17 @@ private void startServer(string configPath)
     }
 
     /* Get server config */
-    ServerConfig config = getServerConfig(configJSON);
+    ServerConfig config;
+
+    try
+    {
+       config = getServerConfig(configJSON);
+    }
+    catch(JSONException e)
+    {
+        writeln("Config bad");
+        return;
+    }
 
     /* Create a new Server */
     Server server = new Server(config);
@@ -56,6 +74,21 @@ private ServerConfig getServerConfig(JSONValue jsonConfig)
 {
     /* TODO: Implement me */
     ServerConfig config;
+
+    JSONValue generalBlock = jsonConfig["general"];
+
+    /* Get bind block */
+    JSONValue[] binds = generalBlock["binds"].array();
+    Listener[] listeners;
+    foreach(JSONValue bindDeclaration; binds)
+    {
+        string address = bindDeclaration["address"].str();
+        string port = bindDeclaration["port"].str();
+
+        Address lAddr = parseAddress(address, to!(ushort)(port));
+        Listener listener = new Listener(lAddr);
+        listeners ~= listener;
+    }
 
 
     return config;
