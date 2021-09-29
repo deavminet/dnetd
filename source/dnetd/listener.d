@@ -14,7 +14,7 @@ import dnetd.server;
 public class Listener : Thread
 {
     /* Server instance */
-    private __gshared Server server;
+    public __gshared Server server;
 
     /* Server's socket for inbound connections */
     private Socket servSocket;
