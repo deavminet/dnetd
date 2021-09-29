@@ -15,7 +15,11 @@ public class Server
 
     this(ServerConfig config)
     {
+        /* Set the listeners configured */
         listeners = config.listeners;
+
+        /* Configure all listeners to use this server instance */
+        Listener.server = this;
     }
 
 }
