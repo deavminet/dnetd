@@ -3,6 +3,7 @@ module dnetd.listener;
 import core.thread;
 import std.socket;
 import dnetd.server;
+import dnetd.connection;
 
 /**
 * Listener
@@ -14,7 +15,7 @@ import dnetd.server;
 public class Listener : Thread
 {
     /* Server instance */
-    public __gshared Server server;
+    public static __gshared Server server;
 
     /* Server's socket for inbound connections */
     private Socket servSocket;
@@ -25,7 +26,7 @@ public class Listener : Thread
     this(Address address)
     {
         super(&run);
-        
+
         /* TODO: Throw exception is the Family is not INET or INET6 */
         if(address.addressFamily != AddressFamily.INET && address.addressFamily != AddressFamily.INET6)
         {
@@ -54,6 +55,9 @@ public class Listener : Thread
         {
             /* Accept a new connection */
             Socket clientSocket = servSocket.accept();
+
+            /* Create a new Connection */
+            Connection connection = new Connection(clientSocket);
         }
     }
 }

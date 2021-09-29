@@ -17,6 +17,7 @@ public class Server
 {
     /* FIXME: Use DList for this */
     private Listener[] listeners;
+    /* TODO: Latwr add mutex for managing lusteners if we do multi thread removal */
 
     this(ServerConfig config)
     {

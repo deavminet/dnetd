@@ -1,6 +1,7 @@
 module dnetd.connection;
 
 import std.socket;
+import dnetd.server;
 
 /**
 * Connection
@@ -9,9 +10,10 @@ import std.socket;
 * one of the listeners
 */
 
-public class Connection
+public class Connection : Thread
 {
 
+    public static __gshared Server server;
     private Socket socket;
 
     /**
